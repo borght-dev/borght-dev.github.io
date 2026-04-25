@@ -1,8 +1,6 @@
 ---
 title: "Log Interpreter Tool"
 date: 2025-05-16
-status: validation
-stack: [".NET 8", "Serilog", "WPF"]
 ---
 
 A local log viewer for Serilog-based systems that supports:
@@ -11,6 +9,6 @@ A local log viewer for Serilog-based systems that supports:
 - Syntax highlighting and clickable exceptions
 - Exception grouping and analysis
 
-Built with .NET 8. Designed for engineers who want full control over their log debugging workflows.
+Built with .NET8. Designed for engineers who want full control over their log debugging workflows.
 
 Currently in early validation phase.

@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import { getEntry, render } from 'astro:content';
+
+const entry = await getEntry('pages', 'about');
+const { Content } = await render(entry!);
+---
+
+<Base title={entry!.data.title} terminalPath="~/about" showHero={false}>
+  <article class="single-post">
+    <nav class="breadcrumbs">
+      <a href="/">~</a><span class="sep">/</span>
+      <span>about</span>
+    </nav>
+
+    <header class="post-header">
+      <h1 class="post-title">{entry!.data.title}</h1>
+    </header>
+
+    <div class="post-content">
+      <Content />
+    </div>
+  </article>
+</Base>

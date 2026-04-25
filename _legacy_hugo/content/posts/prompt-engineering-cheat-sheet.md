@@ -2,8 +2,9 @@
 title: "Prompt Engineering Cheat Sheet"
 subtitle: "Master the art of effective AI communication"
 date: 2025-05-27
-tags: ["ai", "prompts", "reference"]
 ---
+
+
 
 ## Core Principles
 
@@ -59,19 +60,41 @@ Analyze this data step by step:
 
 Ask the AI to show its reasoning process for complex problems.
 
+**Example:**
+
+```
+Solve this problem step by step, showing your reasoning:
+If a train travels 240 miles in 3 hours, and then 160 miles in 2 hours, what is its average speed for the entire journey?
+```
+
 ### Role Assignment
 
 Give the AI a specific role or persona to improve response quality.
+
+**Example:**
+
+```
+You are an experienced financial advisor. A 25-year-old just started their first job earning $50k annually. What investment advice would you give them?
+```
 
 ### Output Formatting
 
 Specify the exact format you want for the response.
 
+**Example:**
+
+```
+Provide your analysis in this format:
+## Summary: [2-3 sentences]
+## Key Points: [bullet list]
+## Recommendations: [numbered list]
+```
+
 ---
 
 ## Do's and Don'ts
 
-| DO                                  | DON'T                                |
+| ✅ **DO**                            | ❌ **DON'T**                          |
 | ----------------------------------- | ------------------------------------ |
 | Be specific about length and format | Use overly complex language          |
 | Provide context and background      | Make assumptions about context       |
@@ -83,9 +106,53 @@ Specify the exact format you want for the response.
 
 ## Quick Tips
 
-- **Specificity:** Replace "write something about..." with "write a 200-word analysis of..."
-- **Templates:** Create reusable prompt templates for common tasks to maintain consistency.
-- **Iteration:** Refine prompts based on outputs. Small changes can dramatically improve results.
-- **Structure:** Use headers, bullet points, and numbering to organize complex prompts.
-- **Persona:** Assign roles like "expert," "teacher," or "critic" to get specialized responses.
-- **Constraints:** Set clear boundaries: word limits, tone, audience, and format requirements.
+* **🎯 Specificity:** Replace "write something about..." with "write a 200-word analysis of..."
+* **📝 Templates:** Create reusable prompt templates for common tasks to maintain consistency.
+* **🔄 Iteration:** Refine prompts based on outputs. Small changes can dramatically improve results.
+* **📊 Structure:** Use headers, bullet points, and numbering to organize complex prompts.
+* **🎭 Persona:** Assign roles like "expert," "teacher," or "critic" to get specialized responses.
+* **⚡ Constraints:** Set clear boundaries: word limits, tone, audience, and format requirements.
+
+---
+
+## Common Prompt Patterns
+
+### Analysis Pattern
+
+```
+Analyze [TOPIC] by examining:
+- Current state
+- Key challenges
+- Opportunities
+- Recommendations
+
+Format as a professional report with executive summary.
+```
+
+### Comparison Pattern
+
+```
+Compare [OPTION A] vs [OPTION B]:
+
+| Criteria      | Option A | Option B | Winner |
+|---------------|----------|----------|--------|
+| [Criterion 1] |          |          |        |
+
+Include overall recommendation.
+```
+
+### Creative Brief Pattern
+
+```
+Create [CONTENT TYPE] for [AUDIENCE]:
+
+- Objective: [GOAL]
+- Tone: [VOICE/STYLE]
+- Key Messages: [3-5 points]
+- Length: [WORD COUNT]
+- Call-to-action: [DESIRED ACTION]
+```
+
+---
+
+© 2025 Prompt Engineering Guide | Master effective AI communication

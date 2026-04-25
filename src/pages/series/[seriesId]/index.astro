@@ -1,0 +1,65 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const series = await getCollection('series');
+  return series.map(s => ({
+    params: { seriesId: s.data.seriesId },
+    props: { s },
+  }));
+}
+
+const { s } = Astro.props;
+const { Content } = await render(s);
+
+const episodes = (await getCollection('episodes', e => e.data.seriesId === s.data.seriesId))
+  .sort((a, b) => a.data.episode - b.data.episode);
+
+const fmt = (d?: Date) => d ? d.toISOString().slice(0, 10) : '—';
+---
+
+<Base
+  title={s.data.title}
+  description={s.data.tagline}
+  terminalPath={`~/series/${s.data.seriesId}`}
+  showHero={false}
+>
+  <article class="single-post">
+    <nav class="breadcrumbs">
+      <a href="/">~</a><span class="sep">/</span>
+      <a href="/series/">series</a><span class="sep">/</span>
+      <span>{s.data.seriesId}</span>
+    </nav>
+
+    <header class="post-header">
+      <h1 class="post-title">{s.data.title}</h1>
+      <p class="post-subtitle">{s.data.tagline}</p>
+      <div class="post-meta">
+        <span class="series-badge">{s.data.status}</span>
+        { s.data.cadence && <span>• cadence: {s.data.cadence}</span> }
+      </div>
+    </header>
+
+    <div class="post-content">
+      <Content />
+
+      <h2>episodes</h2>
+      <ul class="episode-list">
+        { episodes.map(ep => (
+          <li>
+            <a href={ep.data.draft ? '#' : `/series/${s.data.seriesId}/${ep.id.split('/').pop()}/`}
+               style={ep.data.draft ? 'cursor: not-allowed; opacity: 0.7;' : ''}
+               aria-disabled={ep.data.draft}>
+              <span class="episode-num">ep{String(ep.data.episode).padStart(2, '0')}</span>
+              <span class="episode-title">{ep.data.title}</span>
+              <span class={`episode-status ${ep.data.draft ? 'draft' : 'published'}`}>
+                { ep.data.draft ? 'draft' : fmt(ep.data.date) }
+              </span>
+            </a>
+          </li>
+        )) }
+      </ul>
+    </div>
+  </article>
+</Base>

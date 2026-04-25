@@ -1,25 +1,34 @@
-# Hugo caches and temporary files
-resources/
-hugo_stats.json
+# Astro
+dist/
+.astro/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment
+.env
+.env.production
+.env.local
+
+# OS
 .DS_Store
 
-# Backup and temp files
+# IDE
+.vscode/
+.idea/
+
+# Backup / temp
 *.bak
 *.swp
 *.swo
 *~
 
-# Node (optioneel, alleen als je npm tooling gebruikt voor thema's)
-node_modules/
+# Obsidian (plugin state, workspace)
+content/.obsidian/workspace*
+content/.obsidian/cache
+content/.trash/
 
-# IDE/Editor folders
-.vscode/
-
-# Netlify/Vercel folders (indien van toepassing)
-.netlify/
-.vercel/
-
-# Do NOT ignore docs/, since it contains the static output for GitHub Pages
-# public/ wordt niet gebruikt, maar kan geen kwaad om toch te negeren
-public/
-
+# Legacy Hugo (kept locally for reference, not deployed)
+_legacy_hugo/resources/
+_legacy_hugo/hugo_stats.json

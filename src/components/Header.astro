@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  pathname: string;
+  terminalPath?: string;
+  tagline?: string;
+  showHero?: boolean;
+}
+
+const {
+  pathname,
+  terminalPath = '~/home',
+  tagline = 'Senior developer, technical lead, and lifelong learner.',
+  showHero = true,
+} = Astro.props;
+
+const navItems = [
+  { href: '/',         label: '~/home',     match: '/' },
+  { href: '/blog/',    label: '~/blog',     match: '/blog' },
+  { href: '/series/',  label: '~/series',   match: '/series' },
+  { href: '/projects/',label: '~/projects', match: '/projects' },
+  { href: '/about/',   label: '~/about',    match: '/about' },
+  { href: '/contact/', label: '~/contact',  match: '/contact' },
+];
+
+const isActive = (match: string) =>
+  match === '/' ? pathname === '/' : pathname.startsWith(match);
+---
+
+<div class="terminal-header">
+  <div class="terminal-button btn-close"></div>
+  <div class="terminal-button btn-minimize"></div>
+  <div class="terminal-button btn-maximize"></div>
+  <div class="terminal-title">koenvanderborght: {terminalPath}</div>
+  <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">◐</button>
+</div>
+
+{ showHero && (
+  <header class="header">
+    <div class="logo-container">
+      <div class="logo">&gt;</div>
+      <h1 class="site-title">
+        <a href="/">koen<span class="accent">@</span>vanderborght<span class="accent">:~$</span></a>
+      </h1>
+    </div>
+    <p class="tagline">{tagline}</p>
+
+    <nav class="nav">
+      { navItems.map(item => (
+        <a href={item.href} class={`nav-item ${isActive(item.match) ? 'active' : ''}`}>{item.label}</a>
+      )) }
+    </nav>
+  </header>
+) }
+
+{ !showHero && (
+  <nav class="nav" style="padding-top: 1.5rem;">
+    { navItems.map(item => (
+      <a href={item.href} class={`nav-item ${isActive(item.match) ? 'active' : ''}`}>{item.label}</a>
+    )) }
+  </nav>
+) }

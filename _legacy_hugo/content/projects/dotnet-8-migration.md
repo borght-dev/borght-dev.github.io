@@ -1,8 +1,6 @@
 ---
-title: ".NET 8 Migration"
+title: ".NET 8 migration"
 date: 2025-05-16
-status: shipped
-stack: [".NET 8", "Serilog", "Azure DevOps"]
 ---
 
 Together with the development team at Gomocha, we successfully migrated over 20 components from .NET Framework 4.8 to .NET 8 within approximately 8 weeks.

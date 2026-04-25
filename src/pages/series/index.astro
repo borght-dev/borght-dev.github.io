@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const series = (await getCollection('series'))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const allEpisodes = await getCollection('episodes');
+const countFor = (id: string) =>
+  allEpisodes.filter(e => e.data.seriesId === id && !e.data.draft).length;
+const totalFor = (id: string) =>
+  allEpisodes.filter(e => e.data.seriesId === id).length;
+---
+
+<Base title="Series" terminalPath="~/series" tagline="Multi-part deep-dives, published over weeks.">
+  <section class="section">
+    <h2 class="section-title">all_series</h2>
+    <div class="posts-grid">
+      { series.map(s => (
+        <a href={`/series/${s.data.seriesId}/`} class="post-card series-card">
+          <span class="series-badge">{s.data.status}</span>
+          <h3 class="post-title-card">{s.data.title}</h3>
+          <p class="post-excerpt">{s.data.tagline}</p>
+          <p class="series-meta">
+            { countFor(s.data.seriesId) } / { totalFor(s.data.seriesId) } published
+            { s.data.cadence && ` • ${s.data.cadence}` }
+          </p>
+        </a>
+      )) }
+    </div>
+  </section>
+</Base>

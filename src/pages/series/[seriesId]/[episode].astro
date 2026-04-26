@@ -8,35 +8,26 @@ export async function getStaticPaths() {
   return episodes.map(ep => {
     const slug = ep.id.split('/').pop()!;
     const s = series.find(x => x.data.seriesId === ep.data.seriesId)!;
-    return {
-      params: { seriesId: ep.data.seriesId, episode: slug },
-      props: { ep, s },
-    };
+    return { params: { seriesId: ep.data.seriesId, episode: slug }, props: { ep, s } };
   });
 }
 
 const { ep, s } = Astro.props;
 const { Content } = await render(ep);
 
-const siblings = (await getCollection('episodes', e =>
-  e.data.seriesId === ep.data.seriesId && !e.data.draft
-)).sort((a, b) => a.data.episode - b.data.episode);
+const siblings = (await getCollection('episodes', e => e.data.seriesId === ep.data.seriesId && !e.data.draft))
+  .sort((a, b) => a.data.episode - b.data.episode);
 
 const idx = siblings.findIndex(x => x.id === ep.id);
 const prev = idx > 0 ? siblings[idx - 1] : null;
 const next = idx < siblings.length - 1 ? siblings[idx + 1] : null;
 
 const fmt = (d?: Date) => d ? d.toISOString().slice(0, 10) : '';
-const slugOf = (e: typeof ep) => e.id.split('/').pop();
+const slugOf = (id: string) => id.split('/').pop();
 ---
 
-<Base
-  title={ep.data.title}
-  description={ep.data.summary ?? `${s.data.title} — Episode ${ep.data.episode}`}
-  terminalPath={`~/series/${s.data.seriesId}/ep${ep.data.episode}`}
-  showHero={false}
->
-  <article class="single-post">
+<Base title={ep.data.title} description={ep.data.summary ?? `${s.data.title} — Episode ${ep.data.episode}`}>
+  <article class="article-shell">
     <nav class="breadcrumbs">
       <a href="/">~</a><span class="sep">/</span>
       <a href="/series/">series</a><span class="sep">/</span>
@@ -44,31 +35,31 @@ const slugOf = (e: typeof ep) => e.id.split('/').pop();
       <span>ep{String(ep.data.episode).padStart(2, '0')}</span>
     </nav>
 
-    <div class="series-banner">
+    <div class="article-banner">
       Part <strong>{ep.data.episode}</strong> of the series <a href={`/series/${s.data.seriesId}/`}><strong>{s.data.title}</strong></a>
     </div>
 
-    <header class="post-header">
-      <h1 class="post-title">{ep.data.title}</h1>
-      { ep.data.summary && <p class="post-subtitle">{ep.data.summary}</p> }
+    <header class="article-header">
+      <h1 class="article-title">{ep.data.title}</h1>
+      { ep.data.summary && <p class="article-subtitle">{ep.data.summary}</p> }
       { ep.data.date && (
-        <div class="post-meta"><span>{fmt(ep.data.date)}</span></div>
+        <div class="article-meta"><span>{fmt(ep.data.date)}</span></div>
       ) }
     </header>
 
-    <div class="post-content">
+    <div class="article-content">
       <Content />
     </div>
 
-    <nav class="post-nav">
+    <nav class="article-nav">
       { prev ? (
-        <a href={`/series/${s.data.seriesId}/${slugOf(prev)}/`}>
+        <a href={`/series/${s.data.seriesId}/${slugOf(prev.id)}/`}>
           <span class="label">← previous</span>
           <span>ep{String(prev.data.episode).padStart(2, '0')}: {prev.data.title}</span>
         </a>
       ) : <span></span> }
       { next ? (
-        <a href={`/series/${s.data.seriesId}/${slugOf(next)}/`} class="next">
+        <a href={`/series/${s.data.seriesId}/${slugOf(next.id)}/`} class="next">
           <span class="label">next →</span>
           <span>ep{String(next.data.episode).padStart(2, '0')}: {next.data.title}</span>
         </a>

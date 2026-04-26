@@ -8,24 +8,35 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
-<Base title="Blog" terminalPath="~/blog" tagline="Notes, war stories, and series in progress.">
-  <section class="section">
-    <h2 class="section-title">all_posts</h2>
-    <div class="posts-grid">
-      { posts.map(post => (
-        <a href={`/blog/${post.id}/`} class="post-card">
-          <div class="post-meta">
-            <span>{fmt(post.data.date)}</span>
-            { post.data.tags?.length > 0 && <span>•</span> }
-            { post.data.tags?.length > 0 && <span>{post.data.tags.join(', ')}</span> }
-          </div>
-          <h3 class="post-title-card">{post.data.title}</h3>
-          { post.data.subtitle && <p class="post-excerpt"><em>{post.data.subtitle}</em></p> }
-        </a>
-      )) }
-      { posts.length === 0 && (
-        <p class="post-excerpt">Nothing here yet. Check back soon.</p>
-      ) }
+<Base title="Blog" description="Notes, war stories, and series in progress.">
+  <section class="block">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">all_posts</h2>
+      <span class="section-meta">{posts.length} published</span>
+    </div>
+    <div class="post-grid">
+      { posts.map(post => {
+        const minutes = Math.max(1, Math.ceil((post.body?.trim().split(/\s+/).length ?? 0) / 200));
+        const pct = Math.min(100, minutes * 12);
+        return (
+          <a href={`/blog/${post.id}/`} class="post">
+            <div class="post-meta">
+              <span>{fmt(post.data.date)}</span>
+              <span class="read-bar"><span style={`width:${pct}%`}></span></span>
+              <span>{minutes} min read</span>
+            </div>
+            <h3>{post.data.title}</h3>
+            { post.data.subtitle && <p>{post.data.subtitle}</p> }
+            { post.data.tags?.length > 0 && (
+              <div class="tags">
+                { post.data.tags.map(t => <span class="tag">{t}</span>) }
+              </div>
+            ) }
+          </a>
+        );
+      }) }
+      { posts.length === 0 && <p class="tagline">Nothing published yet.</p> }
     </div>
   </section>
 </Base>

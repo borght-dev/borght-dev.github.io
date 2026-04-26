@@ -8,20 +8,24 @@ const projects = (await getCollection('projects'))
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
-<Base title="Projects" terminalPath="~/projects" tagline="Tools, migrations, and side-projects.">
-  <section class="section">
-    <h2 class="section-title">all_projects</h2>
-    <div class="posts-grid">
+<Base title="Projects" description="Tools, migrations, and side-projects.">
+  <section class="block">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">all_projects</h2>
+      <span class="section-meta">{projects.length} entries</span>
+    </div>
+    <div class="post-grid">
       { projects.map(p => (
-        <a href={`/projects/${p.id}/`} class="post-card">
+        <a href={`/projects/${p.id}/`} class="post">
           <div class="post-meta">
             <span>{fmt(p.data.date)}</span>
-            <span>•</span>
+            <span>·</span>
             <span>{p.data.status}</span>
           </div>
-          <h3 class="post-title-card">{p.data.title}</h3>
+          <h3>{p.data.title}</h3>
           { p.data.stack?.length > 0 && (
-            <div class="post-tags">
+            <div class="tags">
               { p.data.stack.map(s => <span class="tag">{s}</span>) }
             </div>
           ) }

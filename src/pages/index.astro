@@ -1,77 +1,143 @@
 ---
 import Base from '../layouts/Base.astro';
+import BorgDockMock from '../components/BorgDockMock.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 4);
 
-const series = (await getCollection('series'))
-  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const series = (await getCollection('series'));
+const allEpisodes = await getCollection('episodes');
+
+const featuredSlug = 'borgdock';
+const featured = series.find(s => s.data.seriesId === featuredSlug)!;
+const otherSeries = series.filter(s => s.data.seriesId !== featuredSlug);
+
+const featuredEpisodes = allEpisodes.filter(e => e.data.seriesId === featured.data.seriesId);
+const featuredPublished = featuredEpisodes.filter(e => !e.data.draft).length;
+const featuredTotal = featuredEpisodes.length;
 
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
-
-function readingTime(text: string): string {
-  const words = text.trim().split(/\s+/).length;
-  return `${Math.max(1, Math.ceil(words / 200))} min read`;
-}
+const readTime = (text: string) => `${Math.max(1, Math.ceil((text?.trim().split(/\s+/).length ?? 0) / 200))} min read`;
+const lastBuild = new Date().toISOString().slice(0, 16).replace('T', ' ');
 ---
 
-<Base title="Koen van der Borght" terminalPath="~/home">
-  <section class="section">
-    <h2 class="section-title">recent_posts</h2>
-    <div class="posts-grid">
-      { posts.length === 0 && (
-        <p class="post-excerpt">No posts published yet — first drafts are queued in the content folder.</p>
-      ) }
-      { posts.map(post => (
-        <a href={`/blog/${post.id}/`} class="post-card">
-          <div class="post-meta">
-            <span>{fmt(post.data.date)}</span>
-            <span>•</span>
-            <span>{readingTime(post.body ?? '')}</span>
-          </div>
-          <h3 class="post-title-card">{post.data.title}</h3>
-          { post.data.subtitle && <p class="post-excerpt"><em>{post.data.subtitle}</em></p> }
-          { post.data.description && <p class="post-excerpt">{post.data.description}</p> }
-        </a>
-      )) }
+<Base title="Koen van der Borght" showTopbar={false}>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="prompt reveal">
+        <span class="pulse-dot"></span>
+        <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span style="color:var(--ink-mute)">:~$</span></span>
+      </div>
+
+      <h1 class="headline reveal reveal-1">
+        Senior dev<br>
+        shipping <span class="accent">tools</span>,<br>
+        not slides<span class="cursor"></span>
+      </h1>
+
+      <p class="tagline reveal reveal-2">
+        Full-stack engineer at Gomocha building field service software by day, making developer tools by night.
+        Currently writing about AI-native engineering workflows.
+      </p>
+
+      <div class="ctas reveal reveal-3">
+        <a href="#series" class="btn btn-primary">read the series →</a>
+        <a href="/blog/" class="btn btn-ghost">~/blog</a>
+      </div>
+
+      <div class="live-strip reveal reveal-4">
+        <div class="live-item">
+          <span class="live-label">currently shipping</span>
+          <span class="live-value"><span class="pulse-dot"></span> BorgDock v0.4</span>
+        </div>
+        <div class="live-item">
+          <span class="live-label">active series</span>
+          <span class="live-value">{series.length} · weekly cadence</span>
+        </div>
+        <div class="live-item">
+          <span class="live-label">last build</span>
+          <span class="live-value">{lastBuild}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="block" id="series">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">featured_series</h2>
+      <span class="section-meta"><a href="/series/">view all {series.length} →</a></span>
+    </div>
+
+    <article class="featured">
+      <div>
+        <div class="featured-status">
+          <span class="pulse-dot"></span> {featured.data.status} · {featured.data.cadence ?? 'on demand'}
+        </div>
+        <h3>{featured.data.title}</h3>
+        <p class="lead">{featured.data.tagline}</p>
+        <div class="featured-meta">
+          <span>{featuredPublished} / {featuredTotal} episodes</span>
+          <span>Tauri 2 · React · Rust</span>
+          <span>updated 2d ago</span>
+        </div>
+        <a href={`/series/${featured.data.seriesId}/`} class="btn btn-primary">explore the series →</a>
+      </div>
+      <BorgDockMock />
+    </article>
+  </section>
+
+  <section class="block tight" id="other-series">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">other_series</h2>
+    </div>
+    <div class="series-grid">
+      { otherSeries.map(s => {
+        const eps = allEpisodes.filter(e => e.data.seriesId === s.data.seriesId);
+        const pub = eps.filter(e => !e.data.draft).length;
+        return (
+          <a href={`/series/${s.data.seriesId}/`} class="series-card">
+            <div class="series-status"><span class="pulse-dot"></span> {s.data.status}</div>
+            <h3>{s.data.title}</h3>
+            <p>{s.data.tagline}</p>
+            <div class="meta">
+              <span>{pub} / {eps.length} episodes</span>
+              { s.data.cadence && <span>· {s.data.cadence}</span> }
+            </div>
+          </a>
+        );
+      }) }
     </div>
   </section>
 
-  <section class="section">
-    <h2 class="section-title">active_series</h2>
-    <div class="posts-grid">
-      { series.map(s => (
-        <a href={`/series/${s.data.seriesId}/`} class="post-card series-card">
-          <span class="series-badge">{s.data.status}</span>
-          <h3 class="post-title-card">{s.data.title}</h3>
-          <p class="post-excerpt">{s.data.tagline}</p>
-          { s.data.cadence && <p class="series-meta">cadence: {s.data.cadence}</p> }
-        </a>
-      )) }
+  <section class="block" id="posts">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">recent_posts</h2>
+      <span class="section-meta"><a href="/blog/">archive →</a></span>
+    </div>
+    <div class="post-grid">
+      { posts.map(post => {
+        const minutes = Math.max(1, Math.ceil((post.body?.trim().split(/\s+/).length ?? 0) / 200));
+        const pct = Math.min(100, minutes * 12);
+        return (
+          <a href={`/blog/${post.id}/`} class="post">
+            <div class="post-meta">
+              <span>{fmt(post.data.date)}</span>
+              <span class="read-bar"><span style={`width:${pct}%`}></span></span>
+              <span>{minutes} min read</span>
+            </div>
+            <h3>{post.data.title}</h3>
+            { post.data.subtitle && <p>{post.data.subtitle}</p> }
+            { !post.data.subtitle && post.data.description && <p>{post.data.description}</p> }
+          </a>
+        );
+      }) }
     </div>
   </section>
 
-  <section class="section">
-    <h2 class="section-title">system_status</h2>
-    <div class="status-grid">
-      <div class="status-item">
-        <div class="status-icon"></div>
-        <div class="status-text">Currently: Coding</div>
-      </div>
-      <div class="status-item">
-        <div class="status-icon"></div>
-        <div class="status-text">Coffee level: ███████░░░ 75%</div>
-      </div>
-      <div class="status-item">
-        <div class="status-icon"></div>
-        <div class="status-text">Available for: Projects</div>
-      </div>
-      <div class="status-item">
-        <div class="status-icon"></div>
-        <div class="status-text">Location: /dev/home</div>
-      </div>
-    </div>
-  </section>
 </Base>

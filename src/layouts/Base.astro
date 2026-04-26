@@ -1,25 +1,22 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
+import Topbar from '../components/Topbar.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
   description?: string;
-  terminalPath?: string;
-  tagline?: string;
-  showHero?: boolean;
+  /** Set false on the home page to hide the slim top bar (the hero contains its own prompt). */
+  showTopbar?: boolean;
 }
 
 const {
   title,
-  description = 'Senior developer, technical lead, and lifelong learner.',
-  terminalPath = '~/home',
-  tagline,
-  showHero = true,
+  description = 'Senior dev at Gomocha, building developer tools and writing about AI-native engineering.',
+  showTopbar = true,
 } = Astro.props;
 
-const fullTitle = title === 'Koen van der Borght' ? title : `${title} | Koen van der Borght`;
+const fullTitle = title === 'Koen van der Borght' ? title : `${title} · koen.vanderborght`;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
@@ -27,10 +24,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#FAFBFC" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0A0E1A" media="(prefers-color-scheme: dark)" />
   <meta name="description" content={description} />
   <meta name="generator" content={Astro.generator} />
-
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="canonical" href={canonical} />
   <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Koen van der Borght" />
@@ -52,13 +50,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   </script>
 </head>
 <body>
-  <div class="terminal-window">
-    <Header pathname={Astro.url.pathname} terminalPath={terminalPath} tagline={tagline} showHero={showHero} />
-    <main class="main-content">
-      <slot />
-    </main>
-    <Footer />
-  </div>
+  { showTopbar && <Topbar pathname={Astro.url.pathname} /> }
+  <slot />
+  <Footer />
 
   <script is:inline>
     const toggle = document.getElementById('theme-toggle');

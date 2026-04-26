@@ -4,46 +4,46 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  return posts.map(post => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
 
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const minutes = Math.max(1, Math.ceil((post.body?.trim().split(/\s+/).length ?? 0) / 200));
 ---
 
 <Base
   title={post.data.title}
   description={post.data.description ?? post.data.subtitle ?? post.data.title}
-  terminalPath={`~/blog/${post.id}`}
-  showHero={false}
 >
-  <article class="single-post">
+  <article class="article-shell">
     <nav class="breadcrumbs">
       <a href="/">~</a><span class="sep">/</span>
       <a href="/blog/">blog</a><span class="sep">/</span>
       <span>{post.id}</span>
     </nav>
 
-    <header class="post-header">
-      <h1 class="post-title">{post.data.title}</h1>
-      { post.data.subtitle && <p class="post-subtitle">{post.data.subtitle}</p> }
-      <div class="post-meta">
+    <header class="article-header">
+      <h1 class="article-title">{post.data.title}</h1>
+      { post.data.subtitle && <p class="article-subtitle">{post.data.subtitle}</p> }
+      <div class="article-meta">
         <span>{fmt(post.data.date)}</span>
-        { post.data.tags?.length > 0 && <span>•</span> }
+        <span>·</span>
+        <span>{minutes} min read</span>
         { post.data.tags?.length > 0 && (
-          <div class="post-tags">
-            { post.data.tags.map(t => <span class="tag">{t}</span>) }
-          </div>
+          <>
+            <span>·</span>
+            <div class="tags" style="display:inline-flex;gap:0.5rem;">
+              { post.data.tags.map(t => <span class="tag">{t}</span>) }
+            </div>
+          </>
         ) }
       </div>
     </header>
 
-    <div class="post-content">
+    <div class="article-content">
       <Content />
     </div>
   </article>

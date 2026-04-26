@@ -1,0 +1,33 @@
+---
+interface Props {
+  pathname: string;
+}
+const { pathname } = Astro.props;
+
+const links = [
+  { href: '/blog/',     label: '~/blog',     match: '/blog',     mobile: true  },
+  { href: '/series/',   label: '~/series',   match: '/series',   mobile: true  },
+  { href: '/projects/', label: '~/projects', match: '/projects', mobile: false },
+  { href: '/about/',    label: '~/about',    match: '/about',    mobile: false },
+];
+
+const isActive = (m: string) => pathname.startsWith(m);
+---
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="topbar-prompt" aria-label="home">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span style="color:var(--ink-mute)">:~$</span></span>
+    </a>
+    <nav class="topbar-nav" aria-label="primary">
+      { links.map(l => (
+        <a href={l.href}
+           class={`${isActive(l.match) ? 'active' : ''} ${l.mobile ? '' : 'hide-mobile'}`}>
+          {l.label}
+        </a>
+      )) }
+      <button id="theme-toggle" class="topbar-toggle" aria-label="Toggle theme">◐</button>
+    </nav>
+  </div>
+</header>

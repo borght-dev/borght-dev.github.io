@@ -3,53 +3,33 @@ const lastBuild = new Date().toISOString().slice(0, 16).replace('T', ' ');
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <div class="footer-content">
-    <div class="footer-section">
-      <h3 class="footer-title">connect_with_me</h3>
-      <div class="social-links">
-        <a href="https://github.com/borght-dev/" class="social-link" target="_blank" rel="noopener">
-          <span class="social-icon">→</span><span>GitHub</span>
-        </a>
-        <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" class="social-link" target="_blank" rel="noopener">
-          <span class="social-icon">→</span><span>LinkedIn</span>
-        </a>
-        <a href="mailto:koenvanderborght@outlook.com" class="social-link">
-          <span class="social-icon">→</span><span>Email</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="footer-section">
-      <h3 class="footer-title">quick_access</h3>
-      <div class="footer-links">
-        <a href="/blog/" class="footer-link">~/blog</a>
-        <a href="/series/" class="footer-link">~/series</a>
-        <a href="/projects/" class="footer-link">~/projects</a>
-        <a href="/rss.xml" class="footer-link">~/rss</a>
-      </div>
-    </div>
-
-    <div class="footer-section">
-      <h3 class="footer-title">system_info</h3>
-      <div class="system-info">
-        <div class="info-line">
-          <span class="info-label">Built with:</span>
-          <span class="info-value">Astro 5</span>
-        </div>
-        <div class="info-line">
-          <span class="info-label">Editor:</span>
-          <span class="info-value">Obsidian (mobile)</span>
-        </div>
-        <div class="info-line">
-          <span class="info-label">Last build:</span>
-          <span class="info-value">{lastBuild}</span>
-        </div>
-      </div>
-    </div>
+<footer class="foot">
+  <div class="foot-col">
+    <h4>connect</h4>
+    <a href="https://github.com/borght-dev/" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:koenvanderborght@outlook.com">Email</a>
   </div>
-
-  <div class="footer-bottom">
-    © {year} Koen van der Borght. All rights reserved.
+  <div class="foot-col">
+    <h4>navigate</h4>
+    <a href="/blog/">~/blog</a>
+    <a href="/series/">~/series</a>
+    <a href="/projects/">~/projects</a>
+    <a href="/rss.xml">~/rss</a>
+  </div>
+  <div class="foot-col">
+    <h4>system</h4>
+    <div class="foot-system">
+      <span class="k">built with</span> Astro 5<br>
+      <span class="k">editor</span> Obsidian (mobile)<br>
+      <span class="k">last build</span> {lastBuild}
+    </div>
   </div>
 </footer>
+
+<div class="foot-bottom">
+  <span>© {year} Koen van der Borght</span>
+  <span style="display:inline-flex;align-items:center;gap:0.5rem;">
+    <span class="pulse-dot"></span> all systems operational
+  </span>
+</div>

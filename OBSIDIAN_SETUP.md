@@ -83,17 +83,7 @@ Polish on the laptop later. Voice gets you 80% there in 5 minutes.
 
 Open Obsidian and you'll find these draft files ready to edit:
 
-### Series 1 — Building an Enterprise Platform with Zero Hand-Written Code (5 episodes)
-
-| # | File | Title |
-|---|------|-------|
-| 1 | `content/series/ai-generated-platform/01-the-claim-and-the-setup.md` | The Claim and the Setup |
-| 2 | `content/series/ai-generated-platform/02-the-reference-code-pattern.md` | The Reference-Code Pattern: How AI Reads a 15-Year Legacy |
-| 3 | `content/series/ai-generated-platform/03-hallucinated-columns.md` | When Claude Made Up a Database Schema (and How We Caught It) |
-| 4 | `content/series/ai-generated-platform/04-vertical-slices-generated.md` | Vertical Slices Are the Best Architecture for AI Codegen |
-| 5 | `content/series/ai-generated-platform/05-ortec-15-plans-one-worker.md` | The Ortec Integration: 15 Plans, One Worker, Zero Manual Code |
-
-### Series 2 — BorgDock: A Desktop Sidebar for GitHub PRs (4 episodes)
+### Series 1 — BorgDock: A Desktop Sidebar for GitHub PRs (4 episodes)
 
 | # | File | Title |
 |---|------|-------|
@@ -102,7 +92,7 @@ Open Obsidian and you'll find these draft files ready to edit:
 | 3 | `content/series/borgdock/03-tauri-main-thread-deadlock.md` | The Tauri Main-Thread Deadlock That Took a Week to Find |
 | 4 | `content/series/borgdock/04-one-click-auto-fix.md` | One-Click Auto-Fix: Wiring BorgDock into Claude Code |
 
-### Series 3 — Multi-Worktree .NET (3 episodes)
+### Series 2 — Multi-Worktree .NET (3 episodes)
 
 | # | File | Title |
 |---|------|-------|
@@ -110,7 +100,7 @@ Open Obsidian and you'll find these draft files ready to edit:
 | 2 | `content/series/multi-worktree-dotnet/02-aspire-gotchas.md` | Aspire Gotchas at Scale: The Pile of Papercuts |
 | 3 | `content/series/multi-worktree-dotnet/03-worktree-to-deployment.md` | From Worktree to Deployment in One Command |
 
-### Series 4 — AI-Native Engineering: A Workflow Series (6 episodes)
+### Series 3 — AI-Native Engineering: A Workflow Series (6 episodes)
 
 | # | File | Title |
 |---|------|-------|

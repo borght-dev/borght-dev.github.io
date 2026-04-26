@@ -20,12 +20,10 @@ content/
 ├── posts/         # standalone blog posts
 ├── projects/      # project portfolio
 └── series/
-    ├── ai-generated-platform/
-    │   ├── index.md           # series description
-    │   ├── 01-the-claim-and-the-setup.md
-    │   ├── 02-the-reference-code-pattern.md
-    │   └── ...
     ├── borgdock/
+    │   ├── index.md           # series description
+    │   ├── 01-why-a-sidebar.md
+    │   └── ...
     ├── multi-worktree-dotnet/
     └── ai-native-engineering/
 ```

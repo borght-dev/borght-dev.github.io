@@ -1,0 +1,214 @@
+---
+import { FONTS_HREF } from '../data/variants-data';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** which nav item is active */
+  active?: 'posts' | 'projects' | 'now' | 'log' | null;
+}
+
+const {
+  title,
+  description = 'Koen van der Borght — senior dev in Tilburg. Notes on workflow, tooling, architecture, and AI-assisted development.',
+  active = null,
+} = Astro.props;
+
+const fullTitle = title === 'Koen van der Borght' ? title : `${title} · koen.vanderborght`;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+// nav items (now/uses hidden until written)
+const navItems = [
+  { key: 'posts',    href: '/legacy/posts/',    label: './posts'    },
+  { key: 'projects', href: '/projects/', label: './projects' },
+  { key: 'log',      href: '/log/',      label: './log →'    },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a1612" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Koen van der Borght" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <title>{fullTitle}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+
+  <style is:global>
+    /* ─── D · Markdown First — design tokens ─────────────────────── */
+    :root {
+      --d-bg:       #fafaf7;
+      --d-panel:    #ffffff;
+      --d-text:     #1a1a1a;
+      --d-text2:    #4a4a4a;
+      --d-text3:    #8a8a8a;
+      --d-muted:    #b8b8b8;
+      --d-accent:   #d23f1f;
+      --d-hairline: #e6e3dc;
+      --d-code:     #f1ede4;
+      --d-quote-bg: #fff8f5;
+      --d-panel-head: #f5f2ec;
+      --d-mono:  'JetBrains Mono', ui-monospace, monospace;
+      --d-sans:  'Inter', sans-serif;
+      --d-serif: 'Fraunces', serif;
+    }
+    /* dark mode = "reading by an amber lamp" — deep warm bg, ivory text */
+    :root[data-theme="dark"] {
+      --d-bg:       #14110d;
+      --d-panel:    #1c1814;
+      --d-text:     #ece4d3;
+      --d-text2:    #b6ad9b;
+      --d-text3:    #807767;
+      --d-muted:    #5a5246;
+      --d-accent:   #e8693c;
+      --d-hairline: #2a251e;
+      --d-code:     #1f1a13;
+      --d-quote-bg: #221912;
+      --d-panel-head: #18140f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --d-bg:       #14110d;
+        --d-panel:    #1c1814;
+        --d-text:     #ece4d3;
+        --d-text2:    #b6ad9b;
+        --d-text3:    #807767;
+        --d-muted:    #5a5246;
+        --d-accent:   #e8693c;
+        --d-hairline: #2a251e;
+        --d-code:     #1f1a13;
+        --d-quote-bg: #221912;
+        --d-panel-head: #18140f;
+      }
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--d-bg);
+      color: var(--d-text);
+      font-family: var(--d-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    body { min-height: 100vh; }
+    a { color: inherit; cursor: pointer; }
+
+    /* shared chrome */
+    .d-shell { width: 1280px; max-width: 100%; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+    .d-header {
+      padding: 24px 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 0.5px solid var(--d-hairline);
+    }
+    .d-header-prompt { font-family: var(--d-mono); font-size: 13px; font-weight: 600; }
+    .d-header-prompt span { color: var(--d-text3); }
+    .d-header-nav { display: flex; gap: 28px; font-family: var(--d-mono); font-size: 12px; align-items: center; }
+    .d-header-nav a {
+      color: var(--d-text2);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+    .d-header-nav a.active { color: var(--d-accent); border-bottom-color: var(--d-accent); }
+    .d-header-nav a:hover { color: var(--d-accent); }
+    .d-toggle {
+      background: transparent; border: 0; cursor: pointer;
+      color: var(--d-text3); font-family: var(--d-mono); font-size: 13px;
+      padding: 0 4px;
+    }
+    .d-toggle:hover { color: var(--d-accent); }
+
+    .d-main { max-width: 720px; margin: 0 auto; padding: 64px 24px 80px; flex: 1; width: 100%; box-sizing: border-box; }
+
+    .d-foot {
+      max-width: 720px; margin: 0 auto; padding: 28px 24px;
+      border-top: 0.5px solid var(--d-hairline);
+      display: flex; justify-content: space-between;
+      font-family: var(--d-mono); font-size: 11.5px; color: var(--d-text3);
+      width: 100%; box-sizing: border-box;
+    }
+    .d-foot a { color: var(--d-text3); text-decoration: none; }
+    .d-foot a:hover { color: var(--d-accent); }
+
+    /* mobile */
+    @media (max-width: 767px) {
+      .d-shell { width: 100%; }
+      .d-header { padding: 14px 20px; }
+      .d-header-nav { gap: 14px; font-size: 11px; flex-wrap: wrap; justify-content: flex-end; }
+      .d-main { padding: 32px 22px 40px; }
+      .d-foot { padding: 24px 20px; flex-wrap: wrap; gap: 8px; font-size: 10.5px; }
+    }
+  </style>
+
+  <script is:inline>
+    // FOUC-free theme bootstrap
+    (function () {
+      const saved = localStorage.getItem('d-theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+  </script>
+</head>
+<body>
+<div class="d-shell">
+  <header class="d-header">
+    <a href="/" class="d-header-prompt" style="text-decoration:none">
+      ~/koenvdborght.nl <span>$</span>
+    </a>
+    <nav class="d-header-nav" aria-label="primary">
+      {navItems.map((l) => (
+        <a href={l.href} class={active === l.key ? 'active' : ''}>{l.label}</a>
+      ))}
+      <button class="d-toggle" id="d-theme-toggle" aria-label="Toggle theme">[ ☼ / ☾ ]</button>
+    </nav>
+  </header>
+
+  <main class="d-main">
+    <slot />
+  </main>
+
+  <footer class="d-foot">
+    <span>© 2026 koen van der borght</span>
+    <span>
+      <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" target="_blank" rel="noopener">linkedin</a>
+      <span style="color: var(--d-muted); margin: 0 6px;">·</span>
+      <a href="https://github.com/borght-dev/" target="_blank" rel="noopener">github</a>
+      <span style="color: var(--d-muted); margin: 0 6px;">·</span>
+      <a href="/rss.xml">rss</a>
+    </span>
+  </footer>
+</div>
+
+<script is:inline>
+  (function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('d-theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      const current = root.getAttribute('data-theme');
+      const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // cycle: system → opposite of system → other → system
+      let next;
+      if (!current)            next = sysDark ? 'light' : 'dark';
+      else if (current === 'dark')  next = 'light';
+      else                          next = 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('d-theme', next);
+    });
+  })();
+</script>
+</body>
+</html>

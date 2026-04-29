@@ -1,0 +1,159 @@
+---
+// Direction D · Markdown First — Archive page
+// Verbatim from personal-site-and-blog/project/site/direction-d-pages.jsx
+import { POSTS, FONTS_HREF } from '../../../data/variants-data';
+
+const D = {
+  bg: '#fafaf7', panel: '#ffffff', text: '#1a1a1a', text2: '#4a4a4a',
+  text3: '#8a8a8a', muted: '#b8b8b8', accent: '#d23f1f',
+  hairline: '#e6e3dc', code: '#f1ede4',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+  serif: "'Fraunces', serif",
+};
+
+const ALL = [
+  ...POSTS,
+  { n: '06', date: '2025 · 11 · 04', readTime: '7 min',  title: 'A small case for boring tools',                       dek: "Make, Bash, SQLite. The dependencies that haven't broken in 30 years.", tags: ['Tools', 'Essay'] },
+  { n: '07', date: '2025 · 09 · 22', readTime: '4 min',  title: 'Note-taking for people who never read their notes',  dek: "I write everything down. I never re-read it. I think that's fine, and here is why.", tags: ['Workflow'] },
+  { n: '08', date: '2025 · 08 · 14', readTime: '11 min', title: 'On owning the architecture',                           dek: 'A handover document I wrote for myself, three job titles ago.', tags: ['Career', 'Architecture'] },
+  { n: '09', date: '2025 · 06 · 30', readTime: '6 min',  title: 'Why I keep a daily build log',                         dek: 'A two-line entry every morning. The compounding is absurd.', tags: ['Workflow'] },
+  { n: '10', date: '2025 · 05 · 10', readTime: '8 min',  title: 'TypeScript without the ceremony',                      dek: 'Eight years in, here is the smallest setup I still trust.', tags: ['TypeScript'] },
+  { n: '11', date: '2025 · 03 · 28', readTime: '5 min',  title: 'The only refactor that ever paid off',                 dek: 'It was renaming a single concept consistently, across the whole codebase.', tags: ['Essay'] },
+  { n: '12', date: '2025 · 02 · 02', readTime: '9 min',  title: 'How I read codebases I did not write',                 dek: 'A protocol. Mostly: shut up, sit down, follow one request end to end.', tags: ['Architecture'] },
+];
+
+const groups: Record<string, typeof ALL> = ALL.reduce((acc, p) => {
+  const y = p.date.slice(0, 4);
+  (acc[y] = acc[y] || []).push(p);
+  return acc;
+}, {} as Record<string, typeof ALL>);
+
+const navItems = ['posts', 'projects', 'now', 'uses', 'feed.xml'];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archive · D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fafaf7; }
+    a { cursor: pointer; }
+    .d-root { width: 1280px; }
+    .d-header { padding: 24px 64px; }
+    .d-main { max-width: 720px; padding: 64px 24px 80px; }
+    .d-h1 { font-size: 56px; }
+    .d-row { display: grid; grid-template-columns: 110px 1fr 80px; gap: 18px; }
+    @media (max-width: 767px) {
+      .d-root { width: 100%; min-height: 0 !important; }
+      .d-header { padding: 14px 20px !important; }
+      .d-header nav { gap: 14px !important; font-size: 11px !important; }
+      .d-main { padding: 32px 22px 40px !important; }
+      .d-h1 { font-size: 38px !important; }
+      .d-intro { font-size: 15px !important; }
+      .d-tags-row { font-size: 12px !important; line-height: 1.6 !important; }
+      .d-row { grid-template-columns: 1fr !important; gap: 4px !important; padding: 16px 0 !important; }
+      .d-row .d-row-date { font-size: 11px !important; color: #b8b8b8 !important; }
+      .d-row .d-row-read { text-align: left !important; font-size: 11px !important; }
+      .d-row-title { font-size: 17px !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="d-root" style={{
+  minHeight: '1860px', background: D.bg, color: D.text,
+  fontFamily: D.sans, margin: '0 auto',
+}}>
+  <header class="d-header" style={{
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    borderBottom: `0.5px solid ${D.hairline}`, background: D.bg,
+  }}>
+    <div style={{ fontFamily: D.mono, fontSize: '13px', fontWeight: 600 }}>
+      ~/koenvdborght.nl <span style={{ color: D.text3 }}>$</span>
+    </div>
+    <nav style={{ display: 'flex', gap: '28px', fontFamily: D.mono, fontSize: '12px' }}>
+      {navItems.map((x) => (
+        <a href={x === 'posts' ? '/variants/d/archive' : '/variants/d/'} style={{
+          color: x === 'posts' ? D.accent : D.text2,
+          textDecoration: 'none',
+          borderBottom: x === 'posts' ? `1px solid ${D.accent}` : 'none',
+          paddingBottom: '2px',
+        }}>./{x}</a>
+      ))}
+    </nav>
+  </header>
+
+  <main class="d-main" style={{ margin: '0 auto' }}>
+    <div style={{ fontFamily: D.mono, fontSize: '12px', color: D.accent, marginBottom: '22px' }}># posts/</div>
+
+    <h1 class="d-h1" style={{
+      fontFamily: D.serif, fontWeight: 400,
+      lineHeight: 1.05, letterSpacing: '-0.025em', margin: '0 0 16px',
+    }}>
+      The <span style={{ fontStyle: 'italic', color: D.accent }}>archive</span>.
+    </h1>
+    <p class="d-intro" style={{ fontSize: '16.5px', lineHeight: 1.65, color: D.text2, margin: '0 0 12px', maxWidth: '580px' }}>
+      {ALL.length} entries since 2022, sorted newest-first, grouped by year.
+      Most are <span style={{ background: D.code, padding: '0 5px', fontFamily: D.mono, fontSize: '13.5px' }}>~6 min</span> reads.
+    </p>
+    <p class="d-tags-row" style={{ fontSize: '14px', color: D.text3, margin: '0 0 48px', fontFamily: D.mono }}>
+      tags:
+      {' '}<a style={{ color: D.accent }}>#ai</a>
+      {' '}<a style={{ color: D.accent }}>#architecture</a>
+      {' '}<a style={{ color: D.accent }}>#workflow</a>
+      {' '}<a style={{ color: D.accent }}>#tools</a>
+      {' '}<a style={{ color: D.accent }}>#career</a>
+      {' '}<a style={{ color: D.accent }}>#essay</a>
+      {' '}<a style={{ color: D.accent }}>#typescript</a>
+    </p>
+
+    {Object.entries(groups).map(([year, posts]) => (
+      <section style={{ marginBottom: '48px' }}>
+        <h2 style={{
+          fontFamily: D.mono, fontSize: '14px', color: D.accent,
+          margin: '0 0 18px', display: 'flex', alignItems: 'baseline', gap: '14px',
+        }}>
+          <span>## {year}</span>
+          <span style={{ flex: 1, height: '0.5px', background: D.hairline }} />
+          <span style={{ color: D.text3, fontWeight: 400 }}>{posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+        </h2>
+
+        {posts.map((p) => (
+          <a href="/variants/d/post" class="d-row" style={{
+            padding: '14px 0',
+            borderTop: `0.5px dashed ${D.hairline}`,
+            textDecoration: 'none', alignItems: 'baseline',
+          }}>
+            <span class="d-row-date" style={{ fontFamily: D.mono, fontSize: '12px', color: D.text3 }}>{p.date.slice(7)}</span>
+            <div>
+              <div class="d-row-title" style={{
+                fontFamily: D.serif, fontSize: '19px', fontWeight: 400,
+                color: D.text, marginBottom: '3px',
+              }}>{p.title}</div>
+              <div style={{ fontFamily: D.mono, fontSize: '11px', color: D.muted }}>
+                {p.tags.map((t) => `#${t.toLowerCase().replace(/\s/g, '-')}`).join(' ')}
+              </div>
+            </div>
+            <span class="d-row-read" style={{ textAlign: 'right', fontFamily: D.mono, fontSize: '11.5px', color: D.accent }}>{p.readTime} →</span>
+          </a>
+        ))}
+      </section>
+    ))}
+
+    <footer style={{
+      marginTop: '56px', paddingTop: '28px', borderTop: `0.5px solid ${D.hairline}`,
+      display: 'flex', justifyContent: 'space-between',
+      fontFamily: D.mono, fontSize: '11.5px', color: D.text3,
+    }}>
+      <span>© 2026 koen van der borght</span>
+      <span>subscribe · <a style={{ color: D.accent }}>rss</a> / <a style={{ color: D.accent }}>email</a></span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

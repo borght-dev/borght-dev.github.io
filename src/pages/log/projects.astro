@@ -1,0 +1,96 @@
+---
+// G · /log/projects — same projects collection, mission-control skin
+import GLayout from '../../layouts/GLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const STATUS_COLOR: Record<string, string> = {
+  active:     'var(--g-green)',
+  shipped:    'var(--g-blue)',
+  validation: 'var(--g-amber)',
+  archived:   'var(--g-mint)',
+};
+const STATUS_LABEL: Record<string, string> = {
+  active:     'ACTIVE',
+  shipped:    'SHIPPED',
+  validation: 'IN VALIDATION',
+  archived:   'ARCHIVED',
+};
+---
+
+<GLayout title="Projects" active="PROJECTS" description="Things currently deployed.">
+  <main style="padding: 48px 32px 64px;">
+    <div style="font-size: 11px; color: var(--g-green); letter-spacing: 0.18em; margin-bottom: 18px;">
+      ▍ <span style="color: var(--g-text);">FILE</span> /var/projects/index &nbsp; <span style="color: var(--g-text3);">· {projects.length} deployments</span>
+    </div>
+    <h1 class="g-h1">
+      Things <span style="font-style: italic; color: var(--g-amber);">currently</span><br />
+      deployed.
+    </h1>
+    <p style="font-family: var(--g-sans); font-size: 16px; color: var(--g-text2); line-height: 1.6; margin: 0 0 56px; max-width: 580px;">
+      {projects.length === 0 ? 'Nothing deployed yet.' : 'Three or four things in increasing order of "you might actually want to use it". Each is a long-running process, not a sprint.'}
+    </p>
+
+    {projects.map((p, i) => {
+      const c = STATUS_COLOR[p.data.status] ?? 'var(--g-mint)';
+      const pid = String(1340 + i * 17).padStart(4, '0');
+      return (
+        <article class="g-proj">
+          <div>
+            <div style="font-size: 10px; color: var(--g-text3); letter-spacing: 0.14em; margin-bottom: 6px;">
+              PID {pid}
+            </div>
+            <div style="font-size: 22px; color: var(--g-amber); font-weight: 600;">{p.data.title.split(/\s/)[0].slice(0, 3).toUpperCase()}</div>
+            <div style={`margin-top: 12px; padding: 4px 10px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid ${c}; color: ${c}; font-size: 10px; letter-spacing: 0.1em;`}>
+              <span style={`width: 5px; height: 5px; border-radius: 50%; background: ${c};`}></span>
+              {STATUS_LABEL[p.data.status] ?? p.data.status.toUpperCase()}
+            </div>
+          </div>
+          <div>
+            <h2 style="font-family: var(--g-serif); font-size: 32px; font-weight: 400; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--g-text);">
+              <a href={`/projects/${p.id}/`} style="color: inherit; text-decoration: none;">{p.data.title}</a>
+            </h2>
+            {p.data.stack.length > 0 && (
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;">
+                {p.data.stack.map((s: string) => (
+                  <span style="font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--g-hairline); color: var(--g-text2); letter-spacing: 0.04em;">{s}</span>
+                ))}
+              </div>
+            )}
+          </div>
+          <div style="background: var(--g-panel); border: 1px solid var(--g-hairline); padding: 14px;" class="g-proj-meta">
+            <div style="font-size: 10px; color: var(--g-text3); letter-spacing: 0.14em; margin-bottom: 8px;">METRICS</div>
+            <div style={`font-family: var(--g-serif); font-size: 28px; color: ${c}; line-height: 1; font-weight: 300;`}>{p.data.date.getFullYear()}</div>
+            <div style="font-size: 11px; color: var(--g-text3); margin-top: 4px;">started</div>
+            {p.data.link && (
+              <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--g-hairline-soft); font-size: 11px;">
+                <a href={p.data.link} target="_blank" rel="noopener" style="color: var(--g-amber);">{p.data.link.replace(/^https?:\/\//, '').replace(/\/$/, '').slice(0, 28)} ↗</a>
+              </div>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </main>
+</GLayout>
+
+<style>
+  .g-h1 {
+    font-family: var(--g-serif); font-weight: 300; font-size: 80px;
+    line-height: 0.96; letter-spacing: -0.035em; margin: 0 0 22px;
+    color: var(--g-text);
+  }
+  .g-proj {
+    padding: 28px 0; border-top: 1px solid var(--g-hairline);
+    display: grid; grid-template-columns: 180px 1fr 220px; gap: 24px;
+  }
+  @media (max-width: 767px) {
+    main { padding: 26px 18px 40px !important; }
+    .g-h1 { font-size: 42px; line-height: 0.98; }
+    .g-proj { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; }
+    .g-proj h2 { font-size: 24px; }
+    .g-proj-meta { font-size: 12px; }
+  }
+</style>

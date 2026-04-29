@@ -1,0 +1,151 @@
+---
+// G · /log/[slug] — single changelog entry rendered with G chrome
+import GLayout from '../../layouts/GLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft && data.tags.includes('log'));
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+function readTime(body: string | undefined): string {
+  const w = (body ?? '').trim().split(/\s+/).length;
+  return `${Math.max(1, Math.ceil(w / 200))} min`;
+}
+const otherTags = post.data.tags.filter((t: string) => t !== 'log');
+---
+
+<GLayout title={post.data.title} description={post.data.description ?? post.data.subtitle} active="CHANGELOG">
+  <div class="g-grid">
+    <article>
+      <div style="font-size: 11px; color: var(--g-text3); margin-bottom: 14px;">
+        <a href="/log/" style="color: var(--g-amber);">/changelog</a> &nbsp;›&nbsp; {post.id}
+      </div>
+
+      <div style="display: inline-flex; gap: 10px; align-items: center; margin-bottom: 18px; padding: 4px 12px; border: 1px solid var(--g-amber); color: var(--g-amber); font-size: 10px; letter-spacing: 0.14em;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--g-amber);"></span>
+        ENTRY · {fmtDate(post.data.date)} · {readTime(post.body)}
+      </div>
+
+      <h1 class="g-h1">{post.data.title}</h1>
+      {post.data.subtitle && (
+        <p class="g-lede">{post.data.subtitle}</p>
+      )}
+
+      {otherTags.length > 0 && (
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 28px;">
+          {otherTags.map((t: string) => (
+            <span style="font-size: 10.5px; padding: 2px 8px; border: 1px solid var(--g-hairline); color: var(--g-text2); letter-spacing: 0.04em;">{t}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="g-prose">
+        <Content />
+      </div>
+
+      <div style="margin-top: 40px; padding: 14px 18px; background: var(--g-panel); border: 1px solid var(--g-hairline); font-family: var(--g-mono); font-size: 12px;">
+        <span style="color: var(--g-amber);">$</span> back <a href="/log/" style="color: var(--g-amber);">/log →</a>
+      </div>
+    </article>
+
+    <aside class="g-rail">
+      <div class="g-section-label" style="color: var(--g-green);">
+        ▍ <span style="color: var(--g-text);">SUBSCRIBE</span>
+      </div>
+      <div style="font-size: 12px; color: var(--g-text2); line-height: 1.8;">
+        <div>$ rss <a href="/rss.xml" style="color: var(--g-text);">/rss.xml</a></div>
+        <div>$ gh follow <a href="https://github.com/borght-dev/" target="_blank" rel="noopener" style="color: var(--g-text);">borght-dev</a></div>
+        <div>$ in <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" target="_blank" rel="noopener" style="color: var(--g-text);">linkedin →</a></div>
+      </div>
+
+      <div class="g-section-label" style="color: var(--g-amber); margin-top: 24px;">
+        ▍ <span style="color: var(--g-text);">ELSEWHERE</span>
+      </div>
+      <div style="font-size: 12px; color: var(--g-text2); line-height: 1.8;">
+        <div>← <a href="/" style="color: var(--g-text);">koen.nl</a> · the public site</div>
+        <div>→ <a href="/posts/" style="color: var(--g-text);">/posts</a> · long-form essays</div>
+      </div>
+    </aside>
+  </div>
+</GLayout>
+
+<style>
+  .g-grid {
+    padding: 40px 32px 48px;
+    display: grid; grid-template-columns: 1fr 320px; gap: 40px;
+    position: relative;
+  }
+  .g-h1 {
+    font-family: var(--g-serif); font-weight: 300; font-size: 56px;
+    line-height: 1.0; letter-spacing: -0.03em; margin: 0 0 18px;
+    color: var(--g-text);
+  }
+  .g-lede {
+    font-family: var(--g-sans); font-size: 17px; line-height: 1.6;
+    color: var(--g-text2); margin: 0 0 28px; max-width: 600px;
+  }
+  .g-rail { position: sticky; top: 32px; align-self: flex-start; }
+  .g-section-label { font-size: 11px; letter-spacing: 0.18em; margin-bottom: 14px; }
+
+  @media (max-width: 767px) {
+    .g-grid { padding: 26px 18px 40px; grid-template-columns: 1fr; gap: 28px; }
+    .g-h1 { font-size: 36px; line-height: 1.05; }
+    .g-lede { font-size: 14.5px; }
+    .g-rail { position: static; }
+  }
+</style>
+
+<style is:global>
+  .g-prose {
+    font-family: var(--g-sans); font-size: 16px; line-height: 1.75;
+    color: var(--g-text);
+  }
+  .g-prose p { margin: 0 0 18px; color: var(--g-text2); }
+  .g-prose h2 {
+    font-family: var(--g-mono); font-size: 13px; color: var(--g-amber);
+    letter-spacing: 0.18em; margin: 28px 0 14px;
+  }
+  .g-prose h2::before { content: '▍ '; }
+  .g-prose h3 {
+    font-family: var(--g-serif); font-size: 22px; font-weight: 400;
+    color: var(--g-text); margin: 24px 0 12px;
+  }
+  .g-prose a { color: var(--g-amber); }
+  .g-prose code {
+    background: var(--g-panel); padding: 1px 6px;
+    font-family: var(--g-mono); font-size: 0.86em;
+    color: var(--g-amber);
+  }
+  .g-prose pre {
+    margin: 0 0 22px; padding: 14px 18px;
+    background: var(--g-panel); border: 1px solid var(--g-hairline);
+    font-family: var(--g-mono); font-size: 13px;
+    line-height: 1.7; color: var(--g-text); overflow-x: auto;
+  }
+  .g-prose pre code { background: transparent; padding: 0; color: inherit; }
+  .g-prose blockquote {
+    padding: 16px 20px; border-left: 3px solid var(--g-amber);
+    background: var(--g-panel); margin: 0 0 22px;
+    font-family: var(--g-serif); font-size: 19px; font-style: italic;
+    line-height: 1.5; color: var(--g-text);
+  }
+  .g-prose blockquote p { margin: 0; color: var(--g-text); }
+  .g-prose ul, .g-prose ol { padding-left: 22px; margin: 0 0 24px; color: var(--g-text2); }
+  .g-prose li { margin-bottom: 6px; }
+  .g-prose strong { color: var(--g-text); }
+  .g-prose hr { border: 0; border-top: 1px solid var(--g-hairline); margin: 32px 0; }
+  .g-prose img { max-width: 100%; border: 1px solid var(--g-hairline); }
+
+  @media (max-width: 767px) {
+    .g-prose { font-size: 14.5px; }
+    .g-prose pre { font-size: 11.5px; padding: 10px 12px; }
+    .g-prose blockquote { font-size: 16px; padding: 12px 14px; }
+  }
+</style>

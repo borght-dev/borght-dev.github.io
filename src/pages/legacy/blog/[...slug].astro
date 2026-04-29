@@ -1,5 +1,5 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Base from '../../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -20,8 +20,8 @@ const minutes = Math.max(1, Math.ceil((post.body?.trim().split(/\s+/).length ?? 
 >
   <article class="article-shell">
     <nav class="breadcrumbs">
-      <a href="/">~</a><span class="sep">/</span>
-      <a href="/blog/">blog</a><span class="sep">/</span>
+      <a href="/legacy/">~</a><span class="sep">/</span>
+      <a href="/legacy/blog/">blog</a><span class="sep">/</span>
       <span>{post.id}</span>
     </nav>
 

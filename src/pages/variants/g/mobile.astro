@@ -1,0 +1,151 @@
+---
+// Direction G · Engineering Log — Mobile cut
+// Verbatim from personal-site-and-blog/project/site/direction-mobile.jsx (GMobile)
+import { FONTS_HREF } from '../../../data/variants-data';
+
+const GM = {
+  bg: '#0d0f12', panel: '#15181d', panelSoft: '#191d23',
+  hairline: '#23262d', hairlineSoft: '#1a1d22',
+  text: '#e6e7e9', text2: '#a8acb3', text3: '#6b6f76', muted: '#454a52',
+  green: '#3ddc84', amber: '#ffb547', red: '#ff5a5f', mint: '#7dd3c0',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+  serif: "'Fraunces', serif",
+};
+
+type Entry = { v: string; d: string; kind: string; kc: string; t: string; dek: string; r: string };
+const entries: Entry[] = [
+  { v: '5.15.0', d: '04·18', kind: 'MAJOR', kc: GM.amber, t: 'Rebuilding a 9-year-old codebase with Claude Code', dek: 'Six weeks. One model. Parity over feature parity.', r: '12 min' },
+  { v: '5.14.0', d: '03·27', kind: 'MINOR', kc: GM.green, t: 'BorgDock: the tool I built',                         dek: 'Why I keep building tools nobody asked for.',         r: '8 min'  },
+  { v: '5.13.2', d: '02·14', kind: 'PATCH', kc: GM.mint,  t: 'Reviewing PRs the model wrote',                      dek: 'A small protocol.',                                   r: '6 min'  },
+  { v: '5.13.0', d: '01·02', kind: 'MINOR', kc: GM.green, t: 'Architecture is the work that survives',             dek: 'Half memo. Half manifesto.',                          r: '9 min'  },
+];
+
+type Stat = [string, string];
+const stats: Stat[] = [
+  ['CURRENT', 'v5.15.0'],
+  ['UPTIME',  '9y 142d'],
+  ['ENTRIES', '47'],
+  ['NEXT',    'this Sun'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=402, initial-scale=1" />
+  <title>G · Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>html, body { margin: 0; padding: 0; background: #0d0f12; }
+    .frame { width: 402px; min-height: 874px; margin: 0 auto; }
+    a { cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="frame" style={{
+  background: GM.bg, color: GM.text, fontFamily: GM.mono, paddingTop: '50px',
+}}>
+  <header style={{
+    padding: '10px 18px', background: GM.panel, borderBottom: `1px solid ${GM.hairline}`,
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    fontSize: '10px', color: GM.text3, letterSpacing: '0.05em',
+  }}>
+    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: GM.green, boxShadow: `0 0 5px ${GM.green}` }} />
+      <span style={{ color: GM.text }}>KOEN.NL</span>
+    </span>
+    <span>T+ <span style={{ color: GM.amber }}>09y · 142d</span></span>
+    <span>≡</span>
+  </header>
+
+  <main style={{ padding: '26px 18px 30px' }}>
+    <div style={{ fontSize: '10px', color: GM.green, letterSpacing: '0.18em', marginBottom: '10px' }}>
+      ▍ <span style={{ color: GM.text }}>ENG-LOG</span>
+    </div>
+    <h1 style={{
+      fontFamily: GM.serif, fontWeight: 300, fontSize: '44px',
+      letterSpacing: '-0.03em', lineHeight: 0.96, margin: '0 0 14px',
+    }}>
+      A log of the things <span style={{ fontStyle: 'italic', color: GM.amber }}>I shipped</span>.
+    </h1>
+    <p style={{
+      fontFamily: GM.sans, fontSize: '14px', lineHeight: 1.55,
+      color: GM.text2, margin: '0 0 22px',
+    }}>
+      Architect / engineer in NL. Nine years in. Each entry is a thing
+      I shipped, with the build notes attached.
+    </p>
+
+    <div style={{
+      display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0,
+      border: `1px solid ${GM.hairline}`, marginBottom: '26px',
+      fontFamily: GM.mono, fontSize: '11px',
+    }}>
+      {stats.map(([k, v], i) => (
+        <div style={{
+          padding: '10px 12px',
+          borderRight: i % 2 === 0 ? `1px solid ${GM.hairline}` : 'none',
+          borderTop:   i > 1 ? `1px solid ${GM.hairline}` : 'none',
+        }}>
+          <div style={{ color: GM.text3, fontSize: '9.5px', letterSpacing: '0.14em' }}>{k}</div>
+          <div style={{ color: GM.text, fontSize: '14px', marginTop: '2px' }}>{v}</div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{ fontSize: '10px', color: GM.green, letterSpacing: '0.18em', marginBottom: '12px' }}>
+      ▍ <span style={{ color: GM.text }}>RECENT RELEASES</span>
+    </div>
+
+    {entries.map((e) => (
+      <article style={{
+        padding: '14px 0', borderTop: `1px solid ${GM.hairline}`,
+      }}>
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          fontSize: '10.5px', color: GM.text3, marginBottom: '6px',
+        }}>
+          <span>v{e.v} · 2026·{e.d}</span>
+          <span style={{
+            padding: '1px 7px', border: `1px solid ${e.kc}`, color: e.kc,
+            fontSize: '9px', letterSpacing: '0.1em',
+          }}>{e.kind}</span>
+        </div>
+        <h2 style={{
+          fontFamily: GM.serif, fontSize: '20px', fontWeight: 400,
+          color: GM.text, margin: '0 0 4px', lineHeight: 1.25, letterSpacing: '-0.015em',
+        }}>{e.t}</h2>
+        <p style={{
+          fontFamily: GM.sans, fontSize: '13px', color: GM.text2,
+          lineHeight: 1.5, margin: '0 0 6px',
+        }}>{e.dek}</p>
+        <div style={{ fontSize: '10.5px', color: GM.amber }}>{e.r} · read →</div>
+      </article>
+    ))}
+
+    <div style={{
+      marginTop: '24px', padding: '14px 16px',
+      background: GM.panel, border: `1px solid ${GM.hairline}`,
+      fontSize: '11px', color: GM.text2, lineHeight: 1.7,
+    }}>
+      <div style={{ color: GM.green, marginBottom: '4px' }}>▍ <span style={{ color: GM.text }}>SUBSCRIBE</span></div>
+      <div>$ rss <span style={{ color: GM.text }}>/feed.xml</span></div>
+      <div>$ email <span style={{ color: GM.text }}>list</span></div>
+      <div>$ gh follow <span style={{ color: GM.text }}>koenvdborght</span></div>
+    </div>
+  </main>
+
+  <footer style={{
+    padding: '8px 18px', background: GM.panel, borderTop: `1px solid ${GM.hairline}`,
+    display: 'flex', justifyContent: 'space-between',
+    fontSize: '9.5px', color: GM.text3, letterSpacing: '0.05em',
+  }}>
+    <span>© 2026 KOEN VDB</span>
+    <span set:html={'{ HZ:60 }'} />
+  </footer>
+</div>
+</body>
+</html>

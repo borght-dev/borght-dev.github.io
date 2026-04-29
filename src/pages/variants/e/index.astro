@@ -1,0 +1,337 @@
+---
+// Direction E · IDE Theme — Home (about.md)
+// Verbatim from personal-site-and-blog/project/site/direction-e.jsx
+import { POSTS, PROJECTS, NOW, FONTS_HREF } from '../../../data/variants-data';
+
+const E = {
+  bg: '#1e1e2e', panel: '#181825', sidebar: '#11111b',
+  hairline: '#313244', hairlineSoft: '#1e1e2e',
+  text: '#cdd6f4', text2: '#a6adc8', text3: '#7f849c', muted: '#585b70',
+  red: '#f38ba8', green: '#a6e3a1', yellow: '#f9e2af',
+  blue: '#89b4fa', purple: '#cba6f7', orange: '#fab387', cyan: '#94e2d5',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+};
+
+const activityIcons: Array<[string, string | null, boolean]> = [
+  ['📁', E.purple, true],
+  ['🔍', null, false],
+  ['✎', null, false],
+  ['◔', null, false],
+  ['⚙', null, false],
+];
+
+const lineNumbers = Array.from({ length: 70 }, (_, i) => i + 1);
+const outlineItems = ['# Hello', '## Building', '## Writing', '## Now', '## Get in touch'];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>about.md — koenvdborght.nl · E</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #1e1e2e; }
+    a { cursor: pointer; }
+    .e-root { width: 1280px; }
+    .e-shell { display: grid; grid-template-columns: 52px 240px 1fr; min-height: 1820px; }
+    .e-titlebar-text { margin-left: 24px; }
+    .e-titlebar-keys { margin-left: auto; }
+    .e-tab-extra { display: flex; }
+    .e-line-gutter { width: 54px; padding: 20px 14px 20px 0; font-size: 12px; }
+    .e-editor { padding: 20px 32px; font-size: 13px; }
+    .e-h1-block { font-size: 28px; }
+    .e-status-l, .e-status-r { gap: 16px; }
+    @media (max-width: 767px) {
+      .e-root { width: 100%; min-height: 0 !important; }
+      .e-shell { grid-template-columns: 32px 1fr !important; min-height: 0 !important; }
+      .e-activity, .e-tree { display: none !important; }
+      .e-titlebar-text { margin-left: 12px !important; font-size: 10px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .e-titlebar-keys { display: none !important; }
+      .e-tab-extra { display: none !important; }
+      .e-tab-active { padding: 6px 12px !important; font-size: 11px !important; }
+      .e-breadcrumb { padding: 6px 12px !important; font-size: 10.5px !important; }
+      .e-line-gutter { width: 32px !important; padding: 14px 6px 14px 0 !important; font-size: 10.5px !important; }
+      .e-editor { padding: 14px 14px !important; font-size: 12px !important; }
+      .e-h1-block { font-size: 19px !important; line-height: 1.3 !important; margin: 4px 0 10px !important; }
+      .e-projects-pre { font-size: 11px !important; padding: 10px 12px !important; overflow-x: auto; }
+      .e-status-l, .e-status-r { gap: 8px !important; font-size: 9px !important; }
+      .e-status-r > span:nth-child(2), .e-status-r > span:nth-child(3) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="e-root" style={{
+  minHeight: '1860px', background: E.bg, color: E.text,
+  fontFamily: E.sans, position: 'relative', margin: '0 auto',
+}}>
+  <div style={{
+    padding: '8px 14px', borderBottom: `1px solid ${E.hairline}`,
+    background: E.sidebar, display: 'flex', alignItems: 'center',
+    fontFamily: E.mono, fontSize: '11px', color: E.text3, gap: '8px',
+  }}>
+    <span style={{ display: 'flex', gap: '6px' }}>
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#f38ba8' }} />
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#f9e2af' }} />
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#a6e3a1' }} />
+    </span>
+    <span class="e-titlebar-text">koenvdborght.nl — about.md — vscode-mocha</span>
+    <span class="e-titlebar-keys">⌘K · ⌘P · ^`</span>
+  </div>
+
+  <div class="e-shell">
+    <aside class="e-activity" style={{
+      background: E.sidebar, borderRight: `1px solid ${E.hairline}`,
+      padding: '12px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+    }}>
+      {activityIcons.map(([i, _c, on]) => (
+        <div style={{
+          width: '36px', height: '36px', borderRadius: '6px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: on ? 'rgba(203,166,247,0.1)' : 'transparent',
+          borderLeft: on ? `2px solid ${E.purple}` : '2px solid transparent',
+          fontFamily: E.mono, fontSize: '14px', color: on ? E.text : E.text3,
+        }}>{i}</div>
+      ))}
+    </aside>
+
+    <aside class="e-tree" style={{
+      background: E.panel, borderRight: `1px solid ${E.hairline}`, padding: '14px 0',
+    }}>
+      <div style={{
+        padding: '0 14px 10px', fontFamily: E.mono, fontSize: '10px',
+        color: E.text3, letterSpacing: '0.1em', textTransform: 'uppercase',
+      }}>EXPLORER</div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px', fontFamily: E.mono, fontSize: '11.5px', color: E.text }}>
+        <span style={{ color: E.text, fontSize: '10px', width: '10px' }}>▾</span><span>koenvdborght</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▾</span><span>posts</span>
+      </div>
+      {POSTS.map((p, i) => (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px',
+          fontFamily: E.mono, fontSize: '11.5px',
+          color: i === 0 ? E.text : E.text2,
+          background: i === 0 ? 'rgba(203,166,247,0.1)' : 'transparent',
+        }}>
+          <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span>
+          <span>{p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 28)}.md</span>
+        </div>
+      ))}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▾</span><span>projects</span>
+      </div>
+      {PROJECTS.map((p) => (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px',
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text2,
+        }}>
+          <span style={{ color: E.yellow, fontSize: '10px', width: '10px' }}>◧</span>
+          <span>{p.name.toLowerCase().replace(/\s/g, '-')}.json</span>
+        </div>
+      ))}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▸</span><span>setup</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text, background: 'rgba(203,166,247,0.1)' }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>about.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>now.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>uses.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>readme.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.muted, fontSize: '10px', width: '10px' }}>◧</span><span>.gitignore</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.yellow, fontSize: '10px', width: '10px' }}>◧</span><span>package.json</span>
+      </div>
+
+      <div style={{
+        margin: '20px 14px 8px', paddingTop: '14px', borderTop: `1px solid ${E.hairline}`,
+        fontFamily: E.mono, fontSize: '10px', color: E.text3,
+        letterSpacing: '0.1em', textTransform: 'uppercase',
+      }}>OUTLINE</div>
+      {outlineItems.map((s, i) => {
+        const c = i === 0 ? E.text : E.text3;
+        return (
+          <div style={{ padding: '4px 14px', fontFamily: E.mono, fontSize: '11px', color: c }}>{s}</div>
+        );
+      })}
+    </aside>
+
+    <main style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{
+        display: 'flex', background: E.panel,
+        borderBottom: `1px solid ${E.hairline}`,
+      }}>
+        <div class="e-tab-active" style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          padding: '8px 14px', borderRight: `1px solid ${E.hairline}`,
+          background: E.bg, borderTop: `2px solid ${E.purple}`,
+          borderBottom: `1px solid ${E.bg}`,
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text,
+        }}>
+          <span style={{ color: E.blue }}>●</span>
+          <span>about<span style={{ color: E.muted }}>.md</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted, fontSize: '13px' }}>×</span>
+        </div>
+        <div class="e-tab-extra" style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          padding: '8px 14px', borderRight: `1px solid ${E.hairline}`,
+          background: E.panel, borderTop: '2px solid transparent',
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text3,
+        }}>
+          <span style={{ color: E.blue }}>●</span>
+          <span>rebuilding-9-year-codebase<span style={{ color: E.muted }}>.md</span></span>
+          <span style={{ color: E.text3, marginLeft: '4px' }}>●</span>
+          <span style={{ marginLeft: '8px', color: E.muted, fontSize: '13px' }}>×</span>
+        </div>
+        <div class="e-tab-extra" style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          padding: '8px 14px', borderRight: `1px solid ${E.hairline}`,
+          background: E.panel, borderTop: '2px solid transparent',
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text3,
+        }}>
+          <span style={{ color: E.yellow }}>●</span>
+          <span>borgdock<span style={{ color: E.muted }}>.json</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted, fontSize: '13px' }}>×</span>
+        </div>
+        <div class="e-tab-extra" style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          padding: '8px 14px', borderRight: `1px solid ${E.hairline}`,
+          background: E.panel, borderTop: '2px solid transparent',
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text3,
+        }}>
+          <span style={{ color: E.blue }}>●</span>
+          <span>now<span style={{ color: E.muted }}>.md</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted, fontSize: '13px' }}>×</span>
+        </div>
+      </div>
+
+      <div class="e-breadcrumb" style={{
+        padding: '6px 16px', borderBottom: `1px solid ${E.hairline}`,
+        fontFamily: E.mono, fontSize: '11px', color: E.text3,
+      }}>
+        koenvdborght <span style={{ margin: '0 6px' }}>›</span> about.md <span style={{ margin: '0 6px' }}>›</span>
+        <span style={{ color: E.purple }}># Hello</span>
+      </div>
+
+      <div class="e-pane" style={{ display: 'grid', gridTemplateColumns: '54px 1fr', flex: 1 }}>
+        <div class="e-line-gutter" style={{
+          textAlign: 'right',
+          fontFamily: E.mono, color: E.muted,
+          borderRight: `1px solid ${E.hairlineSoft}`,
+          userSelect: 'none', lineHeight: '1.7em',
+        }}>
+          {lineNumbers.map((n) => <div>{n}</div>)}
+        </div>
+        <div class="e-editor" style={{ fontFamily: E.mono, lineHeight: 1.7, color: E.text }}>
+          <div style={{ color: E.text3 }}>{`<!-- about.md -->`}</div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+          <div><span style={{ color: E.purple, fontWeight: 600 }}># Hello</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div class="e-h1-block" style={{ fontFamily: E.sans, color: E.text, fontWeight: 400, lineHeight: 1.3, margin: '6px 0 14px' }}>
+            I'm <span style={{ color: E.purple }}>Koen</span> — senior dev, tooling-obsessed,
+            building <span style={{ color: E.orange }}>BorgDock</span> on the side from
+            <span style={{ color: E.cyan }}> Tilburg, NL</span>.
+          </div>
+
+          <div style={{ color: E.muted }}>&nbsp;</div>
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## Currently</span></div>
+
+          <ul style={{ margin: '10px 0 16px', paddingLeft: '20px', color: E.text }}>
+            {NOW.map((n) => (
+              <li style={{ padding: '3px 0', fontSize: '13.5px' }}>
+                <span style={{ color: E.green }}>{n.k.toLowerCase()}:</span>{' '}
+                <span style={{ color: E.text }}>{n.v}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div style={{ color: E.muted }}>&nbsp;</div>
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## Recent posts</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          {POSTS.slice(0, 4).map((p) => (
+            <div style={{ marginBottom: '10px', fontSize: '13.5px' }}>
+              <span style={{ color: E.text3 }}>- </span>
+              <span style={{ color: E.text3 }}>[{p.date}]</span>{' '}
+              <span style={{ color: E.blue, textDecoration: 'underline' }}>{p.title}</span>{' '}
+              <span style={{ color: E.text3 }}>· {p.readTime}</span>
+            </div>
+          ))}
+
+          <div style={{ color: E.muted, marginTop: '10px' }}>&nbsp;</div>
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## Projects</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <pre class="e-projects-pre" style={{
+            margin: 0, padding: '14px 16px', background: E.panel,
+            borderRadius: '6px', fontFamily: E.mono, fontSize: '12.5px',
+            color: E.text, lineHeight: 1.7, border: `1px solid ${E.hairline}`,
+          }} set:html={
+            `<span style="color:${E.text3}">{</span>\n` +
+            PROJECTS.map((p, i) => (
+              `  <span style="color:${E.green}">"${p.name}"</span>` +
+              `<span style="color:${E.text3}">: {</span> ` +
+              `<span style="color:${E.cyan}">status</span>` +
+              `<span style="color:${E.text3}">:</span> ` +
+              `<span style="color:${E.yellow}">"${p.status}"</span>` +
+              `<span style="color:${E.text3}">,</span> ` +
+              `<span style="color:${E.cyan}">year</span>` +
+              `<span style="color:${E.text3}">:</span> ` +
+              `<span style="color:${E.yellow}">"${p.year}"</span>` +
+              `<span style="color:${E.text3}"> }${i < PROJECTS.length - 1 ? ',' : ''}</span>\n`
+            )).join('') +
+            `<span style="color:${E.text3}">}</span>`
+          } />
+
+          <div style={{ color: E.muted, marginTop: '18px' }}>&nbsp;</div>
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## Get in touch</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+          <div style={{ fontSize: '13.5px', color: E.text }}>
+            <span style={{ color: E.text3 }}>- </span>linkedin: <span style={{ color: E.cyan }}>/in/koen-van-der-borght-tilburg</span><br />
+            <span style={{ color: E.text3 }}>- </span>github: <span style={{ color: E.cyan }}>@koenvdborght</span><br />
+            <span style={{ color: E.text3 }}>- </span>rss: <span style={{ color: E.cyan }}>/feed.xml</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div style={{
+    position: 'sticky', bottom: 0,
+    display: 'flex', justifyContent: 'space-between', padding: '4px 14px',
+    background: E.purple, color: '#11111b',
+    fontFamily: E.mono, fontSize: '10.5px', fontWeight: 500,
+  }}>
+    <span class="e-status-l" style={{ display: 'flex', gap: '16px' }}>
+      <span>⎇ main</span>
+      <span>○ 0 ⚠ 0</span>
+      <span>UTF-8</span>
+    </span>
+    <span class="e-status-r" style={{ display: 'flex', gap: '16px' }}>
+      <span>Ln 12, Col 8</span>
+      <span>Spaces: 2</span>
+      <span>Markdown</span>
+      <span>○ Catppuccin Mocha</span>
+    </span>
+  </div>
+</div>
+</body>
+</html>

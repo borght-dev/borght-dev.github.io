@@ -1,0 +1,87 @@
+---
+// D · /posts archive
+import DLayout from '../../../layouts/DLayout.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function fmtDay(d: Date): string {
+  return d.toISOString().slice(5, 10).replace('-', ' · ');
+}
+function readTime(body: string | undefined): string {
+  const w = (body ?? '').trim().split(/\s+/).length;
+  return `${Math.max(1, Math.ceil(w / 200))} min`;
+}
+
+// group by year
+const groups: Record<string, typeof all> = {};
+for (const p of all) {
+  const y = String(p.data.date.getFullYear());
+  (groups[y] = groups[y] || []).push(p);
+}
+
+const years = Object.keys(groups).sort().reverse();
+const allTags = [...new Set(all.flatMap((p) => p.data.tags))].sort();
+---
+
+<DLayout title="Archive" active="posts" description="All posts.">
+  <div style="font-family: var(--d-mono); font-size: 12px; color: var(--d-accent); margin-bottom: 22px;"># posts/</div>
+
+  <h1 style="font-family: var(--d-serif); font-weight: 400; font-size: 56px; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 16px;" class="d-h1">
+    The <span style="font-style: italic; color: var(--d-accent);">archive</span>.
+  </h1>
+  <p style="font-size: 16.5px; line-height: 1.65; color: var(--d-text2); margin: 0 0 12px; max-width: 580px;" class="d-intro">
+    {all.length} {all.length === 1 ? 'entry' : 'entries'}, sorted newest-first, grouped by year.
+  </p>
+  {allTags.length > 0 && (
+    <p style="font-size: 14px; color: var(--d-text3); margin: 0 0 48px; font-family: var(--d-mono);">
+      tags: {allTags.map((t) => <a style="color: var(--d-accent); margin-right: 6px;">#{t.toLowerCase().replace(/\s/g, '-')}</a>)}
+    </p>
+  )}
+  {allTags.length === 0 && (
+    <p style="font-size: 14px; color: var(--d-text3); margin: 0 0 48px; font-family: var(--d-mono);">&nbsp;</p>
+  )}
+
+  {all.length === 0 && (
+    <div style="padding: 40px 0; border-top: 0.5px dashed var(--d-hairline); border-bottom: 0.5px dashed var(--d-hairline); font-family: var(--d-mono); font-size: 13px; color: var(--d-text3); text-align: center;">
+      <span style="color: var(--d-accent);">$</span> ls posts/ <span>→ no entries yet</span>
+    </div>
+  )}
+
+  {years.map((year) => (
+    <section style="margin-bottom: 48px;">
+      <h2 style="font-family: var(--d-mono); font-size: 14px; color: var(--d-accent); margin: 0 0 18px; display: flex; align-items: baseline; gap: 14px;">
+        <span>## {year}</span>
+        <span style="flex: 1; height: 0.5px; background: var(--d-hairline);"></span>
+        <span style="color: var(--d-text3); font-weight: 400;">{groups[year].length} {groups[year].length === 1 ? 'post' : 'posts'}</span>
+      </h2>
+
+      {groups[year].map((p) => (
+        <a href={`/legacy/posts/${p.id}/`} class="d-row" style="display: grid; grid-template-columns: 110px 1fr 80px; gap: 18px; padding: 14px 0; border-top: 0.5px dashed var(--d-hairline); text-decoration: none; align-items: baseline;">
+          <span class="d-row-date" style="font-family: var(--d-mono); font-size: 12px; color: var(--d-text3);">{fmtDay(p.data.date)}</span>
+          <div>
+            <div class="d-row-title" style="font-family: var(--d-serif); font-size: 19px; font-weight: 400; color: var(--d-text); margin-bottom: 3px;">{p.data.title}</div>
+            {p.data.tags.length > 0 && (
+              <div style="font-family: var(--d-mono); font-size: 11px; color: var(--d-muted);">
+                {p.data.tags.map((t: string) => `#${t.toLowerCase().replace(/\s/g, '-')}`).join(' ')}
+              </div>
+            )}
+          </div>
+          <span class="d-row-read" style="text-align: right; font-family: var(--d-mono); font-size: 11.5px; color: var(--d-accent);">{readTime(p.body)} →</span>
+        </a>
+      ))}
+    </section>
+  ))}
+</DLayout>
+
+<style>
+  @media (max-width: 767px) {
+    h1.d-h1 { font-size: 38px !important; }
+    p.d-intro { font-size: 15px !important; }
+    .d-row { grid-template-columns: 1fr !important; gap: 4px !important; padding: 16px 0 !important; }
+    .d-row .d-row-date { font-size: 11px !important; color: var(--d-muted) !important; }
+    .d-row .d-row-read { text-align: left !important; font-size: 11px !important; }
+    .d-row .d-row-title { font-size: 17px !important; }
+  }
+</style>

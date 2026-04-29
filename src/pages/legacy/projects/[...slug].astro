@@ -1,0 +1,44 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(p => ({ params: { slug: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const { Content } = await render(p);
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base title={p.data.title}>
+  <article class="article-shell">
+    <nav class="breadcrumbs">
+      <a href="/legacy/">~</a><span class="sep">/</span>
+      <a href="/legacy/projects/">projects</a><span class="sep">/</span>
+      <span>{p.id}</span>
+    </nav>
+
+    <header class="article-header">
+      <h1 class="article-title">{p.data.title}</h1>
+      <div class="article-meta">
+        <span>{fmt(p.data.date)}</span>
+        <span>·</span>
+        <span>{p.data.status}</span>
+      </div>
+      { p.data.stack?.length > 0 && (
+        <div class="tags" style="display:flex;gap:0.5rem;margin-top:1rem;">
+          { p.data.stack.map(s => <span class="tag">{s}</span>) }
+        </div>
+      ) }
+    </header>
+
+    <div class="article-content">
+      <Content />
+      { p.data.link && (
+        <p><a href={p.data.link} target="_blank" rel="noopener">→ {p.data.link}</a></p>
+      ) }
+    </div>
+  </article>
+</Base>

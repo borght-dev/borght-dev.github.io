@@ -1,0 +1,220 @@
+---
+import { FONTS_HREF } from '../data/variants-data';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: 'CHANGELOG' | 'PROJECTS' | 'NOW' | 'CONTACT' | null;
+}
+
+const {
+  title,
+  description = 'Engineering log of Koen van der Borght — release notes, build notes, mostly truthful.',
+  active = null,
+} = Astro.props;
+
+const fullTitle = `${title} · /log`;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+
+const navItems: Array<{ key: 'CHANGELOG' | 'PROJECTS' | 'NOW' | 'CONTACT' | null, label: string, href: string }> = [
+  { key: 'CHANGELOG', label: 'CHANGELOG', href: '/log/' },
+  { key: 'PROJECTS',  label: 'PROJECTS',  href: '/log/projects/' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#0d0f12" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f5f3ef" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="Koen van der Borght" />
+  <title>{fullTitle}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+
+  <style is:global>
+    /* ─── G · Engineering Log — design tokens ──────────────────── */
+    /* default = dark (the original spec) */
+    :root {
+      --g-bg:           #0d0f12;
+      --g-panel:        #15181d;
+      --g-panel-soft:   #191d23;
+      --g-hairline:     #23262d;
+      --g-hairline-soft:#1a1d22;
+      --g-text:         #e6e7e9;
+      --g-text2:        #a8acb3;
+      --g-text3:        #6b6f76;
+      --g-muted:        #454a52;
+      --g-green:        #3ddc84;
+      --g-amber:        #ffb547;
+      --g-red:          #ff5a5f;
+      --g-blue:         #5fb3ff;
+      --g-mint:         #7dd3c0;
+      --g-scanlines:    rgba(255,255,255,0.012);
+      --g-mono:  'JetBrains Mono', ui-monospace, monospace;
+      --g-sans:  'Inter', sans-serif;
+      --g-serif: 'Fraunces', serif;
+    }
+    /* light = "printed build log" */
+    :root[data-theme="light"] {
+      --g-bg:           #f5f3ef;
+      --g-panel:        #ffffff;
+      --g-panel-soft:   #faf8f3;
+      --g-hairline:     #d8d6d0;
+      --g-hairline-soft:#e6e3dc;
+      --g-text:         #15181d;
+      --g-text2:        #5a5e66;
+      --g-text3:        #8a8d94;
+      --g-muted:        #b8babe;
+      --g-green:        #16a34a;
+      --g-amber:        #c47100;
+      --g-red:          #dc2626;
+      --g-blue:         #1d4ed8;
+      --g-mint:         #0d9488;
+      --g-scanlines:    rgba(0,0,0,0.025);
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --g-bg:           #f5f3ef;
+        --g-panel:        #ffffff;
+        --g-panel-soft:   #faf8f3;
+        --g-hairline:     #d8d6d0;
+        --g-hairline-soft:#e6e3dc;
+        --g-text:         #15181d;
+        --g-text2:        #5a5e66;
+        --g-text3:        #8a8d94;
+        --g-muted:        #b8babe;
+        --g-green:        #16a34a;
+        --g-amber:        #c47100;
+        --g-red:          #dc2626;
+        --g-blue:         #1d4ed8;
+        --g-mint:         #0d9488;
+        --g-scanlines:    rgba(0,0,0,0.025);
+      }
+    }
+
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--g-bg);
+      color: var(--g-text);
+      font-family: var(--g-mono);
+      -webkit-font-smoothing: antialiased;
+    }
+    body { min-height: 100vh; }
+    a { color: inherit; cursor: pointer; }
+
+    /* shared chrome */
+    .g-shell { width: 1280px; max-width: 100%; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+    .g-shell::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.4; z-index: 0;
+      background-image: repeating-linear-gradient(0deg, var(--g-scanlines) 0 2px, transparent 2px 4px);
+    }
+    .g-shell > * { position: relative; z-index: 1; }
+
+    .g-topbar {
+      padding: 12px 32px;
+      border-bottom: 1px solid var(--g-hairline);
+      background: var(--g-panel);
+      display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center;
+      font-size: 11px; color: var(--g-text3); letterSpacing: 0.06em;
+    }
+    .g-topbar-left { display: flex; align-items: center; gap: 14px; }
+    .g-topbar-mid  { text-align: center; color: var(--g-text2); }
+    .g-topbar-nav  { display: flex; justify-content: flex-end; gap: 22px; align-items: center; }
+    .g-topbar-nav a { text-decoration: none; color: var(--g-text2); }
+    .g-topbar-nav a.active { color: var(--g-amber); }
+    .g-topbar-nav a:hover  { color: var(--g-amber); }
+    .g-uplink-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--g-green); box-shadow: 0 0 6px var(--g-green); }
+    .g-toggle {
+      background: transparent; border: 1px solid var(--g-hairline); cursor: pointer;
+      color: var(--g-text2); font-family: var(--g-mono); font-size: 9.5px;
+      padding: 3px 8px; letter-spacing: 0.1em;
+    }
+    .g-toggle:hover { color: var(--g-amber); border-color: var(--g-amber); }
+
+    .g-main { flex: 1; }
+    .g-foot {
+      padding: 8px 32px; background: var(--g-panel);
+      border-top: 1px solid var(--g-hairline);
+      display: flex; justify-content: space-between;
+      font-size: 10.5px; color: var(--g-text3); letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 767px) {
+      .g-shell { width: 100%; }
+      .g-topbar {
+        padding: 10px 16px; grid-template-columns: 1fr auto;
+        gap: 8px; font-size: 10px;
+      }
+      .g-topbar-mid { display: none; }
+      .g-topbar-nav { gap: 10px; font-size: 9.5px; flex-wrap: wrap; }
+      .g-foot { padding: 8px 16px; flex-wrap: wrap; gap: 4px; font-size: 9px; }
+      .g-foot > span:nth-child(2) { display: none; }
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      const saved = localStorage.getItem('g-theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+  </script>
+</head>
+<body>
+<div class="g-shell">
+  <header class="g-topbar">
+    <div class="g-topbar-left">
+      <span class="g-uplink-dot" aria-hidden="true"></span>
+      <a href="/" style="color: var(--g-text); text-decoration: none;">← KOEN.NL</a>
+      <span>· UPLINK <span style="color: var(--g-green);">OK</span></span>
+    </div>
+    <div class="g-topbar-mid">
+      MISSION T+ <span style="color: var(--g-amber);">09y · 142d</span>
+    </div>
+    <nav class="g-topbar-nav" aria-label="primary">
+      {navItems.map((l) => (
+        <a href={l.href} class={active === l.key ? 'active' : ''}>{l.label}</a>
+      ))}
+      <button class="g-toggle" id="g-theme-toggle" aria-label="Toggle theme">DARK / LIGHT</button>
+    </nav>
+  </header>
+
+  <main class="g-main">
+    <slot />
+  </main>
+
+  <footer class="g-foot">
+    <span>© 2026 KOEN VAN DER BORGHT · NL</span>
+    <span>JETBRAINS MONO · FRAUNCES · INTER</span>
+    <span set:html={'{ HZ: 60 · CPU: 0.2 % · MEM: 64 KB }'} />
+  </footer>
+</div>
+
+<script is:inline>
+  (function () {
+    const root = document.documentElement;
+    const btn = document.getElementById('g-theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      const current = root.getAttribute('data-theme');
+      const sysLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      let next;
+      if (!current)            next = sysLight ? 'dark' : 'light';
+      else if (current === 'light') next = 'dark';
+      else                          next = 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('g-theme', next);
+    });
+  })();
+</script>
+</body>
+</html>

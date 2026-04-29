@@ -1,0 +1,121 @@
+---
+// Direction E · IDE Theme — Mobile cut
+// Verbatim from personal-site-and-blog/project/site/direction-mobile.jsx (EMobile)
+import { FONTS_HREF } from '../../../data/variants-data';
+
+const EM = {
+  bg: '#1e1e2e', panel: '#181825', sidebar: '#11111b',
+  hairline: '#313244', text: '#cdd6f4', text2: '#a6adc8', text3: '#7f849c',
+  muted: '#585b70', red: '#f38ba8', green: '#a6e3a1', yellow: '#f9e2af',
+  blue: '#89b4fa', purple: '#cba6f7', orange: '#fab387', cyan: '#94e2d5',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+};
+
+const lineNumbers = Array.from({ length: 28 }, (_, i) => i + 1);
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=402, initial-scale=1" />
+  <title>E · Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>html, body { margin: 0; padding: 0; background: #1e1e2e; }
+    .frame { width: 402px; min-height: 874px; margin: 0 auto; }
+    a { cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="frame" style={{
+  background: EM.bg, color: EM.text, fontFamily: EM.mono,
+  paddingTop: '50px', display: 'flex', flexDirection: 'column',
+}}>
+  <div style={{
+    padding: '8px 14px', borderBottom: `1px solid ${EM.hairline}`,
+    background: EM.sidebar, fontSize: '11px', color: EM.text3,
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+  }}>
+    <span style={{ display: 'flex', gap: '6px' }}>
+      <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f38ba8' }} />
+      <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f9e2af' }} />
+      <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#a6e3a1' }} />
+    </span>
+    <span>koenvdborght.nl</span>
+    <span>≡</span>
+  </div>
+
+  <div style={{
+    padding: '6px 14px', background: EM.panel, borderBottom: `1px solid ${EM.hairline}`,
+    fontSize: '11px', color: EM.text2, display: 'flex', alignItems: 'center', gap: '8px',
+  }}>
+    <span style={{ color: EM.purple }}>●</span>
+    <span style={{ color: EM.text }}>about<span style={{ color: EM.muted }}>.md</span></span>
+    <span style={{ marginLeft: 'auto', color: EM.muted }}>×</span>
+  </div>
+  <div style={{
+    padding: '6px 14px', borderBottom: `1px solid ${EM.hairline}`,
+    fontSize: '10.5px', color: EM.text3,
+  }}>
+    koenvdborght › <span style={{ color: EM.purple }}>about.md</span>
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '32px 1fr', flex: 1 }}>
+    <div style={{
+      textAlign: 'right', paddingRight: '8px', paddingTop: '14px',
+      fontSize: '10.5px', color: EM.muted, lineHeight: '1.7em',
+      borderRight: `1px solid ${EM.hairline}`, userSelect: 'none',
+    }}>
+      {lineNumbers.map((n) => <div>{n}</div>)}
+    </div>
+    <div style={{ padding: '14px 16px', fontSize: '12px', lineHeight: 1.7 }}>
+      <div style={{ color: EM.text3 }}>---</div>
+      <div><span style={{ color: EM.cyan }}>name</span><span style={{ color: EM.text3 }}>: </span><span style={{ color: EM.green }}>"Koen"</span></div>
+      <div><span style={{ color: EM.cyan }}>role</span><span style={{ color: EM.text3 }}>: </span><span style={{ color: EM.green }}>"architect / engineer"</span></div>
+      <div><span style={{ color: EM.cyan }}>where</span><span style={{ color: EM.text3 }}>: </span><span style={{ color: EM.green }}>"NL"</span></div>
+      <div style={{ color: EM.text3 }}>---</div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div><span style={{ color: EM.purple, fontWeight: 600 }}># hello</span></div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div style={{ fontFamily: EM.sans, fontSize: '14px', color: EM.text }}>
+        I build production software and write about it.
+      </div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div><span style={{ color: EM.purple, fontWeight: 600 }}>## recent</span></div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div style={{ fontFamily: EM.sans, fontSize: '13px', color: EM.text2, lineHeight: 1.7 }}>
+        <div>- <span style={{ color: EM.blue }}>rebuilding-9-year-codebase.md</span></div>
+        <div>- <span style={{ color: EM.blue }}>borgdock.json</span></div>
+        <div>- <span style={{ color: EM.blue }}>on-reviewing-prs.md</span></div>
+      </div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div><span style={{ color: EM.purple, fontWeight: 600 }}>## now</span></div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div style={{ fontFamily: EM.sans, fontSize: '13px', color: EM.text2, lineHeight: 1.7 }}>
+        Migrating a nine-year codebase, one parity test at a time.
+      </div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div><span style={{ color: EM.purple, fontWeight: 600 }}>## reach</span></div>
+      <div style={{ color: EM.muted }}>&nbsp;</div>
+      <div style={{ fontFamily: EM.sans, fontSize: '13px', color: EM.text2, lineHeight: 1.7 }}>
+        <div><span style={{ color: EM.cyan }}>linkedin</span> · /in/koen-…</div>
+        <div><span style={{ color: EM.cyan }}>github</span> · @koenvdborght</div>
+        <div><span style={{ color: EM.cyan }}>rss</span> · /feed.xml</div>
+      </div>
+    </div>
+  </div>
+
+  <div style={{
+    background: EM.purple, color: '#11111b',
+    padding: '4px 12px', display: 'flex', justifyContent: 'space-between',
+    fontSize: '10px', fontWeight: 500,
+  }}>
+    <span>⎇ main · ○ 0 ⚠ 0</span>
+    <span>Markdown · UTF-8</span>
+  </div>
+</div>
+</body>
+</html>

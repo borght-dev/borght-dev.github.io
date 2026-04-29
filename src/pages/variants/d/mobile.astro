@@ -1,0 +1,106 @@
+---
+// Direction D · Markdown First — Mobile cut
+// Verbatim from personal-site-and-blog/project/site/direction-mobile.jsx (DMobile)
+import { FONTS_HREF } from '../../../data/variants-data';
+
+const DM = {
+  bg: '#fafaf7', text: '#1a1a1a', text2: '#4a4a4a', text3: '#8a8a8a',
+  accent: '#d23f1f', hairline: '#e6e3dc', code: '#f1ede4',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  serif: "'Fraunces', serif",
+  sans: "'Inter', sans-serif",
+};
+
+const POSTS_M = [
+  { d: '04 · 18', r: '12 min', t: 'Rebuilding a 9-year-old codebase with Claude Code', tag: '#ai' },
+  { d: '03 · 27', r: '8 min',  t: 'BorgDock: the tool I built to fix my own workday',  tag: '#tools' },
+  { d: '02 · 14', r: '6 min',  t: 'On reviewing PRs the model wrote',                  tag: '#workflow' },
+  { d: '01 · 02', r: '9 min',  t: 'Architecture is the work that survives',            tag: '#essay' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=402, initial-scale=1" />
+  <title>D · Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>html, body { margin: 0; padding: 0; background: #fafaf7; }
+    .frame { width: 402px; min-height: 874px; margin: 0 auto; }
+    a { cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="frame" style={{ background: DM.bg, fontFamily: DM.sans, paddingTop: '50px' }}>
+  <div style={{
+    padding: '14px 20px', display: 'flex', alignItems: 'center',
+    justifyContent: 'space-between', borderBottom: `0.5px solid ${DM.hairline}`,
+    fontFamily: DM.mono, fontSize: '11.5px',
+  }}>
+    <span style={{ fontWeight: 600 }}>~/koen <span style={{ color: DM.text3 }}>$</span></span>
+    <span style={{ color: DM.text3 }}>menu ☰</span>
+  </div>
+
+  <main style={{ padding: '32px 22px 40px' }}>
+    <div style={{ fontFamily: DM.mono, fontSize: '11px', color: DM.text3, marginBottom: '8px' }}># index.md</div>
+    <h1 style={{
+      fontFamily: DM.serif, fontSize: '38px', fontWeight: 400,
+      lineHeight: 1.05, letterSpacing: '-0.025em', margin: '0 0 14px',
+    }}>
+      I write code. <span style={{ fontStyle: 'italic', color: DM.accent }}>I write about it.</span>
+    </h1>
+    <p style={{ fontSize: '16px', lineHeight: 1.55, color: DM.text2, margin: '0 0 26px' }}>
+      Architect &amp; engineer (NL). Eight years deep in C# / TS. Lately:
+      shipping production code with Claude.
+    </p>
+
+    <div style={{
+      padding: '12px 14px', background: DM.code, borderRadius: '6px',
+      fontFamily: DM.mono, fontSize: '12px', color: DM.text2, marginBottom: '28px',
+    }}>
+      <div><span style={{ color: DM.accent }}>$</span> whoami</div>
+      <div style={{ color: DM.text }}>koen — architect, engineer</div>
+      <div><span style={{ color: DM.accent }}>$</span> ls ~/now</div>
+      <div style={{ color: DM.text }}>borgdock · rebuild · 5 posts</div>
+    </div>
+
+    <h2 style={{
+      fontFamily: DM.mono, fontSize: '13px', color: DM.accent,
+      fontWeight: 500, margin: '0 0 14px',
+    }}>## recent_posts</h2>
+
+    {POSTS_M.map((p) => (
+      <a style={{
+        display: 'block', padding: '14px 0',
+        borderTop: `0.5px dashed ${DM.hairline}`, textDecoration: 'none',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: DM.mono, fontSize: '11px', color: DM.text3, marginBottom: '4px' }}>
+          <span>2026 · {p.d}</span><span>{p.r}</span>
+        </div>
+        <div style={{ fontFamily: DM.serif, fontSize: '18px', color: DM.text, lineHeight: 1.3, marginBottom: '4px' }}>{p.t}</div>
+        <div style={{ fontFamily: DM.mono, fontSize: '11px', color: DM.accent }}>{p.tag}</div>
+      </a>
+    ))}
+
+    <a style={{
+      display: 'block', marginTop: '22px', padding: '11px 14px',
+      background: DM.text, color: DM.bg, borderRadius: '4px',
+      fontFamily: DM.mono, fontSize: '12.5px', textDecoration: 'none',
+      textAlign: 'center',
+    }}>cd ./posts →</a>
+
+    <footer style={{
+      marginTop: '36px', paddingTop: '20px', borderTop: `0.5px solid ${DM.hairline}`,
+      fontFamily: DM.mono, fontSize: '10.5px', color: DM.text3,
+      display: 'flex', justifyContent: 'space-between',
+    }}>
+      <span>© 2026 koen</span>
+      <span>rss · github · email</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

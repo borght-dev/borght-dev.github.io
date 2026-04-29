@@ -1,0 +1,54 @@
+---
+// D · /now — Derek Sivers-style "what I'm focused on right now" page
+import DLayout from '../layouts/DLayout.astro';
+
+// edit these to update the page; format is one short line per category.
+// see https://nownownow.com for the convention.
+const sections: Array<{ k: string; v: string }> = [
+  { k: 'Building',  v: '[edit me]' },
+  { k: 'Reading',   v: '[edit me]' },
+  { k: 'Listening', v: '[edit me]' },
+  { k: 'Querying',  v: '[edit me]' },
+  { k: 'Avoiding',  v: '[edit me]' },
+];
+
+const lastUpdated = '2026 · 04 · 27';
+---
+
+<DLayout title="Now" active={null} description="What I'm focused on right now.">
+  <div style="font-family: var(--d-mono); font-size: 12px; color: var(--d-accent); margin-bottom: 28px;"># now.md</div>
+
+  <h1 style="font-family: var(--d-serif); font-weight: 400; font-size: 56px; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 18px;" class="d-h1">
+    Right <span style="font-style: italic; color: var(--d-accent);">now</span>.
+  </h1>
+  <p style="font-size: 16.5px; line-height: 1.7; color: var(--d-text2); margin: 0 0 12px; max-width: 580px;" class="d-lede">
+    A snapshot of what I'm focused on this week — building, reading, listening,
+    querying, and (importantly) <em>not</em> doing. I update this page roughly
+    every few weeks. If you've stumbled across a "now" page elsewhere, this
+    is the same convention — see <a href="https://nownownow.com" style="color: var(--d-accent);">nownownow.com</a>.
+  </p>
+  <p style="font-family: var(--d-mono); font-size: 11.5px; color: var(--d-text3); margin: 0 0 48px;">
+    last updated · {lastUpdated}
+  </p>
+
+  <ul style="list-style: none; padding: 0; margin: 0;">
+    {sections.map((n) => (
+      <li style="padding: 14px 0; display: flex; gap: 16px; font-size: 16px; color: var(--d-text); border-top: 0.5px dashed var(--d-hairline);">
+        <span style="font-family: var(--d-mono); color: var(--d-text3); width: 110px; font-size: 12.5px; flex-shrink: 0;">— {n.k.toLowerCase()}</span>
+        <span style={n.v === '[edit me]' ? 'color: var(--d-text3); font-style: italic;' : ''}>{n.v}</span>
+      </li>
+    ))}
+  </ul>
+
+  <div style="margin-top: 56px; padding: 20px 24px; background: var(--d-code); border-radius: 6px; font-family: var(--d-mono); font-size: 12.5px; color: var(--d-text2); line-height: 1.7;">
+    <span style="color: var(--d-accent);">$</span> cd ./posts <a href="/legacy/posts/" style="color: var(--d-accent);">→</a><br />
+    <span style="color: var(--d-accent);">$</span> cd ./log <a href="/log/" style="color: var(--d-accent);">→</a>
+  </div>
+</DLayout>
+
+<style>
+  @media (max-width: 767px) {
+    h1.d-h1 { font-size: 38px !important; }
+    p.d-lede { font-size: 15.5px !important; }
+  }
+</style>

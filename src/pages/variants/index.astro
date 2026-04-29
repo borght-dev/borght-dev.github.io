@@ -1,0 +1,175 @@
+---
+// Variants index — landing page that links to all three direction implementations.
+// This page is the entry point for reviewing the design handoff.
+import { FONTS_HREF } from '../../data/variants-data';
+
+type Variant = {
+  id: 'd' | 'e' | 'g';
+  name: string;
+  tagline: string;
+  swatch: string[];
+  swatchBg: string;
+  swatchBorder: string;
+  pages: Array<{ label: string; href: string; kind: 'desktop' | 'mobile' }>;
+};
+
+const variants: Variant[] = [
+  {
+    id: 'd',
+    name: 'Markdown First',
+    tagline: 'A README on a quiet morning. Cream paper, Fraunces serif, terracotta accents, monospace navigation.',
+    swatch: ['#fafaf7', '#1a1a1a', '#d23f1f', '#f1ede4'],
+    swatchBg: '#fafaf7',
+    swatchBorder: '#e6e3dc',
+    pages: [
+      { label: 'Home',    href: '/variants/d/',        kind: 'desktop' },
+      { label: 'Post',    href: '/variants/d/post',    kind: 'desktop' },
+      { label: 'Archive', href: '/variants/d/archive', kind: 'desktop' },
+      { label: 'Mobile',  href: '/variants/d/mobile',  kind: 'mobile'  },
+    ],
+  },
+  {
+    id: 'e',
+    name: 'IDE Theme',
+    tagline: 'The site is the editor. Catppuccin Mocha, file tree, syntax-highlighted markdown, status bar at the bottom.',
+    swatch: ['#1e1e2e', '#cba6f7', '#a6e3a1', '#89b4fa'],
+    swatchBg: '#1e1e2e',
+    swatchBorder: '#313244',
+    pages: [
+      { label: 'about.md',     href: '/variants/e/',        kind: 'desktop' },
+      { label: 'post.md',      href: '/variants/e/post',    kind: 'desktop' },
+      { label: 'borgdock.json', href: '/variants/e/project', kind: 'desktop' },
+      { label: 'Mobile',       href: '/variants/e/mobile',  kind: 'mobile'  },
+    ],
+  },
+  {
+    id: 'g',
+    name: 'Engineering Log',
+    tagline: 'Mission-control changelog. Versioned posts, semver tags, vitals rail, scanlines, Fraunces display.',
+    swatch: ['#0d0f12', '#3ddc84', '#ffb547', '#5fb3ff'],
+    swatchBg: '#0d0f12',
+    swatchBorder: '#23262d',
+    pages: [
+      { label: 'Index',    href: '/variants/g/',         kind: 'desktop' },
+      { label: 'Post',     href: '/variants/g/post',     kind: 'desktop' },
+      { label: 'Projects', href: '/variants/g/projects', kind: 'desktop' },
+      { label: 'Mobile',   href: '/variants/g/mobile',   kind: 'mobile'  },
+    ],
+  },
+];
+
+const PAL = {
+  bg: '#0f1014',
+  panel: '#181a20',
+  text: '#e6e7ea',
+  text2: '#9ea2ad',
+  text3: '#6b6f78',
+  rule: '#2a2c33',
+  accent: '#ffb547',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  serif: "'Fraunces', serif",
+  sans: "'Inter', sans-serif",
+};
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design variants · Personal site</title>
+  <meta name="description" content="Three design directions for koenvdborght.nl — D · Markdown First, E · IDE Theme, G · Engineering Log." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #0f1014; }
+    a:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+<div style={{
+  minHeight: '100vh', background: PAL.bg, color: PAL.text,
+  fontFamily: PAL.sans, padding: '64px 32px',
+}}>
+  <main style={{ maxWidth: '960px', margin: '0 auto' }}>
+    <div style={{ fontFamily: PAL.mono, fontSize: '11px', color: PAL.accent, letterSpacing: '0.18em', marginBottom: '20px' }}>
+      ▍ DESIGN HANDOFF · 3 DIRECTIONS
+    </div>
+    <h1 style={{
+      fontFamily: PAL.serif, fontWeight: 300, fontSize: '64px',
+      lineHeight: 1.0, letterSpacing: '-0.03em', margin: '0 0 18px',
+    }}>
+      Personal site,<br />
+      <span style={{ fontStyle: 'italic', color: PAL.accent }}>three ways</span>.
+    </h1>
+    <p style={{
+      fontSize: '16px', lineHeight: 1.65, color: PAL.text2,
+      margin: '0 0 56px', maxWidth: '560px',
+    }}>
+      Built from the Anthropic design handoff bundle. Each direction is implemented
+      to the dot — fixed-width artboards (1280 px desktop, 402 px mobile) so the
+      proportions match the source files.
+    </p>
+
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+      {variants.map((v) => (
+        <article style={{
+          background: PAL.panel, border: `1px solid ${PAL.rule}`,
+          padding: '28px 32px',
+          display: 'grid', gridTemplateColumns: '64px 1fr 240px', gap: '28px',
+          alignItems: 'flex-start',
+        }}>
+          <div style={{
+            width: '64px', height: '64px',
+            background: v.swatchBg, border: `1px solid ${v.swatchBorder}`,
+            display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateRows: 'repeat(2, 1fr)',
+          }}>
+            {v.swatch.map((c) => <span style={{ background: c }} />)}
+          </div>
+
+          <div>
+            <div style={{ fontFamily: PAL.mono, fontSize: '11px', color: PAL.accent, letterSpacing: '0.14em', marginBottom: '6px' }}>
+              VARIANT · {v.id.toUpperCase()}
+            </div>
+            <h2 style={{
+              fontFamily: PAL.serif, fontWeight: 400, fontSize: '32px',
+              letterSpacing: '-0.02em', margin: '0 0 8px',
+            }}>{v.name}</h2>
+            <p style={{ fontSize: '14.5px', color: PAL.text2, lineHeight: 1.6, margin: 0, maxWidth: '460px' }}>
+              {v.tagline}
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {v.pages.map((p) => (
+              <a href={p.href} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+                padding: '8px 12px', textDecoration: 'none',
+                background: PAL.bg, border: `1px solid ${PAL.rule}`,
+                fontFamily: PAL.mono, fontSize: '12px', color: PAL.text,
+              }}>
+                <span>./{p.label}</span>
+                <span style={{ fontSize: '10px', color: p.kind === 'mobile' ? PAL.accent : PAL.text3, letterSpacing: '0.1em' }}>
+                  {p.kind === 'mobile' ? '402' : '1280'}px
+                </span>
+              </a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <footer style={{
+      marginTop: '64px', paddingTop: '24px', borderTop: `1px solid ${PAL.rule}`,
+      display: 'flex', justifyContent: 'space-between',
+      fontFamily: PAL.mono, fontSize: '10.5px', color: PAL.text3, letterSpacing: '0.05em',
+    }}>
+      <span>SOURCE · personal-site-and-blog (claude design handoff)</span>
+      <span>FONTS · JetBrains Mono · Fraunces · Inter</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

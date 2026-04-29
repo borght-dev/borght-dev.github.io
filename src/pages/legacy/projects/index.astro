@@ -1,0 +1,36 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<Base title="Projects" description="Tools, migrations, and side-projects.">
+  <section class="block">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">all_projects</h2>
+      <span class="section-meta">{projects.length} entries</span>
+    </div>
+    <div class="post-grid">
+      { projects.map(p => (
+        <a href={`/projects/${p.id}/`} class="post">
+          <div class="post-meta">
+            <span>{fmt(p.data.date)}</span>
+            <span>·</span>
+            <span>{p.data.status}</span>
+          </div>
+          <h3>{p.data.title}</h3>
+          { p.data.stack?.length > 0 && (
+            <div class="tags">
+              { p.data.stack.map(s => <span class="tag">{s}</span>) }
+            </div>
+          ) }
+        </a>
+      )) }
+    </div>
+  </section>
+</Base>

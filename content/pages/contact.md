@@ -3,10 +3,8 @@ title: "Contact"
 description: "Get in touch."
 ---
 
-Feel free to reach out if you want to collaborate or just have a chat:
+Best place to reach me is [LinkedIn](https://www.linkedin.com/in/koen-van-der-borght-tilburg) — I check it most weekdays.
 
-- Email: `koenvanderborght[at]outlook[dot]com`
-- [LinkedIn](https://www.linkedin.com/in/koen-van-der-borght-tilburg)
-- [GitHub](https://github.com/KoenvanderBorght-Dev/)
+For code-related stuff, [GitHub](https://github.com/borght-dev/) works too.
 
 I'm always open to technical discussions, software challenges, or building something cool.

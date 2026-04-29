@@ -1,0 +1,255 @@
+---
+// Direction G · Engineering Log — Home
+// Verbatim from personal-site-and-blog/project/site/direction-g.jsx
+import { POSTS, PROJECTS, NOW, FONTS_HREF } from '../../../data/variants-data';
+
+const G = {
+  bg: '#0d0f12', panel: '#15181d', panelSoft: '#191d23',
+  hairline: '#23262d', hairlineSoft: '#1a1d22',
+  text: '#e6e7e9', text2: '#a8acb3', text3: '#6b6f76', muted: '#454a52',
+  green: '#3ddc84', amber: '#ffb547', red: '#ff5a5f',
+  blue: '#5fb3ff', mint: '#7dd3c0',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+  serif: "'Fraunces', serif",
+};
+
+const navItems = ['INDEX', 'CHANGELOG', 'PROJECTS', 'NOW', 'CONTACT'];
+
+type Vital = [string, string, string, string];
+const vitals: Vital[] = [
+  ['BUILD', 'borgdock@v0.9.2 — green', G.green, '4/4 checks · main'],
+  ['DEPLOY', 'rebuild · 95%', G.amber, 'gomocha-rebuild · staging'],
+  ['LOAD', '0.42', G.mint, 'side-projects · healthy'],
+  ['INBOX', '12 unread', G.blue, 'last reply 6h ago'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>G · Engineering Log — koen.nl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #0d0f12; }
+    a { cursor: pointer; }
+    .g-root { width: 1280px; }
+    .g-topbar { padding: 12px 32px; grid-template-columns: 1fr 1fr 1fr; }
+    .g-topbar-mid { text-align: center; }
+    .g-topbar-nav { gap: 22px; font-size: 11px; }
+    .g-main { padding: 48px 32px 0; display: grid; grid-template-columns: 1fr 320px; gap: 40px; }
+    .g-h1 { font-size: 84px; }
+    .g-rail { position: sticky; top: 32px; align-self: flex-start; }
+    .g-changelog-row { display: grid; grid-template-columns: 108px 1fr; gap: 18px; }
+    .g-footer { padding: 8px 32px; }
+    @media (max-width: 767px) {
+      .g-root { width: 100%; min-height: 0 !important; }
+      .g-topbar { padding: 10px 16px !important; grid-template-columns: 1fr auto !important; gap: 8px !important; font-size: 10px !important; }
+      .g-topbar-mid { display: none !important; }
+      .g-topbar-nav { gap: 12px !important; font-size: 9.5px !important; flex-wrap: wrap; justify-content: flex-end !important; }
+      .g-main { padding: 26px 18px 0 !important; grid-template-columns: 1fr !important; gap: 28px !important; }
+      .g-h1 { font-size: 44px !important; line-height: 0.98 !important; }
+      .g-intro p { font-size: 14px !important; }
+      .g-rail { position: static !important; top: auto !important; }
+      .g-changelog-row { grid-template-columns: 1fr !important; gap: 6px !important; padding: 14px 0 !important; }
+      .g-changelog-meta { display: flex !important; gap: 10px; align-items: center; flex-wrap: wrap; }
+      .g-changelog-row h2 { font-size: 21px !important; }
+      .g-cmd-bar { flex-wrap: wrap !important; padding: 12px 14px !important; font-size: 11px !important; gap: 10px !important; }
+      .g-footer { padding: 8px 16px !important; flex-wrap: wrap !important; gap: 4px !important; font-size: 9px !important; }
+      .g-footer > span:nth-child(2) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="g-root" style={{
+  minHeight: '1860px', background: G.bg, color: G.text,
+  fontFamily: G.mono, position: 'relative', margin: '0 auto',
+}}>
+  <div style={{
+    position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.4,
+    backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 4px)',
+  }} />
+
+  <header class="g-topbar" style={{
+    position: 'relative',
+    borderBottom: `1px solid ${G.hairline}`,
+    background: G.panel,
+    display: 'grid', alignItems: 'center',
+    color: G.text3, letterSpacing: '0.06em',
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: G.green, boxShadow: `0 0 6px ${G.green}` }} />
+      <span style={{ color: G.text }}>KOEN.NL · ENG-LOG</span>
+      <span>· UPLINK <span style={{ color: G.green }}>OK</span></span>
+    </div>
+    <div class="g-topbar-mid" style={{ color: G.text2 }}>
+      MISSION T+ <span style={{ color: G.amber }}>09y · 142d · 04:31:18</span>
+    </div>
+    <div class="g-topbar-nav" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {navItems.map((x, i) => {
+        const c = i === 1 ? G.amber : G.text2;
+        const href = x === 'CHANGELOG' ? '/variants/g/post' : x === 'PROJECTS' ? '/variants/g/projects' : '/variants/g/';
+        return <a href={href} style={{ textDecoration: 'none', color: c }}>{x}</a>;
+      })}
+    </div>
+  </header>
+
+  <main class="g-main" style={{ position: 'relative' }}>
+    <div class="g-intro">
+      <div style={{ marginBottom: '56px' }}>
+        <div style={{ fontSize: '11px', color: G.green, letterSpacing: '0.18em', marginBottom: '24px' }}>
+          ▍ <span style={{ color: G.text }}>FILE</span> /var/log/koen.log &nbsp; <span style={{ color: G.text3 }}>· tail -f</span>
+        </div>
+        <h1 class="g-h1" style={{
+          fontFamily: G.serif, fontWeight: 300,
+          lineHeight: 0.96, letterSpacing: '-0.035em', margin: '0 0 24px',
+          color: G.text,
+        }}>
+          Engineering<br />
+          <span style={{ fontStyle: 'italic', color: G.amber }}>log</span> of one
+          senior dev,<br />
+          <span style={{ color: G.text2 }}>uptime 9.0 years.</span>
+        </h1>
+        <p style={{
+          fontFamily: G.sans, fontSize: '15.5px', lineHeight: 1.65,
+          color: G.text2, margin: 0, maxWidth: '540px',
+        }}>
+          Koen, in Tilburg. I keep this site as a structured log of what I'm
+          building, breaking, and learning — versioned the same way the things
+          I work on are. Time-stamped, mostly truthful, occasionally wrong.
+        </p>
+      </div>
+
+      <div style={{ fontSize: '11px', color: G.amber, letterSpacing: '0.18em', marginBottom: '18px' }}>
+        ▍ <span style={{ color: G.text }}>CHANGELOG</span>
+      </div>
+
+      {POSTS.map((p, i) => {
+        const ver = `v${POSTS.length - i}.${(POSTS.length - i) * 3}.0`;
+        const tag: [string, string] =
+          i === 0 ? ['MAJOR',   G.amber] :
+          i === 1 ? ['FEATURE', G.green] :
+          i === 2 ? ['ESSAY',   G.mint]  :
+                    ['PATCH',   G.blue];
+        return (
+          <article class="g-changelog-row" style={{
+            padding: '20px 0', borderTop: `1px solid ${G.hairline}`,
+            alignItems: 'flex-start',
+          }}>
+            <div class="g-changelog-meta">
+              <div style={{ fontSize: '11px', color: G.text3, marginBottom: '4px' }}>{p.date.replace(/\s/g, '')}</div>
+              <div style={{ fontSize: '13px', color: G.amber, fontWeight: 600, marginBottom: '8px' }}>{ver}</div>
+              <div style={{
+                display: 'inline-block', padding: '2px 7px', fontSize: '9.5px',
+                color: tag[1], border: `1px solid ${tag[1]}`, letterSpacing: '0.1em',
+              }}>{tag[0]}</div>
+            </div>
+            <div>
+              <h2 style={{
+                fontFamily: G.serif, fontSize: '26px', fontWeight: 400,
+                color: G.text, letterSpacing: '-0.015em', lineHeight: 1.15,
+                margin: '0 0 6px',
+              }}>{p.title}</h2>
+              <p style={{
+                fontFamily: G.sans, fontSize: '14px', lineHeight: 1.6,
+                color: G.text2, margin: '0 0 10px', maxWidth: '600px',
+              }}>{p.dek}</p>
+              <div style={{ fontSize: '10.5px', color: G.text3, letterSpacing: '0.06em' }}>
+                +{(i + 2) * 312} −{i * 47} lines · {p.readTime} read · {p.tags.map((t) => '+' + t.toLowerCase().replace(/\s/g, '-')).join(' ')}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+
+      <div class="g-cmd-bar" style={{
+        marginTop: '32px', padding: '18px 22px',
+        background: G.panel, border: `1px solid ${G.hairline}`,
+        display: 'flex', gap: '22px', alignItems: 'center',
+        fontSize: '12px', color: G.text2,
+      }}>
+        <span style={{ color: G.green }}>$</span>
+        <span>git log --oneline | head</span>
+        <span style={{ color: G.text3 }}>· press</span>
+        <span style={{ padding: '2px 8px', border: `1px solid ${G.hairline}`, color: G.amber }}>↵</span>
+        <span style={{ color: G.text3 }}>to view full archive</span>
+      </div>
+    </div>
+
+    <aside class="g-rail" style={{ position: 'sticky', top: '32px', alignSelf: 'flex-start' }}>
+      <div style={{ fontSize: '11px', color: G.green, letterSpacing: '0.18em', marginBottom: '14px' }}>
+        ▍ <span style={{ color: G.text }}>VITALS</span>
+      </div>
+
+      {vitals.map(([k, v, c, sub]) => (
+        <div style={{
+          background: G.panel, border: `1px solid ${G.hairline}`,
+          padding: '14px', marginBottom: '8px',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+            <span style={{ fontSize: '10px', color: G.text3, letterSpacing: '0.14em' }}>{k}</span>
+            <span style={{ fontSize: '9.5px', color: c }}>● ACTIVE</span>
+          </div>
+          <div style={{ fontSize: '13px', color: G.text, marginBottom: '4px' }}>{v}</div>
+          <div style={{ fontSize: '10px', color: G.text3 }}>{sub}</div>
+        </div>
+      ))}
+
+      <div style={{ fontSize: '11px', color: G.amber, letterSpacing: '0.18em', margin: '24px 0 12px' }}>
+        ▍ <span style={{ color: G.text }}>NOW · WK17</span>
+      </div>
+      <div style={{ background: G.panel, border: `1px solid ${G.hairline}`, padding: '14px' }}>
+        {NOW.map((n, i) => (
+          <div style={{
+            padding: '6px 0', fontSize: '12px',
+            borderTop: i ? `1px solid ${G.hairlineSoft}` : 'none',
+            color: G.text2,
+          }}>
+            <span style={{ color: G.text3 }}>{n.k.toLowerCase()}/</span> {n.v}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ fontSize: '11px', color: G.amber, letterSpacing: '0.18em', margin: '24px 0 12px' }}>
+        ▍ <span style={{ color: G.text }}>PROJECTS</span>
+      </div>
+      {PROJECTS.map((p) => (
+        <div style={{ padding: '10px 0', borderTop: `1px solid ${G.hairline}`, fontSize: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+            <span style={{ color: G.text }}>{p.name}</span>
+            <span style={{ color: G.text3 }}>{p.year}</span>
+          </div>
+          <div style={{ color: G.text3, fontSize: '11px' }}>
+            {p.stack.slice(0, 2).join(' · ')} · <span style={{ color: G.green }}>{p.status}</span>
+          </div>
+        </div>
+      ))}
+
+      <div style={{ fontSize: '11px', color: G.amber, letterSpacing: '0.18em', margin: '24px 0 12px' }}>
+        ▍ <span style={{ color: G.text }}>CONTACT</span>
+      </div>
+      <div style={{ fontSize: '12px', color: G.text, lineHeight: 1.8 }}>
+        <div>$ in linkedin/koen-van-der-borght-tilburg</div>
+        <div>$ gh follow borght-dev</div>
+        <div>$ rss /rss.xml</div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="g-footer" style={{
+    marginTop: '56px',
+    background: G.panel, borderTop: `1px solid ${G.hairline}`,
+    display: 'flex', justifyContent: 'space-between',
+    fontSize: '10.5px', color: G.text3, letterSpacing: '0.05em',
+  }}>
+    <span>© 2026 KOEN VAN DER BORGHT · NL</span>
+    <span>JETBRAINS MONO · FRAUNCES · INTER</span>
+    <span set:html={'{ HZ: 60 · CPU: 0.2 % · MEM: 64 KB }'} />
+  </footer>
+</div>
+</body>
+</html>

@@ -12,7 +12,7 @@ export async function GET(context: APIContext) {
       title: p.data.title,
       pubDate: p.data.date,
       description: p.data.subtitle ?? p.data.description ?? '',
-      link: `/blog/${p.id}/`,
+      link: `/posts/${p.id}/`,
     })),
     ...episodes.map(e => {
       const s = series.find(x => x.data.seriesId === e.data.seriesId);
@@ -21,7 +21,7 @@ export async function GET(context: APIContext) {
         title: `${s?.data.title ?? ''} — ep${e.data.episode}: ${e.data.title}`,
         pubDate: e.data.date ?? new Date(),
         description: e.data.summary ?? '',
-        link: `/series/${e.data.seriesId}/${slug}/`,
+        link: `/legacy/series/${e.data.seriesId}/${slug}/`,
       };
     }),
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());

@@ -1,36 +1,61 @@
 ---
-import Base from '../../layouts/Base.astro';
+// D · /projects index
+import DLayout from '../../layouts/DLayout.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects'))
+const all = (await getCollection('projects'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
+function fmtYear(d: Date): string {
+  return String(d.getFullYear());
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  active: 'Active',
+  shipped: 'Shipped',
+  archived: 'Archived',
+  validation: 'In validation',
+};
 ---
 
-<Base title="Projects" description="Tools, migrations, and side-projects.">
-  <section class="block">
-    <div class="section-head">
-      <span class="section-prompt">&gt;</span>
-      <h2 class="section-title">all_projects</h2>
-      <span class="section-meta">{projects.length} entries</span>
+<DLayout title="Projects" active="projects" description="Tools, migrations, and side-projects.">
+  <div style="font-family: var(--d-mono); font-size: 12px; color: var(--d-accent); margin-bottom: 22px;"># projects/</div>
+
+  <h1 style="font-family: var(--d-serif); font-weight: 400; font-size: 56px; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 16px;" class="d-h1">
+    Things I'm <span style="font-style: italic; color: var(--d-accent);">building</span>.
+  </h1>
+  <p style="font-size: 16.5px; line-height: 1.65; color: var(--d-text2); margin: 0 0 48px; max-width: 580px;" class="d-intro">
+    {all.length} {all.length === 1 ? 'project' : 'projects'} — long-running work, not sprints.
+    Some I use daily; some are paused; one or two will probably never be finished.
+  </p>
+
+  {all.length === 0 && (
+    <div style="padding: 40px 0; border-top: 0.5px dashed var(--d-hairline); border-bottom: 0.5px dashed var(--d-hairline); font-family: var(--d-mono); font-size: 13px; color: var(--d-text3); text-align: center;">
+      <span style="color: var(--d-accent);">$</span> ls projects/ <span>→ no entries yet</span>
     </div>
-    <div class="post-grid">
-      { projects.map(p => (
-        <a href={`/projects/${p.id}/`} class="post">
-          <div class="post-meta">
-            <span>{fmt(p.data.date)}</span>
-            <span>·</span>
-            <span>{p.data.status}</span>
-          </div>
-          <h3>{p.data.title}</h3>
-          { p.data.stack?.length > 0 && (
-            <div class="tags">
-              { p.data.stack.map(s => <span class="tag">{s}</span>) }
-            </div>
-          ) }
-        </a>
-      )) }
-    </div>
-  </section>
-</Base>
+  )}
+
+  {all.map((p) => (
+    <a href={`/projects/${p.id}/`} style="display: block; padding: 22px 0; border-top: 0.5px dashed var(--d-hairline); text-decoration: none;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; gap: 14px;">
+        <h3 style="font-family: var(--d-serif); font-size: 26px; font-weight: 400; margin: 0; color: var(--d-text);">{p.data.title}</h3>
+        <span style="font-family: var(--d-mono); font-size: 11px; color: var(--d-text3); white-space: nowrap;">{fmtYear(p.data.date)}</span>
+      </div>
+      <div style="font-family: var(--d-mono); font-size: 11px; color: var(--d-muted); margin-top: 6px;">
+        {p.data.stack.length > 0 && <>{p.data.stack.join(' · ')} · </>}
+        <span style="color: var(--d-accent);">{STATUS_LABEL[p.data.status] ?? p.data.status}</span>
+        {p.data.link && <>
+          {' · '}
+          <span style="color: var(--d-text3);">{p.data.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+        </>}
+      </div>
+    </a>
+  ))}
+</DLayout>
+
+<style>
+  @media (max-width: 767px) {
+    h1.d-h1 { font-size: 38px !important; }
+    p.d-intro { font-size: 15px !important; }
+  }
+</style>

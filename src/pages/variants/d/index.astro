@@ -1,0 +1,200 @@
+---
+// Direction D · Markdown First — Home
+// Verbatim from personal-site-and-blog/project/site/direction-d.jsx
+import { POSTS, PROJECTS, NOW, FONTS_HREF } from '../../../data/variants-data';
+
+const D = {
+  bg: '#fafaf7', panel: '#ffffff', text: '#1a1a1a', text2: '#4a4a4a',
+  text3: '#8a8a8a', muted: '#b8b8b8', accent: '#d23f1f',
+  hairline: '#e6e3dc', code: '#f1ede4',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+  serif: "'Fraunces', serif",
+};
+
+const aboutToml = `[koen]
+where     = "tilburg, nl"
+since     = 2017
+employer  = "gomocha"
+role      = "sr. developer"
+ambition  = ["architect", "cto", "founder"]
+
+[building]
+borgdock  = "v0.9 · daily-driver"
+gomocha-r = "rebuild · ~95%"
+home-lab  = "38 devices · always"
+
+[here]
+purpose   = "writing things down"`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>D · Markdown First — koenvdborght.nl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fafaf7; }
+    a { cursor: pointer; }
+    .d-root { width: 1280px; }
+    .d-header { padding: 24px 64px; }
+    .d-main { max-width: 720px; padding: 64px 24px 80px; }
+    .d-h1 { font-size: 56px; }
+    @media (max-width: 767px) {
+      .d-root { width: 100%; min-height: 0 !important; }
+      .d-header { padding: 14px 20px !important; }
+      .d-header nav { gap: 14px !important; font-size: 11px !important; }
+      .d-main { padding: 32px 22px 40px !important; }
+      .d-h1 { font-size: 38px !important; }
+      .d-h1 + p, .d-main p { font-size: 16px !important; }
+      .d-main h2 { margin-top: 40px !important; }
+      .d-main pre { font-size: 11.5px !important; padding: 12px 14px !important; }
+      .d-post-h3 { font-size: 22px !important; }
+      .d-proj-h3 { font-size: 22px !important; }
+      .d-tags { display: none !important; }
+      .d-archive-link { display: block !important; line-height: 1.7; }
+    }
+  </style>
+</head>
+<body>
+<div class="d-root" style={{
+  minHeight: '1860px', background: D.bg, color: D.text,
+  fontFamily: D.sans, position: 'relative', margin: '0 auto',
+}}>
+  <header class="d-header" style={{
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    borderBottom: `0.5px solid ${D.hairline}`,
+  }}>
+    <div style={{ fontFamily: D.mono, fontSize: '13px', fontWeight: 600 }}>
+      ~/koenvdborght.nl <span style={{ color: D.text3 }}>$</span>
+    </div>
+    <nav style={{ display: 'flex', gap: '28px', fontFamily: D.mono, fontSize: '12px' }}>
+      {['posts', 'projects', 'now', 'uses', 'feed.xml'].map((x) => (
+        <a style={{ color: D.text2, textDecoration: 'none' }}>./{x}</a>
+      ))}
+    </nav>
+  </header>
+
+  <main class="d-main" style={{ margin: '0 auto' }}>
+    <div style={{ fontFamily: D.mono, fontSize: '12px', color: D.accent, marginBottom: '28px' }}># koen.md</div>
+
+    <h1 class="d-h1" style={{
+      fontFamily: D.serif, fontWeight: 400,
+      lineHeight: 1.05, letterSpacing: '-0.025em', margin: '0 0 24px',
+    }}>
+      Hello — I'm <span style={{ fontStyle: 'italic', color: D.accent }}>Koen</span>.
+    </h1>
+
+    <p style={{ fontSize: '17.5px', lineHeight: 1.7, color: D.text2, margin: '0 0 18px' }}>
+      Senior dev in Tilburg, 9 years at Gomocha, currently building{' '}
+      <code style={{ background: D.code, padding: '1px 7px', borderRadius: '3px', fontFamily: D.mono, fontSize: '14px' }}>BorgDock</code>
+      {' '}— a developer dock I needed and couldn't find.
+    </p>
+    <p style={{ fontSize: '17.5px', lineHeight: 1.7, color: D.text2, margin: '0 0 36px' }}>
+      This is where I write things down. Mostly about <em>workflow</em>, <em>tooling</em>,
+      and what AI-assisted development actually feels like once the novelty wears off.
+    </p>
+
+    <div style={{
+      background: D.panel, border: `0.5px solid ${D.hairline}`,
+      borderRadius: '6px', padding: 0, marginBottom: '64px', overflow: 'hidden',
+    }}>
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', padding: '8px 14px',
+        background: '#f5f2ec', borderBottom: `0.5px solid ${D.hairline}`,
+        fontFamily: D.mono, fontSize: '11px', color: D.text3,
+      }}>
+        <span>about.toml</span><span>13 lines</span>
+      </div>
+      <pre style={{
+        margin: 0, padding: '18px 22px', fontFamily: D.mono, fontSize: '13px',
+        lineHeight: 1.7, color: D.text,
+      }}>{aboutToml}</pre>
+    </div>
+
+    <h2 style={{
+      fontFamily: D.mono, fontSize: '14px', color: D.accent,
+      marginBottom: '22px', letterSpacing: '0.02em',
+    }}>## recent_posts</h2>
+
+    {POSTS.map((p) => (
+      <a style={{
+        display: 'block', padding: '20px 0', textDecoration: 'none',
+        borderTop: `0.5px dashed ${D.hairline}`,
+      }}>
+        <div style={{ display: 'flex', gap: '14px', alignItems: 'baseline', marginBottom: '8px' }}>
+          <span style={{ fontFamily: D.mono, fontSize: '12px', color: D.text3 }}>—</span>
+          <span style={{ fontFamily: D.mono, fontSize: '12px', color: D.text3 }}>{p.date}</span>
+          <span style={{ fontFamily: D.mono, fontSize: '11px', color: D.muted }}>· {p.readTime}</span>
+        </div>
+        <h3 class="d-post-h3" style={{
+          fontFamily: D.serif, fontSize: '26px', fontWeight: 400,
+          letterSpacing: '-0.015em', margin: '0 0 6px', color: D.text,
+        }}>
+          {p.title}
+        </h3>
+        <p style={{ fontSize: '14.5px', color: D.text2, lineHeight: 1.6, margin: '0 0 8px' }}>{p.dek}</p>
+        <div class="d-tags" style={{ fontFamily: D.mono, fontSize: '11px', color: D.muted }}>
+          {p.tags.map((t) => <span style={{ marginRight: '12px' }}>#{t.toLowerCase().replace(/\s/g, '-')}</span>)}
+        </div>
+      </a>
+    ))}
+
+    <div style={{
+      paddingTop: '28px', marginTop: '28px',
+      borderTop: `0.5px solid ${D.hairline}`,
+      fontFamily: D.mono, fontSize: '12px', color: D.text3,
+    }}>
+      <span class="d-archive-link">archive of 23 essays · <a href="/variants/d/archive" style={{ color: D.accent }}>/posts →</a></span>
+      <span style={{ marginLeft: '14px' }}>subscribe · <a style={{ color: D.accent }}>rss</a> / <a style={{ color: D.accent }}>email</a></span>
+    </div>
+
+    <h2 style={{
+      fontFamily: D.mono, fontSize: '14px', color: D.accent,
+      margin: '64px 0 22px', letterSpacing: '0.02em',
+    }}>## building</h2>
+
+    {PROJECTS.map((p) => (
+      <div style={{
+        padding: '20px 0', borderTop: `0.5px dashed ${D.hairline}`,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '6px' }}>
+          <h3 class="d-proj-h3" style={{ fontFamily: D.serif, fontSize: '24px', fontWeight: 400, margin: 0 }}>{p.name}</h3>
+          <span style={{ fontFamily: D.mono, fontSize: '11px', color: D.text3 }}>{p.year}</span>
+        </div>
+        <p style={{ fontSize: '14px', color: D.text2, lineHeight: 1.6, margin: '0 0 6px' }}>{p.blurb}</p>
+        <div style={{ fontFamily: D.mono, fontSize: '11px', color: D.muted }}>
+          {p.stack.join(' · ')} · <span style={{ color: D.accent }}>{p.status}</span>
+        </div>
+      </div>
+    ))}
+
+    <h2 style={{
+      fontFamily: D.mono, fontSize: '14px', color: D.accent,
+      margin: '64px 0 22px', letterSpacing: '0.02em',
+    }}>## now</h2>
+    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+      {NOW.map((n) => (
+        <li style={{ padding: '8px 0', display: 'flex', gap: '12px', fontSize: '15px', color: D.text }}>
+          <span style={{ fontFamily: D.mono, color: D.text3, width: '90px', fontSize: '12px' }}>— {n.k.toLowerCase()}</span>
+          <span>{n.v}</span>
+        </li>
+      ))}
+    </ul>
+
+    <footer style={{
+      marginTop: '80px', paddingTop: '28px', borderTop: `0.5px solid ${D.hairline}`,
+      display: 'flex', justifyContent: 'space-between',
+      fontFamily: D.mono, fontSize: '11.5px', color: D.text3,
+    }}>
+      <span>© 2026 koen van der borght</span>
+      <span>made in (n)vim · plain html</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

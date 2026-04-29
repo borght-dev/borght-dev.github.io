@@ -1,0 +1,130 @@
+---
+// D · /legacy/posts/[slug] template — real MDX rendered with D chrome
+import DLayout from '../../../layouts/DLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10).replace(/-/g, ' · ');
+}
+function readTime(body: string | undefined): string {
+  const w = (body ?? '').trim().split(/\s+/).length;
+  return `${Math.max(1, Math.ceil(w / 200))} min`;
+}
+
+const tags = post.data.tags ?? [];
+---
+
+<DLayout title={post.data.title} description={post.data.description ?? post.data.subtitle} active="posts">
+  <div style="font-family: var(--d-mono); font-size: 12px; color: var(--d-text3); margin-bottom: 36px;">
+    <a href="/legacy/posts/" style="color: var(--d-accent);">/posts</a>
+    <span style="margin: 0 6px;">/</span>{post.id}.md
+  </div>
+
+  <div style="display: flex; gap: 14px; font-family: var(--d-mono); font-size: 12px; color: var(--d-text3); margin-bottom: 22px; flex-wrap: wrap;">
+    <span>{fmtDate(post.data.date)}</span>
+    <span>·</span>
+    <span>{readTime(post.body)} read</span>
+    {tags.length > 0 && <>
+      <span>·</span>
+      <span style="color: var(--d-accent);">{tags.map((t: string) => `#${t.toLowerCase().replace(/\s/g, '-')}`).join(' ')}</span>
+    </>}
+  </div>
+
+  <h1 style="font-family: var(--d-serif); font-weight: 400; font-size: 48px; line-height: 1.08; letter-spacing: -0.025em; margin: 0 0 18px;" class="d-h1">
+    {post.data.title}
+  </h1>
+  {post.data.subtitle && (
+    <p style="font-family: var(--d-serif); font-style: italic; font-size: 21px; line-height: 1.55; color: var(--d-text2); margin: 0 0 44px; font-weight: 300;" class="d-dek">
+      {post.data.subtitle}
+    </p>
+  )}
+
+  <div class="d-prose">
+    <Content />
+  </div>
+
+  <div style="margin-top: 56px; padding: 20px 24px; background: var(--d-code); border-radius: 6px; font-family: var(--d-mono); font-size: 12.5px; color: var(--d-text2); line-height: 1.7;" class="d-end">
+    <span style="color: var(--d-accent);">$</span> reply --on <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" target="_blank" rel="noopener" style="color: var(--d-accent);">linkedin →</a><br />
+    <span style="color: var(--d-accent);">$</span> back <a href="/legacy/posts/" style="color: var(--d-accent);">./posts →</a>
+  </div>
+</DLayout>
+
+<style is:global>
+  /* prose styling for MDX bodies — keeps the D aesthetic */
+  .d-prose {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--d-text);
+  }
+  .d-prose p { margin: 0 0 22px; }
+  .d-prose h2 {
+    font-family: var(--d-mono);
+    font-size: 15px;
+    color: var(--d-accent);
+    font-weight: 500;
+    margin: 36px 0 18px;
+    letter-spacing: 0.02em;
+  }
+  .d-prose h2::before { content: '## '; opacity: 0.6; }
+  .d-prose h3 {
+    font-family: var(--d-serif);
+    font-size: 22px;
+    font-weight: 400;
+    margin: 32px 0 14px;
+    color: var(--d-text);
+  }
+  .d-prose a { color: var(--d-accent); }
+  .d-prose code {
+    background: var(--d-code);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: var(--d-mono);
+    font-size: 0.85em;
+  }
+  .d-prose pre {
+    background: var(--d-panel);
+    border: 0.5px solid var(--d-hairline);
+    border-radius: 6px;
+    padding: 16px 22px;
+    font-family: var(--d-mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 0 0 22px;
+  }
+  .d-prose pre code { background: transparent; padding: 0; }
+  .d-prose blockquote {
+    margin: 32px 0;
+    padding: 18px 24px;
+    border-left: 3px solid var(--d-accent);
+    background: var(--d-quote-bg);
+    font-family: var(--d-serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--d-text);
+    font-weight: 300;
+  }
+  .d-prose blockquote p { margin: 0; }
+  .d-prose ul, .d-prose ol { padding-left: 22px; margin: 0 0 26px; }
+  .d-prose li { margin-bottom: 8px; }
+  .d-prose hr { border: 0; border-top: 0.5px solid var(--d-hairline); margin: 40px 0; }
+  .d-prose img { max-width: 100%; border-radius: 6px; }
+
+  @media (max-width: 767px) {
+    h1.d-h1 { font-size: 32px !important; line-height: 1.1 !important; }
+    p.d-dek { font-size: 18px !important; margin-bottom: 28px !important; }
+    .d-prose { font-size: 15.5px; }
+    .d-prose pre { font-size: 11.5px; padding: 12px 14px; }
+    .d-prose blockquote { font-size: 18px; padding: 14px 18px; }
+    .d-end { font-size: 11px !important; padding: 14px 16px !important; }
+  }
+</style>

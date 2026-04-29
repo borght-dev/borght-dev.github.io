@@ -1,143 +1,130 @@
 ---
-import Base from '../layouts/Base.astro';
-import BorgDockMock from '../components/BorgDockMock.astro';
+// D · Markdown First — public homepage
+import DLayout from '../layouts/DLayout.astro';
 import { getCollection } from 'astro:content';
+import { NOW } from '../data/variants-data';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 4);
+  .slice(0, 5);
 
-const series = (await getCollection('series'));
-const allEpisodes = await getCollection('episodes');
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const featuredSlug = 'borgdock';
-const featured = series.find(s => s.data.seriesId === featuredSlug)!;
-const otherSeries = series.filter(s => s.data.seriesId !== featuredSlug);
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10).replace(/-/g, ' · ');
+}
+function readTime(body: string | undefined): string {
+  const w = (body ?? '').trim().split(/\s+/).length;
+  return `${Math.max(1, Math.ceil(w / 200))} min`;
+}
 
-const featuredEpisodes = allEpisodes.filter(e => e.data.seriesId === featured.data.seriesId);
-const featuredPublished = featuredEpisodes.filter(e => !e.data.draft).length;
-const featuredTotal = featuredEpisodes.length;
+const aboutToml = `[koen]
+where     = "tilburg, nl"
+since     = 2017
+employer  = "gomocha"
+role      = "sr. developer"
+ambition  = ["architect", "cto", "founder"]
 
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
-const readTime = (text: string) => `${Math.max(1, Math.ceil((text?.trim().split(/\s+/).length ?? 0) / 200))} min read`;
-const lastBuild = new Date().toISOString().slice(0, 16).replace('T', ' ');
+[building]
+borgdock  = "v1.1 · daily-driver"
+gomocha-r = "rebuild · ~95%"
+home-lab  = "tinkering · forever"
+
+[here]
+purpose   = "writing things down"`;
 ---
 
-<Base title="Koen van der Borght" showTopbar={false}>
+<DLayout title="Koen van der Borght" active={null}>
+  <div style="font-family: var(--d-mono); font-size: 12px; color: var(--d-accent); margin-bottom: 28px;"># koen.md</div>
 
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="prompt reveal">
-        <span class="pulse-dot"></span>
-        <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span style="color:var(--ink-mute)">:~$</span></span>
+  <h1 style="font-family: var(--d-serif); font-weight: 400; font-size: 56px; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px;" class="d-h1">
+    Hello — I'm <span style="font-style: italic; color: var(--d-accent);">Koen</span>.
+  </h1>
+
+  <p style="font-size: 17.5px; line-height: 1.7; color: var(--d-text2); margin: 0 0 18px;" class="d-lede">
+    Senior dev in Tilburg, 9 years at Gomocha, currently building
+    <code style="background: var(--d-code); padding: 1px 7px; border-radius: 3px; font-family: var(--d-mono); font-size: 14px;">BorgDock</code>
+    — a developer dock I needed and couldn't find.
+  </p>
+  <p style="font-size: 17.5px; line-height: 1.7; color: var(--d-text2); margin: 0 0 36px;" class="d-lede">
+    This is where I write things down. Mostly about <em>workflow</em>, <em>tooling</em>,
+    and what AI-assisted development actually feels like once the novelty wears off.
+  </p>
+
+  <div style="background: var(--d-panel); border: 0.5px solid var(--d-hairline); border-radius: 6px; margin-bottom: 64px; overflow: hidden;">
+    <div style="display: flex; justify-content: space-between; padding: 8px 14px; background: var(--d-panel-head); border-bottom: 0.5px solid var(--d-hairline); font-family: var(--d-mono); font-size: 11px; color: var(--d-text3);">
+      <span>about.toml</span><span>13 lines</span>
+    </div>
+    <pre style="margin: 0; padding: 18px 22px; font-family: var(--d-mono); font-size: 13px; line-height: 1.7; color: var(--d-text); overflow-x: auto;">{aboutToml}</pre>
+  </div>
+
+  <h2 style="font-family: var(--d-mono); font-size: 14px; color: var(--d-accent); margin-bottom: 22px; letter-spacing: 0.02em;">## recent_posts</h2>
+
+  {posts.length === 0 && (
+    <p style="font-family: var(--d-mono); font-size: 12.5px; color: var(--d-text3); padding: 20px 0; border-top: 0.5px dashed var(--d-hairline);">
+      <span style="color: var(--d-accent);">$</span> ls posts/ <span style="color: var(--d-text3);">→ no entries yet</span>
+    </p>
+  )}
+
+  {posts.map((p) => (
+    <a href={`/legacy/posts/${p.id}/`} style="display: block; padding: 20px 0; text-decoration: none; border-top: 0.5px dashed var(--d-hairline);">
+      <div style="display: flex; gap: 14px; align-items: baseline; margin-bottom: 8px;">
+        <span style="font-family: var(--d-mono); font-size: 12px; color: var(--d-text3);">—</span>
+        <span style="font-family: var(--d-mono); font-size: 12px; color: var(--d-text3);">{fmtDate(p.data.date)}</span>
+        <span style="font-family: var(--d-mono); font-size: 11px; color: var(--d-muted);">· {readTime(p.body)}</span>
       </div>
+      <h3 style="font-family: var(--d-serif); font-size: 26px; font-weight: 400; letter-spacing: -0.015em; margin: 0 0 6px; color: var(--d-text);">
+        {p.data.title}
+      </h3>
+      {p.data.subtitle && (
+        <p style="font-size: 14.5px; color: var(--d-text2); line-height: 1.6; margin: 0 0 8px;">{p.data.subtitle}</p>
+      )}
+      {p.data.tags.length > 0 && (
+        <div style="font-family: var(--d-mono); font-size: 11px; color: var(--d-muted);">
+          {p.data.tags.map((t: string) => <span style="margin-right: 12px;">#{t.toLowerCase().replace(/\s/g, '-')}</span>)}
+        </div>
+      )}
+    </a>
+  ))}
 
-      <h1 class="headline reveal reveal-1">
-        Senior dev<br>
-        shipping <span class="accent">tools</span>,<br>
-        not slides<span class="cursor"></span>
-      </h1>
+  <div style="padding-top: 28px; margin-top: 28px; border-top: 0.5px solid var(--d-hairline); font-family: var(--d-mono); font-size: 12px; color: var(--d-text3);">
+    archive of {posts.length === 0 ? '0' : '5+'} essays · <a href="/legacy/posts/" style="color: var(--d-accent);">/posts →</a>
+    <span style="margin-left: 14px;">subscribe · <a href="/rss.xml" style="color: var(--d-accent);">rss</a></span>
+  </div>
 
-      <p class="tagline reveal reveal-2">
-        Full-stack engineer at Gomocha building field service software by day, making developer tools by night.
-        Currently writing about AI-native engineering workflows.
-      </p>
+  <h2 style="font-family: var(--d-mono); font-size: 14px; color: var(--d-accent); margin: 64px 0 22px; letter-spacing: 0.02em;">## building</h2>
 
-      <div class="ctas reveal reveal-3">
-        <a href="#series" class="btn btn-primary">read the series →</a>
-        <a href="/blog/" class="btn btn-ghost">~/blog</a>
+  {projects.map((p) => (
+    <a href={`/projects/${p.id}/`} style="display: block; padding: 20px 0; border-top: 0.5px dashed var(--d-hairline); text-decoration: none;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px;">
+        <h3 style="font-family: var(--d-serif); font-size: 24px; font-weight: 400; margin: 0; color: var(--d-text);">{p.data.title}</h3>
+        <span style="font-family: var(--d-mono); font-size: 11px; color: var(--d-text3);">{fmtDate(p.data.date)}</span>
       </div>
-
-      <div class="live-strip reveal reveal-4">
-        <div class="live-item">
-          <span class="live-label">currently shipping</span>
-          <span class="live-value"><span class="pulse-dot"></span> BorgDock v0.4</span>
-        </div>
-        <div class="live-item">
-          <span class="live-label">active series</span>
-          <span class="live-value">{series.length} · weekly cadence</span>
-        </div>
-        <div class="live-item">
-          <span class="live-label">last build</span>
-          <span class="live-value">{lastBuild}</span>
-        </div>
+      <div style="font-family: var(--d-mono); font-size: 11px; color: var(--d-muted);">
+        {p.data.stack.length > 0 && <>{p.data.stack.join(' · ')} · </>}
+        <span style="color: var(--d-accent);">{p.data.status}</span>
       </div>
-    </div>
-  </header>
+    </a>
+  ))}
 
-  <section class="block" id="series">
-    <div class="section-head">
-      <span class="section-prompt">&gt;</span>
-      <h2 class="section-title">featured_series</h2>
-      <span class="section-meta"><a href="/series/">view all {series.length} →</a></span>
-    </div>
+  <h2 style="font-family: var(--d-mono); font-size: 14px; color: var(--d-accent); margin: 64px 0 22px; letter-spacing: 0.02em;">## now</h2>
+  <ul style="list-style: none; padding: 0; margin: 0;">
+    {NOW.map((n) => (
+      <li style="padding: 8px 0; display: flex; gap: 12px; font-size: 15px; color: var(--d-text);">
+        <span style="font-family: var(--d-mono); color: var(--d-text3); width: 90px; font-size: 12px; flex-shrink: 0;">— {n.k.toLowerCase()}</span>
+        <span style="color: var(--d-text3); font-style: italic;">[edit me]</span>
+      </li>
+    ))}
+  </ul>
+  <p style="margin-top: 16px; font-family: var(--d-mono); font-size: 11.5px; color: var(--d-text3);">
+    full /now page · <a href="/now/" style="color: var(--d-accent);">/now →</a>
+  </p>
+</DLayout>
 
-    <article class="featured">
-      <div>
-        <div class="featured-status">
-          <span class="pulse-dot"></span> {featured.data.status} · {featured.data.cadence ?? 'on demand'}
-        </div>
-        <h3>{featured.data.title}</h3>
-        <p class="lead">{featured.data.tagline}</p>
-        <div class="featured-meta">
-          <span>{featuredPublished} / {featuredTotal} episodes</span>
-          <span>Tauri 2 · React · Rust</span>
-          <span>updated 2d ago</span>
-        </div>
-        <a href={`/series/${featured.data.seriesId}/`} class="btn btn-primary">explore the series →</a>
-      </div>
-      <BorgDockMock />
-    </article>
-  </section>
-
-  <section class="block tight" id="other-series">
-    <div class="section-head">
-      <span class="section-prompt">&gt;</span>
-      <h2 class="section-title">other_series</h2>
-    </div>
-    <div class="series-grid">
-      { otherSeries.map(s => {
-        const eps = allEpisodes.filter(e => e.data.seriesId === s.data.seriesId);
-        const pub = eps.filter(e => !e.data.draft).length;
-        return (
-          <a href={`/series/${s.data.seriesId}/`} class="series-card">
-            <div class="series-status"><span class="pulse-dot"></span> {s.data.status}</div>
-            <h3>{s.data.title}</h3>
-            <p>{s.data.tagline}</p>
-            <div class="meta">
-              <span>{pub} / {eps.length} episodes</span>
-              { s.data.cadence && <span>· {s.data.cadence}</span> }
-            </div>
-          </a>
-        );
-      }) }
-    </div>
-  </section>
-
-  <section class="block" id="posts">
-    <div class="section-head">
-      <span class="section-prompt">&gt;</span>
-      <h2 class="section-title">recent_posts</h2>
-      <span class="section-meta"><a href="/blog/">archive →</a></span>
-    </div>
-    <div class="post-grid">
-      { posts.map(post => {
-        const minutes = Math.max(1, Math.ceil((post.body?.trim().split(/\s+/).length ?? 0) / 200));
-        const pct = Math.min(100, minutes * 12);
-        return (
-          <a href={`/blog/${post.id}/`} class="post">
-            <div class="post-meta">
-              <span>{fmt(post.data.date)}</span>
-              <span class="read-bar"><span style={`width:${pct}%`}></span></span>
-              <span>{minutes} min read</span>
-            </div>
-            <h3>{post.data.title}</h3>
-            { post.data.subtitle && <p>{post.data.subtitle}</p> }
-            { !post.data.subtitle && post.data.description && <p>{post.data.description}</p> }
-          </a>
-        );
-      }) }
-    </div>
-  </section>
-
-</Base>
+<style>
+  @media (max-width: 767px) {
+    h1.d-h1 { font-size: 38px !important; }
+    p.d-lede { font-size: 16px !important; }
+  }
+</style>

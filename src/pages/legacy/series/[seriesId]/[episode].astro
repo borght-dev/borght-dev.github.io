@@ -1,5 +1,5 @@
 ---
-import Base from '../../../layouts/Base.astro';
+import Base from '../../../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -29,8 +29,8 @@ const slugOf = (id: string) => id.split('/').pop();
 <Base title={ep.data.title} description={ep.data.summary ?? `${s.data.title} — Episode ${ep.data.episode}`}>
   <article class="article-shell">
     <nav class="breadcrumbs">
-      <a href="/">~</a><span class="sep">/</span>
-      <a href="/series/">series</a><span class="sep">/</span>
+      <a href="/legacy/">~</a><span class="sep">/</span>
+      <a href="/legacy/series/">series</a><span class="sep">/</span>
       <a href={`/series/${s.data.seriesId}/`}>{s.data.seriesId}</a><span class="sep">/</span>
       <span>ep{String(ep.data.episode).padStart(2, '0')}</span>
     </nav>

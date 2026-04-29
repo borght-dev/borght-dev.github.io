@@ -1,0 +1,185 @@
+---
+// G · /log home — changelog-style index of all posts tagged 'log'
+import GLayout from '../../layouts/GLayout.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('posts', ({ data }) => !data.draft && data.tags.includes('log')))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+function fmtDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+function readTime(body: string | undefined): string {
+  const w = (body ?? '').trim().split(/\s+/).length;
+  return `${Math.max(1, Math.ceil(w / 200))} min`;
+}
+
+// derive a fake semver per entry so the visual rhythm matches the design.
+// real versions can come from frontmatter later if you add one.
+function ver(i: number, total: number): string {
+  const major = total - i;
+  return `v${major}.${major * 3}.0`;
+}
+function tagFor(i: number): [string, string] {
+  if (i === 0) return ['MAJOR',   'var(--g-amber)'];
+  if (i === 1) return ['FEATURE', 'var(--g-green)'];
+  if (i === 2) return ['ESSAY',   'var(--g-mint)'];
+  return ['PATCH', 'var(--g-blue)'];
+}
+---
+
+<GLayout title="Engineering log" active="CHANGELOG" description="Build notes, release logs, mostly truthful.">
+  <div class="g-grid">
+    <div>
+      <div class="g-section-label" style="color: var(--g-green);">
+        ▍ <span style="color: var(--g-text);">FILE</span> /var/log/koen.log &nbsp; <span style="color: var(--g-text3);">· tail -f</span>
+      </div>
+      <h1 class="g-h1">
+        Engineering<br />
+        <span style="font-style: italic; color: var(--g-amber);">log</span> of one
+        senior dev,<br />
+        <span style="color: var(--g-text2);">uptime 9.0 years.</span>
+      </h1>
+      <p class="g-lede">
+        Koen, in Tilburg. I keep this subsite as a structured log of what I'm
+        building, breaking, and learning — versioned the same way the things
+        I work on are. Time-stamped, mostly truthful, occasionally wrong.
+      </p>
+
+      <div class="g-section-label" style="color: var(--g-amber); margin-bottom: 18px;">
+        ▍ <span style="color: var(--g-text);">CHANGELOG</span>
+      </div>
+
+      {all.length === 0 && (
+        <div style="padding: 28px 0; border-top: 1px solid var(--g-hairline); border-bottom: 1px solid var(--g-hairline); font-size: 12px; color: var(--g-text3); text-align: center;">
+          <span style="color: var(--g-amber);">$</span> ls /var/log/ <span>→ no entries yet</span>
+        </div>
+      )}
+
+      {all.map((p, i) => {
+        const [kind, c] = tagFor(i);
+        return (
+          <article class="g-row">
+            <div>
+              <div style="font-size: 11px; color: var(--g-text3); margin-bottom: 4px;">{fmtDate(p.data.date)}</div>
+              <div style="font-size: 13px; color: var(--g-amber); font-weight: 600; margin-bottom: 8px;">{ver(i, all.length)}</div>
+              <div style={`display: inline-block; padding: 2px 7px; font-size: 9.5px; color: ${c}; border: 1px solid ${c}; letter-spacing: 0.1em;`}>{kind}</div>
+            </div>
+            <div>
+              <h2 style="font-family: var(--g-serif); font-size: 26px; font-weight: 400; color: var(--g-text); letter-spacing: -0.015em; line-height: 1.15; margin: 0 0 6px;">
+                <a href={`/log/${p.id}/`} style="color: inherit; text-decoration: none;">{p.data.title}</a>
+              </h2>
+              {p.data.subtitle && (
+                <p style="font-family: var(--g-sans); font-size: 14px; line-height: 1.6; color: var(--g-text2); margin: 0 0 10px; max-width: 600px;">{p.data.subtitle}</p>
+              )}
+              <div style="font-size: 10.5px; color: var(--g-text3); letter-spacing: 0.06em;">
+                {readTime(p.body)} read · {p.data.tags.filter((t) => t !== 'log').map((t) => '+' + t.toLowerCase().replace(/\s/g, '-')).join(' ')}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <aside class="g-rail">
+      <div class="g-section-label" style="color: var(--g-green);">
+        ▍ <span style="color: var(--g-text);">VITALS</span>
+      </div>
+      <div class="g-vital">
+        <div class="g-vital-head"><span>BUILD</span><span style="color: var(--g-green);">● ACTIVE</span></div>
+        <div class="g-vital-v">borgdock@v1.1.0 — green</div>
+        <div class="g-vital-sub">latest tag · main</div>
+      </div>
+      <div class="g-vital">
+        <div class="g-vital-head"><span>DEPLOY</span><span style="color: var(--g-amber);">● ACTIVE</span></div>
+        <div class="g-vital-v">rebuild · ~95%</div>
+        <div class="g-vital-sub">gomocha-rebuild · staging</div>
+      </div>
+      <div class="g-vital">
+        <div class="g-vital-head"><span>INBOX</span><span style="color: var(--g-blue);">● ACTIVE</span></div>
+        <div class="g-vital-v">[edit me]</div>
+        <div class="g-vital-sub">last reply ?</div>
+      </div>
+
+      <div class="g-section-label" style="color: var(--g-amber); margin-top: 24px;">
+        ▍ <span style="color: var(--g-text);">PROJECTS</span>
+      </div>
+      {projects.map((p) => (
+        <div style="padding: 10px 0; border-top: 1px solid var(--g-hairline); font-size: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+            <a href={`/projects/${p.id}/`} style="color: var(--g-text); text-decoration: none;">{p.data.title}</a>
+            <span style="color: var(--g-text3);">{p.data.date.getFullYear()}</span>
+          </div>
+          <div style="color: var(--g-text3); font-size: 11px;">
+            {p.data.stack.slice(0, 2).join(' · ')}
+            {p.data.stack.length > 0 && ' · '}
+            <span style="color: var(--g-green);">{p.data.status}</span>
+          </div>
+        </div>
+      ))}
+
+      <div class="g-section-label" style="color: var(--g-amber); margin-top: 24px;">
+        ▍ <span style="color: var(--g-text);">SUBSCRIBE</span>
+      </div>
+      <div style="font-size: 12px; color: var(--g-text2); line-height: 1.8;">
+        <div>$ rss <a href="/rss.xml" style="color: var(--g-text);">/rss.xml</a></div>
+        <div>$ gh follow <a href="https://github.com/borght-dev/" target="_blank" rel="noopener" style="color: var(--g-text);">borght-dev</a></div>
+        <div>$ in <a href="https://www.linkedin.com/in/koen-van-der-borght-tilburg/" target="_blank" rel="noopener" style="color: var(--g-text);">linkedin →</a></div>
+      </div>
+    </aside>
+  </div>
+</GLayout>
+
+<style>
+  .g-grid {
+    padding: 48px 32px 0;
+    display: grid; grid-template-columns: 1fr 320px; gap: 40px;
+    position: relative;
+  }
+  .g-section-label {
+    font-size: 11px; letter-spacing: 0.18em;
+    margin-bottom: 14px;
+  }
+  .g-h1 {
+    font-family: var(--g-serif); font-weight: 300; font-size: 84px;
+    line-height: 0.96; letter-spacing: -0.035em;
+    margin: 24px 0 24px; color: var(--g-text);
+  }
+  .g-lede {
+    font-family: var(--g-sans); font-size: 15.5px; line-height: 1.65;
+    color: var(--g-text2); margin: 0 0 56px; max-width: 540px;
+  }
+  .g-row {
+    display: grid; grid-template-columns: 108px 1fr;
+    padding: 20px 0; border-top: 1px solid var(--g-hairline);
+    gap: 18px; align-items: flex-start;
+  }
+  .g-rail {
+    position: sticky; top: 32px; align-self: flex-start;
+    padding-bottom: 48px;
+  }
+  .g-vital {
+    background: var(--g-panel); border: 1px solid var(--g-hairline);
+    padding: 14px; margin-bottom: 8px;
+  }
+  .g-vital-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 4px; font-size: 10px; color: var(--g-text3); letter-spacing: 0.14em;
+  }
+  .g-vital-head > span:last-child { font-size: 9.5px; }
+  .g-vital-v   { font-size: 13px; color: var(--g-text); margin-bottom: 4px; }
+  .g-vital-sub { font-size: 10px; color: var(--g-text3); }
+
+  @media (max-width: 767px) {
+    .g-grid { padding: 26px 18px 48px; grid-template-columns: 1fr; gap: 32px; }
+    .g-h1 { font-size: 44px; line-height: 0.98; margin: 16px 0; }
+    .g-lede { font-size: 14px; margin-bottom: 28px; }
+    .g-rail { position: static; padding-bottom: 0; }
+    .g-row { grid-template-columns: 1fr; gap: 6px; padding: 14px 0; }
+    .g-row > div:first-child { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .g-row h2 { font-size: 21px; }
+  }
+</style>

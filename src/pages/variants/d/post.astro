@@ -1,0 +1,231 @@
+---
+// Direction D · Markdown First — Sample post page
+// Verbatim from personal-site-and-blog/project/site/direction-d-pages.jsx
+import { FONTS_HREF } from '../../../data/variants-data';
+
+const D = {
+  bg: '#fafaf7', panel: '#ffffff', text: '#1a1a1a', text2: '#4a4a4a',
+  text3: '#8a8a8a', muted: '#b8b8b8', accent: '#d23f1f',
+  hairline: '#e6e3dc', code: '#f1ede4', codeText: '#1a1a1a',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+  serif: "'Fraunces', serif",
+};
+
+const codeStyle = { background: D.code, padding: '1px 6px', borderRadius: '3px', fontFamily: D.mono, fontSize: '14px' };
+const h2Style   = { fontFamily: D.mono, fontSize: '15px', color: D.accent, fontWeight: 500, margin: '36px 0 18px' };
+
+const navItems = ['posts', 'projects', 'now', 'uses', 'feed.xml'];
+
+const loopSh = `# 1. open the legacy file
+$ nvim legacy/Activity.cs
+
+# 2. ask claude to model it
+$ claude "what invariants does this enforce?"
+
+# 3. write the new version with tests
+$ claude /implement Activity --tests
+
+# 4. diff against legacy behaviour
+$ ./parity ./legacy ./new`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rebuilding a 9-year-old codebase · D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #fafaf7; }
+    a { cursor: pointer; }
+    .d-root { width: 1280px; }
+    .d-header { padding: 24px 64px; }
+    .d-main { max-width: 720px; padding: 64px 24px 80px; }
+    .d-h1 { font-size: 48px; }
+    .d-dek { font-size: 21px; }
+    @media (max-width: 767px) {
+      .d-root { width: 100%; min-height: 0 !important; }
+      .d-header { padding: 14px 20px !important; }
+      .d-header nav { gap: 14px !important; font-size: 11px !important; }
+      .d-main { padding: 32px 22px 40px !important; }
+      .d-h1 { font-size: 32px !important; line-height: 1.1 !important; }
+      .d-dek { font-size: 18px !important; margin-bottom: 28px !important; }
+      .d-body { font-size: 15.5px !important; }
+      .d-body p { margin-bottom: 18px !important; }
+      .d-body pre { font-size: 11.5px !important; padding: 12px 14px !important; overflow-x: auto; }
+      .d-quote p { font-size: 18px !important; }
+      .d-meta { flex-wrap: wrap !important; gap: 8px !important; }
+      .d-end { font-size: 11px !important; padding: 14px 16px !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="d-root" style={{
+  minHeight: '1860px', background: D.bg, color: D.text,
+  fontFamily: D.sans, margin: '0 auto',
+}}>
+  <header class="d-header" style={{
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    borderBottom: `0.5px solid ${D.hairline}`, background: D.bg,
+  }}>
+    <div style={{ fontFamily: D.mono, fontSize: '13px', fontWeight: 600 }}>
+      ~/koenvdborght.nl <span style={{ color: D.text3 }}>$</span>
+    </div>
+    <nav style={{ display: 'flex', gap: '28px', fontFamily: D.mono, fontSize: '12px' }}>
+      {navItems.map((x) => (
+        <a href={x === 'posts' ? '/variants/d/archive' : '#'} style={{
+          color: x === 'posts' ? D.accent : D.text2,
+          textDecoration: 'none',
+          borderBottom: x === 'posts' ? `1px solid ${D.accent}` : 'none',
+          paddingBottom: '2px',
+        }}>./{x}</a>
+      ))}
+    </nav>
+  </header>
+
+  <main class="d-main" style={{ margin: '0 auto' }}>
+    <div style={{ fontFamily: D.mono, fontSize: '12px', color: D.text3, marginBottom: '36px' }}>
+      <a href="/variants/d/archive" style={{ color: D.accent }}>/posts</a>
+      <span style={{ margin: '0 6px' }}>/</span>
+      rebuilding-9-year-codebase.md
+    </div>
+
+    <div class="d-meta" style={{ display: 'flex', gap: '14px', fontFamily: D.mono, fontSize: '12px', color: D.text3, marginBottom: '22px' }}>
+      <span>2026 · 04 · 18</span>
+      <span>·</span>
+      <span>12 min read</span>
+      <span>·</span>
+      <span style={{ color: D.accent }}>#ai #architecture #field-notes</span>
+    </div>
+
+    <h1 class="d-h1" style={{
+      fontFamily: D.serif, fontWeight: 400,
+      lineHeight: 1.08, letterSpacing: '-0.025em', margin: '0 0 18px',
+    }}>
+      Rebuilding a 9-year-old codebase with{' '}
+      <span style={{ fontStyle: 'italic', color: D.accent }}>Claude Code</span>
+    </h1>
+    <p class="d-dek" style={{
+      fontFamily: D.serif, fontStyle: 'italic', lineHeight: 1.55,
+      color: D.text2, margin: '0 0 44px', fontWeight: 300,
+    }}>
+      Six weeks, one developer, one model. What survived contact with the
+      real domain — and what I would not do again.
+    </p>
+
+    <div class="d-body" style={{ fontSize: '17px', lineHeight: 1.75, color: D.text }}>
+      <p style={{ margin: '0 0 22px' }}>
+        The codebase I rebuilt is nine years old, written by ten different
+        people, and runs in production at every customer my employer has.
+        It is the kind of codebase that has a folder called <code style={codeStyle}>shared/</code>
+        {' '}with 412 files in it.
+      </p>
+      <p style={{ margin: '0 0 22px' }}>
+        I did not set out to rebuild it. I set out to <em>understand</em> it
+        — and once I understood it, the rebuild fell out of the
+        understanding.
+      </p>
+
+      <h2 style={h2Style}>## The shape of the work</h2>
+      <p style={{ margin: '0 0 22px' }}>
+        For six weeks I ran roughly the same loop, every morning:
+      </p>
+
+      <div style={{
+        background: D.panel, border: `0.5px solid ${D.hairline}`,
+        borderRadius: '6px', marginBottom: '26px', overflow: 'hidden',
+      }}>
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', padding: '8px 14px',
+          background: '#f5f2ec', borderBottom: `0.5px solid ${D.hairline}`,
+          fontFamily: D.mono, fontSize: '11px', color: D.text3,
+        }}>
+          <span>~/loop.sh</span><span>bash</span>
+        </div>
+        <pre style={{
+          margin: 0, padding: '16px 22px', fontFamily: D.mono, fontSize: '13.5px',
+          lineHeight: 1.7, color: D.codeText,
+        }}>{loopSh}</pre>
+      </div>
+
+      <p style={{ margin: '0 0 22px' }}>
+        Step 4 is where every illusion goes to die. Parity was the only
+        metric I trusted. Not <em>"does it compile"</em>, not <em>"does
+        it pass the tests we have"</em> — does it produce the same outputs
+        for the same inputs as the production system, including the bugs
+        customers had quietly come to depend on.
+      </p>
+
+      <div class="d-quote" style={{
+        margin: '32px 0', padding: '18px 24px',
+        borderLeft: `3px solid ${D.accent}`,
+        background: '#fff8f5',
+      }}>
+        <p style={{
+          fontFamily: D.serif, fontSize: '22px', fontStyle: 'italic',
+          color: D.text, lineHeight: 1.5, margin: 0, fontWeight: 300,
+        }}>
+          "Bugs customers depend on are features. Bugs customers
+          don't notice are technical debt. The model can't tell them apart;
+          you have to."
+        </p>
+      </div>
+
+      <h2 style={h2Style}>## What worked</h2>
+      <ul style={{ paddingLeft: '22px', margin: '0 0 26px' }}>
+        <li style={{ marginBottom: '8px' }}>Explaining the <em>domain</em>, not the code, to the model.</li>
+        <li style={{ marginBottom: '8px' }}>Treating the legacy system as the spec.</li>
+        <li style={{ marginBottom: '8px' }}>Letting the model write the tests <strong>first</strong>, then the implementation.</li>
+        <li style={{ marginBottom: '8px' }}>Owning the architecture; delegating the fingertips.</li>
+      </ul>
+
+      <h2 style={h2Style}>## What I would not do again</h2>
+      <p style={{ margin: '0 0 22px' }}>
+        I would not let the model invent table names. I would not skip the
+        parity step "just for the easy module". I would not let a session
+        run more than two hours without a written summary of where the next
+        session needs to start. The cost of context drift is the cost of a
+        day.
+      </p>
+
+      <h2 style={h2Style}>## Where I am now</h2>
+      <p style={{ margin: '0 0 22px' }}>
+        Roughly 95% of the surface area is rebuilt. The remaining 5% is the
+        interesting 5% — the integrations, the timezone bugs, the customer
+        with the workflow that nobody alive can fully explain. I'm in no
+        rush; the rebuild has already paid for itself in what it taught me
+        about the system I had been working in for nine years.
+      </p>
+
+      <p style={{ margin: '0 0 22px', fontStyle: 'italic', color: D.text2 }}>
+        More notes from inside the rebuild are coming. If you've done
+        something similar — or are about to — I'd love to compare scars.
+      </p>
+    </div>
+
+    <div class="d-end" style={{
+      marginTop: '56px', padding: '20px 24px',
+      background: D.code, borderRadius: '6px',
+      fontFamily: D.mono, fontSize: '12.5px', color: D.text2, lineHeight: 1.7,
+    }}>
+      <span style={{ color: D.accent }}>$</span> reply --on linkedin →<br />
+      <span style={{ color: D.accent }}>$</span> share --on=ph,hn,rss<br />
+      <span style={{ color: D.accent }}>$</span> next <a style={{ color: D.accent }}>./borgdock-tool-i-built.md →</a>
+    </div>
+
+    <footer style={{
+      marginTop: '56px', paddingTop: '28px', borderTop: `0.5px solid ${D.hairline}`,
+      display: 'flex', justifyContent: 'space-between',
+      fontFamily: D.mono, fontSize: '11.5px', color: D.text3,
+    }}>
+      <span>© 2026 koen van der borght</span>
+      <span>made in (n)vim · plain html</span>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

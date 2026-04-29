@@ -1,0 +1,314 @@
+---
+// Direction E · IDE Theme — Sample post page
+// Verbatim from personal-site-and-blog/project/site/direction-e-pages.jsx (EDirectionPost)
+import { POSTS, PROJECTS, FONTS_HREF } from '../../../data/variants-data';
+
+const E = {
+  bg: '#1e1e2e', panel: '#181825', sidebar: '#11111b',
+  hairline: '#313244', hairlineSoft: '#1e1e2e',
+  text: '#cdd6f4', text2: '#a6adc8', text3: '#7f849c', muted: '#585b70',
+  red: '#f38ba8', green: '#a6e3a1', yellow: '#f9e2af',
+  blue: '#89b4fa', purple: '#cba6f7', orange: '#fab387', cyan: '#94e2d5',
+  mono: "'JetBrains Mono', ui-monospace, monospace",
+  sans: "'Inter', sans-serif",
+};
+
+const lineNumbers = Array.from({ length: 80 }, (_, i) => i + 1);
+
+const codeBlock = `# 1. open the legacy file
+$ nvim legacy/Activity.cs
+# 2. ask claude to model it
+$ claude "what invariants does this enforce?"
+# 3. write the new version with tests
+$ claude /implement Activity --tests
+# 4. diff against legacy behaviour
+$ ./parity ./legacy ./new`;
+
+const treeActive = '01';
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>rebuilding-9-year-codebase.md · E</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href={FONTS_HREF} />
+  <style>
+    html, body { margin: 0; padding: 0; background: #1e1e2e; }
+    a { cursor: pointer; }
+    .e-root { width: 1280px; }
+    .e-shell { display: grid; grid-template-columns: 52px 240px 1fr; min-height: 1820px; }
+    .e-titlebar-text { margin-left: 24px; }
+    .e-titlebar-keys { margin-left: auto; }
+    .e-tab-extra { display: flex; }
+    .e-line-gutter { width: 54px; padding: 20px 14px 20px 0; font-size: 12px; }
+    .e-editor { padding: 20px 32px; font-size: 13px; }
+    .e-status-l, .e-status-r { gap: 16px; }
+    @media (max-width: 767px) {
+      .e-root { width: 100%; min-height: 0 !important; }
+      .e-shell { grid-template-columns: 32px 1fr !important; min-height: 0 !important; }
+      .e-activity, .e-tree { display: none !important; }
+      .e-titlebar-text { margin-left: 12px !important; font-size: 10px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .e-titlebar-keys { display: none !important; }
+      .e-tab-extra { display: none !important; }
+      .e-tab-active { padding: 6px 12px !important; font-size: 11px !important; }
+      .e-breadcrumb { padding: 6px 12px !important; font-size: 10.5px !important; }
+      .e-line-gutter { width: 32px !important; padding: 14px 6px 14px 0 !important; font-size: 10.5px !important; }
+      .e-editor { padding: 14px 14px !important; font-size: 12px !important; }
+      .e-editor pre { font-size: 11px !important; padding: 8px 10px !important; overflow-x: auto; }
+      .e-status-l, .e-status-r { gap: 8px !important; font-size: 9px !important; }
+      .e-status-r > span:nth-child(2), .e-status-r > span:nth-child(3) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="e-root" style={{
+  minHeight: '1860px', background: E.bg, color: E.text,
+  fontFamily: E.sans, position: 'relative', margin: '0 auto',
+}}>
+  <div style={{
+    padding: '8px 14px', borderBottom: `1px solid ${E.hairline}`,
+    background: E.sidebar, display: 'flex', alignItems: 'center',
+    fontFamily: E.mono, fontSize: '11px', color: E.text3, gap: '8px',
+  }}>
+    <span style={{ display: 'flex', gap: '6px' }}>
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#f38ba8' }} />
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#f9e2af' }} />
+      <span style={{ width: '11px', height: '11px', borderRadius: '50%', background: '#a6e3a1' }} />
+    </span>
+    <span class="e-titlebar-text">koenvdborght.nl — rebuilding-9-year-codebase.md — vscode-mocha</span>
+    <span class="e-titlebar-keys">⌘K · ⌘P · ^`</span>
+  </div>
+
+  <div class="e-shell">
+    <aside class="e-activity" style={{
+      background: E.sidebar, borderRight: `1px solid ${E.hairline}`,
+      padding: '12px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+    }}>
+      {['📁', '🔍', '✎', '◔', '⚙'].map((i, idx) => {
+        const on = idx === 0;
+        return (
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '6px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: on ? 'rgba(203,166,247,0.1)' : 'transparent',
+            borderLeft: on ? `2px solid ${E.purple}` : '2px solid transparent',
+            fontFamily: E.mono, fontSize: '14px', color: on ? E.text : E.text3,
+          }}>{i}</div>
+        );
+      })}
+    </aside>
+
+    <aside class="e-tree" style={{
+      background: E.panel, borderRight: `1px solid ${E.hairline}`, padding: '14px 0',
+    }}>
+      <div style={{
+        padding: '0 14px 10px', fontFamily: E.mono, fontSize: '10px',
+        color: E.text3, letterSpacing: '0.1em', textTransform: 'uppercase',
+      }}>EXPLORER</div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px', fontFamily: E.mono, fontSize: '11.5px', color: E.text }}>
+        <span style={{ color: E.text, fontSize: '10px', width: '10px' }}>▾</span><span>koenvdborght</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▾</span><span>posts</span>
+      </div>
+      {POSTS.map((p) => {
+        const active = treeActive === p.n;
+        return (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px',
+            fontFamily: E.mono, fontSize: '11.5px',
+            color: active ? E.text : E.text2,
+            background: active ? 'rgba(203,166,247,0.1)' : 'transparent',
+          }}>
+            <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span>
+            <span>{p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 28)}.md</span>
+          </div>
+        );
+      })}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▾</span><span>projects</span>
+      </div>
+      {PROJECTS.map((p) => (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px',
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text2,
+        }}>
+          <span style={{ color: E.yellow, fontSize: '10px', width: '10px' }}>◧</span>
+          <span>{p.name.toLowerCase().replace(/\s/g, '-')}.json</span>
+        </div>
+      ))}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.blue, fontSize: '10px', width: '10px' }}>▾</span><span>setup</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.orange, fontSize: '10px', width: '10px' }}>◧</span><span>editor.toml</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.orange, fontSize: '10px', width: '10px' }}>◧</span><span>terminal.toml</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 40px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.orange, fontSize: '10px', width: '10px' }}>◧</span><span>keyboard.toml</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>about.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>now.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>uses.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.text3, fontSize: '10px', width: '10px' }}>◧</span><span>readme.md</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.muted, fontSize: '10px', width: '10px' }}>◧</span><span>.gitignore</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 12px 4px 26px', fontFamily: E.mono, fontSize: '11.5px', color: E.text2 }}>
+        <span style={{ color: E.yellow, fontSize: '10px', width: '10px' }}>◧</span><span>package.json</span>
+      </div>
+    </aside>
+
+    <main style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', background: E.panel, borderBottom: `1px solid ${E.hairline}` }}>
+        <div class="e-tab-extra" style={{
+          display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 14px',
+          borderRight: `1px solid ${E.hairline}`, background: E.panel,
+          borderTop: '2px solid transparent', fontFamily: E.mono, fontSize: '11.5px', color: E.text3,
+        }}>
+          <span style={{ color: E.blue }}>●</span>
+          <span>about<span style={{ color: E.muted }}>.md</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted }}>×</span>
+        </div>
+        <div class="e-tab-active" style={{
+          display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 14px',
+          borderRight: `1px solid ${E.hairline}`, background: E.bg,
+          borderTop: `2px solid ${E.purple}`, borderBottom: `1px solid ${E.bg}`,
+          fontFamily: E.mono, fontSize: '11.5px', color: E.text,
+        }}>
+          <span style={{ color: E.blue }}>●</span>
+          <span>rebuilding-9-year-codebase<span style={{ color: E.muted }}>.md</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted }}>×</span>
+        </div>
+        <div class="e-tab-extra" style={{
+          display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 14px',
+          borderRight: `1px solid ${E.hairline}`, background: E.panel,
+          borderTop: '2px solid transparent', fontFamily: E.mono, fontSize: '11.5px', color: E.text3,
+        }}>
+          <span style={{ color: E.yellow }}>●</span>
+          <span>borgdock<span style={{ color: E.muted }}>.json</span></span>
+          <span style={{ marginLeft: '8px', color: E.muted }}>×</span>
+        </div>
+      </div>
+      <div class="e-breadcrumb" style={{
+        padding: '6px 16px', borderBottom: `1px solid ${E.hairline}`,
+        fontFamily: E.mono, fontSize: '11px', color: E.text3,
+      }}>
+        <span style={{ color: E.text3 }}>koenvdborght</span>
+        <span style={{ margin: '0 6px' }}>›</span>
+        <span style={{ color: E.text3 }}>posts</span>
+        <span style={{ margin: '0 6px' }}>›</span>
+        <span style={{ color: E.purple }}>rebuilding-9-year-codebase.md</span>
+      </div>
+
+      <div class="e-pane" style={{ display: 'grid', gridTemplateColumns: '54px 1fr', flex: 1 }}>
+        <div class="e-line-gutter" style={{
+          textAlign: 'right',
+          fontFamily: E.mono, color: E.muted,
+          borderRight: `1px solid ${E.hairlineSoft}`,
+          userSelect: 'none', lineHeight: '1.7em',
+        }}>
+          {lineNumbers.map((n) => <div>{n}</div>)}
+        </div>
+        <div class="e-editor" style={{ fontFamily: E.mono, lineHeight: 1.7 }}>
+          <div style={{ color: E.text3 }}>---</div>
+          <div><span style={{ color: E.cyan }}>title</span><span style={{ color: E.text3 }}>: </span><span style={{ color: E.green }}>"Rebuilding a 9-year-old codebase with Claude Code"</span></div>
+          <div><span style={{ color: E.cyan }}>date</span><span style={{ color: E.text3 }}>: </span><span style={{ color: E.yellow }}>2026-04-18</span></div>
+          <div><span style={{ color: E.cyan }}>tags</span><span style={{ color: E.text3 }}>: </span><span style={{ color: E.text }}>[</span><span style={{ color: E.green }}>"ai"</span><span style={{ color: E.text }}>, </span><span style={{ color: E.green }}>"architecture"</span><span style={{ color: E.text }}>, </span><span style={{ color: E.green }}>"field-notes"</span><span style={{ color: E.text }}>]</span></div>
+          <div><span style={{ color: E.cyan }}>read</span><span style={{ color: E.text3 }}>: </span><span style={{ color: E.green }}>"12 min"</span></div>
+          <div style={{ color: E.text3 }}>---</div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div><span style={{ color: E.purple, fontWeight: 600 }}># Rebuilding a 9-year-old codebase with Claude Code</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+          <div style={{ fontFamily: E.sans, fontSize: '17px', lineHeight: 1.7, color: E.text }}>
+            Six weeks, one developer, one model. What survived contact with the
+            real domain — and what I would not do again.
+          </div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div style={{ fontFamily: E.sans, fontSize: '15px', lineHeight: 1.7, color: E.text2 }}>
+            The codebase I rebuilt is nine years old, written by ten different
+            people, and runs in production at every customer my employer has.
+          </div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## The shape of the work</span></div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div style={{ color: E.text3 }}>```bash</div>
+          <pre style={{
+            margin: 0, padding: '6px 12px', background: E.panel,
+            border: `1px solid ${E.hairline}`, borderRadius: '4px',
+            fontFamily: E.mono, fontSize: '12.5px', lineHeight: 1.7, color: E.text,
+          }}>{codeBlock}</pre>
+          <div style={{ color: E.text3 }}>```</div>
+          <div style={{ color: E.muted }}>&nbsp;</div>
+
+          <div style={{ fontFamily: E.sans, fontSize: '15px', lineHeight: 1.7, color: E.text2 }}>
+            Step 4 is where every illusion goes to die. Parity was the only
+            metric I trusted.
+          </div>
+
+          <div style={{ color: E.muted, marginTop: '14px' }}>&nbsp;</div>
+          <div style={{
+            borderLeft: `3px solid ${E.purple}`, paddingLeft: '14px',
+            fontFamily: E.sans, fontSize: '16px', fontStyle: 'italic',
+            color: E.text, lineHeight: 1.5,
+          }}>
+            "Bugs customers depend on are features. Bugs customers don't notice
+            are technical debt. The model can't tell them apart; you have to."
+          </div>
+          <div style={{ color: E.muted, marginTop: '14px' }}>&nbsp;</div>
+
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## What worked</span></div>
+          <div style={{ fontFamily: E.sans, fontSize: '15px', lineHeight: 1.8, color: E.text2, marginTop: '8px' }}>
+            <div>- Explaining the <em>domain</em>, not the code, to the model.</div>
+            <div>- Treating the legacy system as the spec.</div>
+            <div>- Tests <strong>first</strong>, then implementation.</div>
+            <div>- Owning the architecture; delegating the fingertips.</div>
+          </div>
+          <div style={{ color: E.muted, marginTop: '14px' }}>&nbsp;</div>
+
+          <div><span style={{ color: E.purple, fontWeight: 600 }}>## What I would not do again</span></div>
+          <div style={{ fontFamily: E.sans, fontSize: '15px', lineHeight: 1.7, color: E.text2, marginTop: '8px' }}>
+            I would not let the model invent table names. I would not skip the
+            parity step "just for the easy module". The cost of context drift
+            is the cost of a day.
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div style={{
+    position: 'sticky', bottom: 0,
+    display: 'flex', justifyContent: 'space-between', padding: '4px 14px',
+    background: E.purple, color: '#11111b',
+    fontFamily: E.mono, fontSize: '10.5px', fontWeight: 500,
+  }}>
+    <span class="e-status-l" style={{ display: 'flex', gap: '16px' }}>
+      <span>⎇ main</span><span>○ 0 ⚠ 0</span><span>UTF-8</span>
+    </span>
+    <span class="e-status-r" style={{ display: 'flex', gap: '16px' }}>
+      <span>Ln 12, Col 8</span><span>Spaces: 2</span><span>Markdown</span><span>○ Catppuccin Mocha</span>
+    </span>
+  </div>
+</div>
+</body>
+</html>

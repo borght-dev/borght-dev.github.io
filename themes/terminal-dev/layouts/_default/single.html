@@ -1,46 +1,117 @@
 {{ define "main" }}
-<article class="single-post">
-    <header class="post-header">
-        <h1 class="post-title">{{ .Title }}</h1>
-        {{ if .Params.subtitle }}
-        <h2 class="post-subtitle">{{ .Params.subtitle }}</h2>
+{{- $section := .Section -}}
+{{- $sectionLabel := $section -}}
+{{- if eq $section "posts" }}{{ $sectionLabel = "blog" }}{{ end -}}
+{{- $words   := len (split .Plain " ") -}}
+{{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
+{{- $tocRaw := .TableOfContents -}}
+{{- $hasTocOuter := and (eq $section "posts") (gt (len (printf "%s" $tocRaw)) 80) -}}
+<article class="article-shell{{ if $hasTocOuter }} has-toc{{ end }}">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    {{ if $section }}
+      <a href="/{{ $section }}/">{{ $sectionLabel }}</a><span class="sep">/</span>
+      <span>{{ .File.BaseFileName }}</span>
+    {{ else }}
+      <span>{{ .File.BaseFileName }}</span>
+    {{ end }}
+  </nav>
+
+  <header class="article-header{{ if .Params.avatar }} has-avatar{{ end }}">
+    {{ if .Params.avatar }}
+      <img src="{{ .Params.avatar }}" alt="{{ .Title }}" class="avatar" loading="lazy" />
+    {{ end }}
+    <div class="article-headline">
+      <h1 class="article-title">{{ .Title }}</h1>
+      {{ with .Params.subtitle }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+      {{ if or (not .Date.IsZero) (eq $section "posts") .Params.status .Params.tags }}
+      <div class="article-meta">
+        {{ if not .Date.IsZero }}<span>{{ dateFormat "2006-01-02" .Date }}</span>{{ end }}
+        {{ if eq $section "posts" }}
+          {{ if not .Date.IsZero }}<span>·</span>{{ end }}
+          <span>{{ $minutes }} min read</span>
         {{ end }}
-        <div class="post-meta">
-            <span class="post-date">📅 {{ .Date.Format "January 2, 2006" }}</span>
-            <span class="post-reading-time">⏱️ {{ .ReadingTime }} min read</span>
-            {{ if .Params.author }}
-            <span class="post-author">👤 {{ .Params.author }}</span>
-            {{ end }}
-        </div>
+        {{ with .Params.status }}<span>·</span><span>{{ . }}</span>{{ end }}
         {{ if .Params.tags }}
-        <div class="post-tags">
-            {{ range .Params.tags }}
-                <span class="tag">{{ . }}</span>
-            {{ end }}
-        </div>
+          <span>·</span>
+          <div class="tags" style="display:inline-flex;gap:0.5rem;">
+            {{ range .Params.tags }}<span class="tag">{{ . }}</span>{{ end }}
+          </div>
         {{ end }}
-    </header>
-    
-    <div class="post-content">
-        {{ .Content }}
+      </div>
+      {{ end }}
     </div>
-    
-    <footer class="post-footer">
-        <div class="post-nav">
-            {{ if .PrevInSection }}
-            <div class="post-nav-item prev">
-                <span class="post-nav-label">← Previous</span>
-                <a href="{{ .PrevInSection.Permalink }}" class="post-nav-title">{{ .PrevInSection.Title }}</a>
-            </div>
-            {{ end }}
-            
-            {{ if .NextInSection }}
-            <div class="post-nav-item next">
-                <span class="post-nav-label">Next →</span>
-                <a href="{{ .NextInSection.Permalink }}" class="post-nav-title">{{ .NextInSection.Title }}</a>
-            </div>
-            {{ end }}
-        </div>
-    </footer>
+    {{ if .Params.stack }}
+      <div class="tags" style="display:flex;gap:0.5rem;margin-top:1rem;">
+        {{ range .Params.stack }}<span class="tag">{{ . }}</span>{{ end }}
+      </div>
+    {{ end }}
+  </header>
+
+  {{- $toc := $tocRaw -}}
+  {{- $hasToc := $hasTocOuter -}}
+  <div class="article-layout{{ if $hasToc }} has-toc{{ end }}">
+    <div class="article-content">
+      {{ .Content }}
+      {{ with .Params.link }}
+        <p><a href="{{ . }}" target="_blank" rel="noopener">→ {{ . }}</a></p>
+      {{ end }}
+    </div>
+    {{ if $hasToc }}
+      <aside class="article-toc" aria-label="On this page">
+        <div class="article-toc-label">// ON THIS PAGE</div>
+        <div class="article-toc-nav">{{ $toc }}</div>
+      </aside>
+    {{ end }}
+  </div>
+
+  {{ if $hasToc }}
+  <script>
+    (function () {
+      const tocLinks = document.querySelectorAll('.article-toc a');
+      if (!tocLinks.length) return;
+      const map = new Map();
+      tocLinks.forEach(link => {
+        const id = decodeURIComponent((link.getAttribute('href') || '').replace(/^#/, ''));
+        if (id) map.set(id, link);
+      });
+      const headings = Array.from(map.keys())
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+      if (!headings.length) return;
+
+      const setActive = (id) => {
+        tocLinks.forEach(a => a.classList.remove('is-active'));
+        const link = map.get(id);
+        if (link) link.classList.add('is-active');
+      };
+
+      const io = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top)[0];
+        if (visible) setActive(visible.target.id);
+      }, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+      headings.forEach(h => io.observe(h));
+    })();
+  </script>
+  {{ end }}
+
+  {{ if or .PrevInSection .NextInSection }}
+  <nav class="article-nav">
+    {{ if .PrevInSection }}
+      <a href="{{ .PrevInSection.RelPermalink }}">
+        <span class="label">← previous</span>
+        <span>{{ .PrevInSection.Title }}</span>
+      </a>
+    {{ else }}<span></span>{{ end }}
+    {{ if .NextInSection }}
+      <a href="{{ .NextInSection.RelPermalink }}" class="next">
+        <span class="label">next →</span>
+        <span>{{ .NextInSection.Title }}</span>
+      </a>
+    {{ else }}<span></span>{{ end }}
+  </nav>
+  {{ end }}
 </article>
 {{ end }}

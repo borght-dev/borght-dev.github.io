@@ -1155,6 +1155,90 @@ footer.foot {
   .blog-row-date { font-size: 10px; }
 }
 
+/* ─── Article TOC sidebar ────────────────────────────────────── */
+.article-shell.has-toc {
+  max-width: 1040px;
+}
+.article-layout {
+  display: block;
+}
+.article-layout.has-toc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-12);
+}
+@media (min-width: 960px) {
+  .article-layout.has-toc {
+    grid-template-columns: minmax(0, 720px) 220px;
+    align-items: start;
+  }
+}
+
+.article-toc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  border-left: 1px solid var(--rule);
+  padding-left: var(--s-6);
+}
+@media (min-width: 960px) {
+  .article-toc {
+    position: sticky;
+    top: var(--s-16);
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
+}
+.article-toc-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: var(--s-3);
+}
+.article-toc nav { padding: 0; }
+.article-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; flex-direction: column;
+  border-left: 2px solid var(--rule);
+}
+.article-toc ul ul {
+  margin-left: var(--s-3);
+  border-left: 1px solid var(--rule);
+}
+.article-toc li { margin: 0; padding: 0; }
+.article-toc a {
+  display: block;
+  color: var(--ink-mute);
+  text-decoration: none;
+  padding: 4px var(--s-3);
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  font-size: 13px;
+  line-height: 1.4;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.article-toc a:hover {
+  color: var(--ink);
+}
+.article-toc a.is-active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+.article-toc ul ul a { font-size: 12px; padding-left: var(--s-3); }
+
+@media (max-width: 959px) {
+  .article-toc {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-6);
+    margin-top: var(--s-8);
+  }
+}
+
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 600px) {
   body { font-size: 14px; }

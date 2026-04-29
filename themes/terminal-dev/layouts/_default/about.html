@@ -1,0 +1,116 @@
+{{ define "main" }}
+<article class="cv">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <span>about</span>
+  </nav>
+
+  <header class="cv-hero">
+    <div class="cv-hero-text">
+      <h1 class="cv-headline">Hi, I'm <span class="accent">Koen</span>.</h1>
+      <p class="cv-intro">{{ .Params.intro | markdownify }}</p>
+    </div>
+    {{ with .Params.photo }}
+      <figure class="cv-photo">
+        <img src="{{ . }}" alt="Koen van der Borght" loading="lazy" />
+        <figcaption>[ koen.jpg ]</figcaption>
+      </figure>
+    {{ end }}
+  </header>
+
+  {{ with .Params.experience }}
+  <section class="cv-row">
+    <div class="cv-label">EXPERIENCE</div>
+    <div class="cv-rail">
+      {{ range . }}
+        <div class="cv-item">
+          <div class="cv-period">{{ .period }}</div>
+          <div class="cv-body">
+            <h3>{{ .role }} <span class="cv-org">· {{ .org }}</span></h3>
+            <p>{{ .summary | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | safeHTML }}</p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.highlights }}
+  <section class="cv-row">
+    <div class="cv-label">SELECTED WORK</div>
+    <div class="cv-rail">
+      {{ range . }}
+        <div class="cv-item">
+          <div class="cv-period">{{ .period }}</div>
+          <div class="cv-body">
+            <h3>{{ .title }}</h3>
+            <p>{{ .summary | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | replaceRE "`([^`]+)`" "<code>$1</code>" | safeHTML }}</p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.stack }}
+  <section class="cv-row">
+    <div class="cv-label">STACK</div>
+    <div class="cv-rail">
+      <div class="cv-stack">
+        {{ range . }}
+          <span class="cv-chip">
+            <span class="cv-chip-name">{{ .name }}</span>
+            <span class="cv-chip-level">{{ .level }}</span>
+          </span>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.currently }}
+  <section class="cv-row">
+    <div class="cv-label">CURRENTLY</div>
+    <div class="cv-rail">
+      {{ range . }}
+        <div class="cv-item">
+          <div class="cv-period cv-tag">{{ .label }}</div>
+          <div class="cv-body">
+            <h3>{{ .title }}</h3>
+            <p>{{ .summary | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | safeHTML }}</p>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.certifications }}
+  <section class="cv-row">
+    <div class="cv-label">CERTIFICATIONS</div>
+    <div class="cv-rail">
+      {{ range . }}
+        <div class="cv-item">
+          <div class="cv-period">{{ dateFormat "2006-01-02" (time.AsTime .date) }}</div>
+          <div class="cv-body">
+            <h3>{{ .name }} <span class="cv-org">· {{ .score }}</span></h3>
+            {{ with .short }}<p>{{ . }}</p>{{ end }}
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with .Params.offTheClockBlocks }}
+  <section class="cv-row">
+    <div class="cv-label">OFF THE CLOCK</div>
+    <div class="cv-rail">
+      <ul class="cv-off">
+        {{ range . }}<li>{{ . }}</li>{{ end }}
+      </ul>
+    </div>
+  </section>
+  {{ end }}
+</article>
+{{ end }}

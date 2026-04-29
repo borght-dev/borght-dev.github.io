@@ -2,6 +2,9 @@
 {{- $allPosts := where .Site.RegularPages "Section" "posts" -}}
 {{- $allPosts = where $allPosts ".Params.draft" "ne" true -}}
 {{- $posts    := first 4 $allPosts -}}
+{{- $shipping := where .Site.RegularPages "Section" "projects" -}}
+{{- $shipping  = where $shipping ".Params.pinned" "eq" true -}}
+{{- $pin      := index $shipping 0 -}}
 
 <header class="hero">
   <div class="hero-inner">
@@ -67,26 +70,65 @@
   </div>
 </header>
 
-<section class="block" id="posts">
-  <div class="section-head">
-    <span class="section-prompt">&gt;</span>
-    <h2 class="section-title">recent_posts</h2>
-    <span class="section-meta"><a href="/posts/">archive →</a></span>
+<section class="block" id="now-shipping">
+  {{ if $pin }}
+  <div class="ps1">
+    <span class="glyph">$</span>
+    <span class="cmd">cat</span>
+    <span class="arg">now_shipping.md</span>
   </div>
-  <div class="post-grid">
+  <div class="term-box">
+    <div class="titlebar">
+      <span class="lights"><span></span><span></span><span></span></span>
+      <span class="name">{{ $pin.Title | lower }} — now_shipping.md</span>
+      <span class="right">
+        {{ with $pin.Params.version }}{{ . }}{{ end }}
+        {{ if not .Date.IsZero }} · {{ time.Format "2006-01-02" $pin.Date }}{{ end }}
+      </span>
+    </div>
+    <div class="body">
+      <div class="heading">{{ $pin.Title }}{{ with $pin.Params.subtitle }} — {{ . }}{{ end }}</div>
+      {{ with $pin.Params.description }}<p class="desc">{{ . }}</p>{{ end }}
+      {{ with $pin.Params.changelog }}
+        <div class="changelog">
+          {{ range . }}
+            <div class="row"><span class="v">{{ .v }}</span><span>{{ .note }}</span></div>
+          {{ end }}
+        </div>
+      {{ end }}
+      {{ with $pin.Params.stack }}
+        <div class="tags-line">
+          {{ range . }}<span>{{ . }}</span>{{ end }}
+        </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
+  <div class="ps1">
+    <span class="glyph">$</span>
+    <span class="cmd">ls -la</span>
+    <span class="arg">~/blog/recent</span>
+    <span class="comment"># latest 4</span>
+  </div>
+  <div class="ls-block">
+    <div class="ls-head">
+      <span>-rw-r--r--</span>
+      <span>DATE</span>
+      <span>READ</span>
+      <span>NAME</span>
+      <span></span>
+    </div>
     {{ range $posts }}
       {{- $words   := len (split .Plain " ") -}}
       {{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
-      {{- $pct     := math.Min 100 (mul (int $minutes) 12) -}}
-      <a href="{{ .RelPermalink }}" class="post">
-        <div class="post-meta">
-          <span>{{ dateFormat "2006-01-02" .Date }}</span>
-          <span class="read-bar"><span style="width:{{ $pct }}%"></span></span>
-          <span>{{ $minutes }} min read</span>
-        </div>
-        <h3>{{ .Title }}</h3>
-        {{ with .Params.subtitle }}<p>{{ . }}</p>{{ end }}
-        {{ if not .Params.subtitle }}{{ with .Params.description }}<p>{{ . }}</p>{{ end }}{{ end }}
+      {{- $slug    := .File.ContentBaseName -}}
+      <a href="{{ .RelPermalink }}" class="ls-row">
+        <span class="perm">-rw-r--r--</span>
+        <span class="date">{{ dateFormat "2006-01-02" .Date }}</span>
+        <span class="size">{{ $minutes }} min</span>
+        <span class="name">{{ $slug }}.md</span>
+        <span class="arr">→</span>
       </a>
     {{ end }}
   </div>

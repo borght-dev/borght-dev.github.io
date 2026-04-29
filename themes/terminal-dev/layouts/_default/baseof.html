@@ -1,46 +1,38 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang | default " en" }}">
+<html lang="{{ .Site.Language.Lang | default "en" }}">
 <head>
     {{ partial "head.html" . }}
+    <script>
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light') document.documentElement.classList.add('light-mode');
+        else if (saved === 'dark') document.documentElement.classList.add('dark-mode');
+    </script>
 </head>
 <body>
-    <div class="terminal-window">
-        {{ partial "header.html" . }}
+    {{ partial "header.html" . }}
 
-        <main class="main-content">
-            {{ block "main" . }}{{ end }}
+    {{ block "main" . }}{{ end }}
 
-            {{ if and .IsHome .Site.Params.ShowSystemStatus }}
-              {{ partial "status.html" . }}
-            {{ end }}
-        </main>
+    {{ if not .IsHome }}{{ partial "back-button.html" . }}{{ end }}
 
+    {{ partial "footer.html" . }}
 
-        {{ partial "footer.html" . }}
-    </div>
-
-    {{ if .Site.Params.enableTaglineTypingEffect }}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Add typing effect to tagline
-            const tagline = document.querySelector('.tagline');
-            if (tagline) {
-                const text = tagline.textContent;
-                tagline.textContent = '';
-                tagline.classList.add('typing-effect');
-
-                let i = 0;
-                const typeWriter = () => {
-                    if (i < text.length) {
-                        tagline.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 50);
-                    }
-                };
-                setTimeout(typeWriter, 500);
+        const toggle = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+        toggle?.addEventListener('click', () => {
+            if (root.classList.contains('light-mode')) {
+                root.classList.remove('light-mode');
+                root.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else if (root.classList.contains('dark-mode')) {
+                root.classList.remove('dark-mode');
+                localStorage.removeItem('theme');
+            } else {
+                root.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
             }
         });
     </script>
-    {{ end }}
 </body>
 </html>

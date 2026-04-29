@@ -1,42 +1,94 @@
 {{ define "main" }}
-<section class="section">
+{{- $allPosts := where .Site.RegularPages "Section" "posts" -}}
+{{- $allPosts = where $allPosts ".Params.draft" "ne" true -}}
+{{- $posts    := first 4 $allPosts -}}
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="prompt reveal">
+      <span class="dollar">$</span>
+      <span class="cmd">whoami</span><span class="cursor" aria-hidden="true"></span>
+    </div>
+
+    <h1 class="headline reveal reveal-1">
+      Senior dev<br>
+      shipping <span class="accent">tools</span>,<br>
+      not slides
+    </h1>
+
+    <p class="tagline reveal reveal-2">
+      Full-stack engineer at Gomocha building field service software by day, making developer tools by night.
+      Currently writing about AI-native engineering workflows.
+    </p>
+
+    <div class="ctas reveal reveal-3">
+      <a href="/posts/" class="btn btn-primary">~/blog</a>
+      <a href="/series/" class="btn btn-ghost">~/series</a>
+    </div>
+
+    <div class="ps-block reveal reveal-4">
+      <div class="ps-prompt">
+        <span class="dollar">$</span>
+        <span class="cmd">ps -ef</span> <span class="flag">--running</span>
+      </div>
+      <div class="ps-table" role="table" aria-label="currently running">
+        <div class="ps-row ps-head" role="row">
+          <span role="columnheader">PID</span>
+          <span role="columnheader">NAME</span>
+          <span role="columnheader">STATE</span>
+          <span role="columnheader">UPTIME</span>
+        </div>
+        <div class="ps-row" role="row">
+          <span class="ps-pid" role="cell">8421</span>
+          <span class="ps-name" role="cell">borgdock</span>
+          <span class="ps-state ps-state-running" role="cell">running v1.1.0</span>
+          <span class="ps-uptime" role="cell">shipping</span>
+        </div>
+        <div class="ps-row" role="row">
+          <span class="ps-pid" role="cell">8422</span>
+          <span class="ps-name" role="cell">writing/ai-native</span>
+          <span class="ps-state ps-state-active" role="cell">3 posts queued</span>
+          <span class="ps-uptime" role="cell">weekly</span>
+        </div>
+        <div class="ps-row" role="row">
+          <span class="ps-pid" role="cell">8423</span>
+          <span class="ps-name" role="cell">gomocha/field-svc</span>
+          <span class="ps-state ps-state-active" role="cell">leading team of 6</span>
+          <span class="ps-uptime" role="cell">day job</span>
+        </div>
+        <div class="ps-row" role="row">
+          <span class="ps-pid" role="cell">8424</span>
+          <span class="ps-name" role="cell">dad-mode</span>
+          <span class="ps-state ps-state-warm" role="cell">always on</span>
+          <span class="ps-uptime" role="cell">since 2023</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="posts">
+  <div class="section-head">
+    <span class="section-prompt">&gt;</span>
     <h2 class="section-title">recent_posts</h2>
-    <div class="posts-grid">
-        {{ $posts := where .Site.RegularPages "Section" "posts" }}
-        {{ range first 6 $posts.ByDate.Reverse }}
-            {{ partial "summary.html" . }}
-        {{ end }}
-        
-        {{ if eq (len $posts) 0 }}
-        <!-- Sample posts when no content exists -->
-        <article class="post-card">
-            <div class="post-meta">
-                <span>{{ now.Format "2006-01-02" }}</span>
-                <span>•</span>
-                <span>5 min read</span>
-            </div>
-            <h3 class="post-title">
-                <a href="#">Welcome to Your Terminal Blog</a>
-            </h3>
-            <p class="post-excerpt">
-                Your new Hugo terminal-themed blog is ready! Start writing your first post by creating content in the posts directory...
-            </p>
-            <div class="post-tags">
-                <span class="tag">hugo</span>
-                <span class="tag">blog</span>
-                <span class="tag">terminal</span>
-            </div>
-        </article>
-        {{ end }}
-    </div>
-    
-    {{ if gt (len $posts) 6 }}
-    <div class="view-all">
-        <a href="{{ "posts" | relURL }}" class="view-all-link">
-            <span>View all posts</span>
-            <span class="arrow">→</span>
-        </a>
-    </div>
+    <span class="section-meta"><a href="/posts/">archive →</a></span>
+  </div>
+  <div class="post-grid">
+    {{ range $posts }}
+      {{- $words   := len (split .Plain " ") -}}
+      {{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
+      {{- $pct     := math.Min 100 (mul (int $minutes) 12) -}}
+      <a href="{{ .RelPermalink }}" class="post">
+        <div class="post-meta">
+          <span>{{ dateFormat "2006-01-02" .Date }}</span>
+          <span class="read-bar"><span style="width:{{ $pct }}%"></span></span>
+          <span>{{ $minutes }} min read</span>
+        </div>
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.subtitle }}<p>{{ . }}</p>{{ end }}
+        {{ if not .Params.subtitle }}{{ with .Params.description }}<p>{{ . }}</p>{{ end }}{{ end }}
+      </a>
     {{ end }}
+  </div>
 </section>
 {{ end }}

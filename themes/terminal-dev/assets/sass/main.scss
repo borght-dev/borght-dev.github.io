@@ -207,12 +207,15 @@ a:hover { color: var(--accent-deep); }
 .hero-inner { position: relative; max-width: var(--maxw); margin: 0 auto; width: 100%; z-index: 1; }
 
 .prompt {
-  display: flex; align-items: center; gap: var(--s-3);
-  font-size: 13px; color: var(--ink-soft);
+  display: flex; align-items: center; gap: var(--s-2);
+  font-size: 14px; color: var(--ink-soft);
   margin-bottom: var(--s-8);
 }
 .prompt .who { color: var(--ink); font-weight: 500; }
 .prompt .at  { color: var(--accent); }
+.prompt .dollar { color: var(--pulse); font-weight: 700; }
+.prompt .cmd { color: var(--ink); font-weight: 500; }
+.prompt .cursor { margin-left: 2px; }
 
 h1.headline {
   font-weight: 700;
@@ -251,6 +254,66 @@ h1.headline {
 .live-value {
   color: var(--ink); font-weight: 500; font-size: 13px;
   display: flex; align-items: center; gap: var(--s-2);
+}
+
+/* ─── ps -ef --running block (home) ──────────────────────────── */
+.ps-block {
+  margin-top: var(--s-12); padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+}
+.ps-prompt {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-6);
+  color: var(--ink-soft);
+}
+.ps-prompt .dollar { color: var(--pulse); font-weight: 700; }
+.ps-prompt .cmd    { color: var(--ink); font-weight: 500; }
+.ps-prompt .flag {
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.ps-table {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1.4fr) minmax(0, 1.6fr) minmax(0, 1fr);
+  border-top: 1px solid var(--rule);
+}
+.ps-row {
+  display: contents;
+}
+.ps-row > span {
+  padding: var(--s-3) var(--s-3);
+  border-bottom: 1px dotted var(--rule-hard);
+  font-size: 13px;
+  color: var(--ink);
+  align-self: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ps-row.ps-head > span {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: var(--s-3) var(--s-3) var(--s-2);
+  border-bottom: 1px solid var(--rule-hard);
+}
+.ps-row .ps-pid    { color: var(--ink-mute); font-size: 12px; }
+.ps-row .ps-name   { color: var(--ink); font-weight: 500; }
+.ps-row .ps-uptime { color: var(--ink-mute); font-size: 12px; }
+.ps-row .ps-state          { font-weight: 500; }
+.ps-state-running { color: var(--pulse); }
+.ps-state-active  { color: var(--accent); }
+.ps-state-warm    { color: var(--warn); }
+
+@media (max-width: 720px) {
+  .ps-table {
+    grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 0.8fr);
+    font-size: 12px;
+  }
+  .ps-row > span { padding: var(--s-2); font-size: 12px; }
 }
 
 /* ─── Section / block layout ─────────────────────────────────── */

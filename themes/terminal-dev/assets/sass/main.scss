@@ -784,6 +784,24 @@ footer.foot {
   font-size: 11px; color: var(--ink-mute);
   flex-wrap: wrap; gap: var(--s-3);
 }
+.foot-theme-toggle {
+  appearance: none;
+  background: transparent;
+  color: var(--ink-mute);
+  border: 1px solid var(--rule-hard);
+  border-radius: var(--radius);
+  height: 26px;
+  padding: 0 var(--s-3);
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.02em;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+.foot-theme-toggle:hover { border-color: var(--ink); color: var(--ink); }
+.foot-theme-label { color: var(--accent); font-weight: 500; }
+.foot-theme-toggle:hover .foot-theme-label { color: var(--accent); }
+@media print { .foot-theme-toggle { display: none !important; } }
 
 /* ─── Scroll-driven reveal ───────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {

@@ -1,42 +1,40 @@
 {{ define "main" }}
-<section class="section">
-    <h2 class="section-title">{{ .Title | lower }}{{ if eq .Section "posts" }}_archive{{ end }}</h2>
-    
-    {{ if .Content }}
-    <div class="section-content">
-        {{ .Content }}
-    </div>
-    {{ end }}
-    
-    {{ if .Pages }}
-    <div class="posts-grid">
-        {{ range .Pages.ByDate.Reverse }}
-            {{ partial "summary.html" . }}
+{{- $items := where .Pages ".Params.draft" "ne" true -}}
+<section class="block">
+  <div class="section-head">
+    <span class="section-prompt">&gt;</span>
+    <h2 class="section-title">all_{{ .Section }}</h2>
+    <span class="section-meta">{{ len $items }} {{ if eq .Section "posts" }}published{{ else }}entries{{ end }}</span>
+  </div>
+  <div class="post-grid">
+    {{ range $items }}
+      {{- $words   := len (split .Plain " ") -}}
+      {{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
+      {{- $pct     := math.Min 100 (mul (int $minutes) 12) -}}
+      <a href="{{ .RelPermalink }}" class="post">
+        <div class="post-meta">
+          <span>{{ dateFormat "2006-01-02" .Date }}</span>
+          {{ if eq $.Section "posts" }}
+            <span class="read-bar"><span style="width:{{ $pct }}%"></span></span>
+            <span>{{ $minutes }} min read</span>
+          {{ else }}
+            {{ with .Params.status }}<span>·</span><span>{{ . }}</span>{{ end }}
+          {{ end }}
+        </div>
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.subtitle }}<p>{{ . }}</p>{{ end }}
+        {{ if .Params.tags }}
+          <div class="tags">
+            {{ range .Params.tags }}<span class="tag">{{ . }}</span>{{ end }}
+          </div>
+        {{ else if .Params.stack }}
+          <div class="tags">
+            {{ range .Params.stack }}<span class="tag">{{ . }}</span>{{ end }}
+          </div>
         {{ end }}
-    </div>
-    {{ else }}
-    <div class="empty-state">
-        <p>No {{ .Section }} found. Check back later!</p>
-    </div>
+      </a>
     {{ end }}
-    
-    <!-- Pagination -->
-    {{ if .Paginator }}
-    {{ if gt .Paginator.TotalPages 1 }}
-    <nav class="pagination">
-        {{ if .Paginator.HasPrev }}
-            <a href="{{ .Paginator.Prev.URL }}" class="pagination-link prev">← Previous</a>
-        {{ end }}
-        
-        <span class="pagination-info">
-            Page {{ .Paginator.PageNumber }} of {{ .Paginator.TotalPages }}
-        </span>
-        
-        {{ if .Paginator.HasNext }}
-            <a href="{{ .Paginator.Next.URL }}" class="pagination-link next">Next →</a>
-        {{ end }}
-    </nav>
-    {{ end }}
-    {{ end }}
+    {{ if eq (len $items) 0 }}<p class="tagline">Nothing published yet.</p>{{ end }}
+  </div>
 </section>
 {{ end }}

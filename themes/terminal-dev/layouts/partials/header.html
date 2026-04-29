@@ -1,27 +1,16 @@
-<header class="header">
-    <div class="logo-container">
-        <div class="logo">></div>
-        <h1 class="site-title">
-            <a href="{{ .Site.BaseURL }}">
-                {{- $title := .Site.Title | lower -}}
-                {{- $parts := split $title " " -}}
-                {{- if gt (len $parts) 1 -}}
-                {{- index $parts 0 -}}<span class="accent">@</span>{{- delimit (after 1 $parts) "" -}}
-                {{- else -}}
-                {{- $title -}}
-                {{- end -}}<span class="accent">:~$</span>
-            </a>
-        </h1>
-    </div>
-    <p class="tagline">{{ .Site.Params.description }}</p>
-
-    <nav class="nav">
-        <a href="{{ .Site.BaseURL }}" class="nav-item {{ if .IsHome }}active{{ end }}">~/home</a>
-        <a href="{{ "posts" | relURL }}" class="nav-item {{ if eq .Section " posts" }}active{{ end }}">~/blog</a>
-        <a href="{{ "projects" | relURL }}" class="nav-item {{ if eq .Section " projects" }}active{{ end
-            }}">~/projects</a>
-        <a href="{{ "about" | relURL }}" class="nav-item {{ if eq .Section " about" }}active{{ end }}">~/about</a>
-        <a href="{{ "contact" | relURL }}" class="nav-item {{ if eq .Section " contact" }}active{{ end
-            }}">~/contact</a>
+{{- $p := .RelPermalink -}}
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="topbar-prompt" aria-label="home">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span style="color:var(--ink-mute)">:~$</span></span>
+    </a>
+    <nav class="topbar-nav" aria-label="primary">
+      <a href="/posts/"    class="{{ if hasPrefix $p "/posts" }}active{{ end }}">~/blog</a>
+      <a href="/series/"   class="{{ if hasPrefix $p "/series" }}active{{ end }}">~/series</a>
+      <a href="/projects/" class="hide-mobile {{ if hasPrefix $p "/projects" }}active{{ end }}">~/projects</a>
+      <a href="/about/"    class="hide-mobile {{ if hasPrefix $p "/about" }}active{{ end }}">~/about</a>
+      <button id="theme-toggle" class="topbar-toggle" aria-label="Toggle theme">◐</button>
     </nav>
+  </div>
 </header>

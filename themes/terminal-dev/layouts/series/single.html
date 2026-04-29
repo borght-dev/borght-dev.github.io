@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{- $parent := .Parent -}}
+{{- $siblings := where $parent.RegularPages ".Params.draft" "ne" true -}}
+{{- $siblings = $siblings.ByParam "episode" -}}
+{{- $idx := -1 -}}
+{{- range $i, $p := $siblings -}}
+  {{- if eq $p.RelPermalink $.RelPermalink -}}{{- $idx = $i -}}{{- end -}}
+{{- end -}}
+{{- $prev := false -}}{{- $next := false -}}
+{{- if gt $idx 0 -}}{{- $prev = index $siblings (sub $idx 1) -}}{{- end -}}
+{{- if and (ge $idx 0) (lt $idx (sub (len $siblings) 1)) -}}{{- $next = index $siblings (add $idx 1) -}}{{- end -}}
+{{- $num := printf "%02d" (int .Params.episode) -}}
+
+<article class="article-shell">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <a href="/series/">series</a><span class="sep">/</span>
+    <a href="{{ $parent.RelPermalink }}">{{ $parent.Params.seriesId | default $parent.File.ContentBaseName }}</a><span class="sep">/</span>
+    <span>ep{{ $num }}</span>
+  </nav>
+
+  <div class="article-banner">
+    Part <strong>{{ .Params.episode }}</strong> of the series <a href="{{ $parent.RelPermalink }}"><strong>{{ $parent.Title }}</strong></a>
+  </div>
+
+  <header class="article-header">
+    <h1 class="article-title">{{ .Title }}</h1>
+    {{ with .Params.summary }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+    {{ if not .Date.IsZero }}
+      <div class="article-meta"><span>{{ dateFormat "2006-01-02" .Date }}</span></div>
+    {{ end }}
+  </header>
+
+  <div class="article-content">
+    {{ .Content }}
+  </div>
+
+  {{ if or $prev $next }}
+  <nav class="article-nav">
+    {{ if $prev }}
+      <a href="{{ $prev.RelPermalink }}">
+        <span class="label">← previous</span>
+        <span>ep{{ printf "%02d" (int $prev.Params.episode) }}: {{ $prev.Title }}</span>
+      </a>
+    {{ else }}<span></span>{{ end }}
+    {{ if $next }}
+      <a href="{{ $next.RelPermalink }}" class="next">
+        <span class="label">next →</span>
+        <span>ep{{ printf "%02d" (int $next.Params.episode) }}: {{ $next.Title }}</span>
+      </a>
+    {{ else }}<span></span>{{ end }}
+  </nav>
+  {{ end }}
+</article>
+{{ end }}

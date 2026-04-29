@@ -1,0 +1,70 @@
+{{ define "main" }}
+{{- if .Sections -}}
+  {{/* /series/ — list of all series */}}
+  <section class="block">
+    <div class="section-head">
+      <span class="section-prompt">&gt;</span>
+      <h2 class="section-title">all_series</h2>
+      <span class="section-meta">{{ len .Sections }} active</span>
+    </div>
+    <div class="series-grid">
+      {{ range .Sections }}
+        {{- $eps := where .RegularPages ".Params.draft" "ne" true -}}
+        <a href="{{ .RelPermalink }}" class="series-card">
+          <div class="series-status"><span class="pulse-dot"></span> {{ .Params.status }}</div>
+          <h3>{{ .Title }}</h3>
+          <p>{{ .Params.tagline }}</p>
+          <div class="meta">
+            <span>{{ len $eps }} / {{ len .RegularPages }} episodes</span>
+            {{ with .Params.cadence }}<span>· {{ . }}</span>{{ end }}
+          </div>
+        </a>
+      {{ end }}
+    </div>
+  </section>
+{{- else -}}
+  {{/* /series/<id>/ — individual series with episode list */}}
+  {{- $episodes := .RegularPages.ByParam "episode" -}}
+  <article class="article-shell">
+    <nav class="breadcrumbs">
+      <a href="/">~</a><span class="sep">/</span>
+      <a href="/series/">series</a><span class="sep">/</span>
+      <span>{{ .Params.seriesId | default .File.ContentBaseName }}</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="series-status" style="margin-bottom:1rem;">
+        <span class="pulse-dot"></span> {{ .Params.status }}{{ with .Params.cadence }} · {{ . }}{{ end }}
+      </div>
+      <h1 class="article-title">{{ .Title }}</h1>
+      {{ with .Params.tagline }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+    </header>
+
+    <div class="article-content">
+      {{ .Content }}
+
+      <h2>episodes</h2>
+      <ul class="episode-list">
+        {{ range $episodes }}
+          {{- $num := printf "%02d" (int .Params.episode) -}}
+          <li>
+            {{ if .Params.draft }}
+              <a href="#" style="cursor:not-allowed;opacity:0.6;" aria-disabled="true">
+                <span class="episode-num">ep{{ $num }}</span>
+                <span class="episode-title">{{ .Title }}</span>
+                <span class="episode-status draft">draft</span>
+              </a>
+            {{ else }}
+              <a href="{{ .RelPermalink }}">
+                <span class="episode-num">ep{{ $num }}</span>
+                <span class="episode-title">{{ .Title }}</span>
+                <span class="episode-status published">{{ dateFormat "2006-01-02" .Date }}</span>
+              </a>
+            {{ end }}
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  </article>
+{{- end -}}
+{{ end }}

@@ -1,99 +1,31 @@
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-section">
-            <h3 class="footer-title">connect_with_me</h3>
-            <div class="social-links">
-                {{ if .Site.Params.github }}
-                <a href="{{ .Site.Params.github }}" class="social-link" target="_blank" rel="noopener">
-                    <span class="social-icon">→</span>
-                    <span>GitHub</span>
-                </a>
-                {{ end }}
-                {{ if .Site.Params.linkedin }}
-                <a href="{{ .Site.Params.linkedin }}" class="social-link" target="_blank" rel="noopener">
-                    <span class="social-icon">→</span>
-                    <span>LinkedIn</span>
-                </a>
-                {{ end }}
-                {{ if .Site.Params.twitter }}
-                <a href="{{ .Site.Params.twitter }}" class="social-link" target="_blank" rel="noopener">
-                    <span class="social-icon">→</span>
-                    <span>Twitter</span>
-                </a>
-                {{ end }}
-                {{ if .Site.Params.email }}
-                <a href="mailto:{{ .Site.Params.email }}" class="social-link">
-                    <span class="social-icon">→</span>
-                    <span>Email</span>
-                </a>
-                {{ end }}
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <h3 class="footer-title">quick_access</h3>
-            <div class="footer-links">
-                <a href="{{ " posts" | relURL }}" class="footer-link">~/blog</a>
-                <a href="{{ " projects" | relURL }}" class="footer-link">~/projects</a>
-                <a href="{{ " about" | relURL }}" class="footer-link">~/about</a>
-                <a href="{{ " index.xml" | relURL }}" class="footer-link">~/rss</a>
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <h3 class="footer-title">system_info</h3>
-            <div class="system-info">
-                <div class="info-line">
-                    <span class="info-label">Built with:</span>
-                    <span class="info-value">Hugo {{ hugo.Version }}</span>
-                </div>
-                <div class="info-line">
-                    <span class="info-label">Theme:</span>
-                    <span class="info-value">Terminal Dev</span>
-                </div>
-                <div class="info-line">
-                    <span class="info-label">Last build:</span>
-                    <span class="info-value">{{ now.Format "2006-01-02 15:04" }}</span>
-                </div>
-            </div>
-        </div>
+{{- $year := now.Format "2006" -}}
+{{- $build := now.Format "2006-01-02 15:04" -}}
+<footer class="foot">
+  <div class="foot-col">
+    <h4>connect</h4>
+    {{ with .Site.Params.github }}<a href="{{ . }}" target="_blank" rel="noopener">GitHub</a>{{ end }}
+    {{ with .Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener">LinkedIn</a>{{ end }}
+  </div>
+  <div class="foot-col">
+    <h4>navigate</h4>
+    <a href="/posts/">~/blog</a>
+    <a href="/series/">~/series</a>
+    <a href="/projects/">~/projects</a>
+    <a href="/index.xml">~/rss</a>
+  </div>
+  <div class="foot-col">
+    <h4>system</h4>
+    <div class="foot-system">
+      <span class="k">built with</span> Hugo<br>
+      <span class="k">editor</span> Obsidian (mobile)<br>
+      <span class="k">last build</span> {{ $build }}
     </div>
-
-    <div class="footer-bottom">
-        <div class="copyright">
-            <span>© {{ now.Year }} {{ .Site.Params.author | default .Site.Title }}. All rights reserved.</span>
-        </div>
-    </div>
+  </div>
 </footer>
-<script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const root = document.documentElement;
-     
-    // On page load, apply user preference if set
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        root.classList.add('light-mode');
-        root.classList.remove('dark-mode');
-    } else if (savedTheme === 'dark') {
-        root.classList.add('dark-mode');
-        root.classList.remove('light-mode');
-    }
 
-    // Toggle logic
-    themeToggle.addEventListener('click', () => {
-        if (root.classList.contains('light-mode')) {
-            root.classList.remove('light-mode');
-            root.classList.add('dark-mode');
-            localStorage.setItem('theme', 'dark');
-        } else if (root.classList.contains('dark-mode')) {
-            root.classList.remove('dark-mode');
-            root.classList.remove('light-mode'); // fallback to system default
-            localStorage.removeItem('theme');
-        } else {
-            root.classList.add('light-mode');
-            root.classList.remove('dark-mode');
-            localStorage.setItem('theme', 'light');
-        }
-    });
-
-</script>
+<div class="foot-bottom">
+  <span>© {{ $year }} Koen van der Borght</span>
+  <span style="display:inline-flex;align-items:center;gap:0.5rem;">
+    <span class="pulse-dot"></span> all systems operational
+  </span>
+</div>

@@ -1,0 +1,5 @@
+{{- $href := "/" -}}
+{{- if and .Parent (not .Parent.IsHome) -}}{{- $href = .Parent.RelPermalink -}}{{- end -}}
+<a href="{{ $href }}" class="back-fab" aria-label="back one level" title="back">
+  <span aria-hidden="true">←</span>
+</a>

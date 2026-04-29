@@ -2,8 +2,10 @@
 title: "Koen"
 description: "Senior dev & tech lead at Gomocha. .NET, Azure, AI-native workflows."
 layout: about
+fullName: "Koen van der Borght"
 photo: /profile.jpg
 intro: "Software engineer & tech lead with 8+ years of experience. I started as an intern, worked my way up to senior, and currently lead the development team at [Gomocha](https://www.gomocha.com). I write about AI-native engineering workflows and ship developer tools on the side."
+signoff: "let's build better software, together."
 experience:
   - period: "2022 — now"
     role: "Tech Lead"
@@ -59,13 +61,13 @@ stack:
   - { name: "Tauri",       level: "side"  }
   - { name: "Claude Code", level: "daily" }
 currently:
-  - { label: "shipping", title: "BorgDock",                          summary: "Sidebar for parallel Claude Code agents." }
+  - { label: "shipping", title: "BorgDock",                          summary: "A dev tool to stay focused while running parallel Claude Code agents." }
   - { label: "writing",  title: "AI-native engineering workflows",   summary: "A weekly series on how my day-to-day has changed." }
   - { label: "leading",  title: "FSP Horizon · Gomocha",             summary: "Next-gen field service platform on .NET Aspire + React. Multi-tenant from commit one." }
   - { label: "tinkering", title: "Mechanical keyboards",             summary: "Daily drivers: Ergodox with Gateron Browns and a Keychron Q1 with Zealios 67g." }
 certifications:
-  - { name: "Professional Scrum Master II", score: "99.1%", date: "2024-09-02", short: "PSM II" }
-  - { name: "Professional Scrum Master I",  score: "95%",   date: "2024-02-12", short: "PSM I" }
+  - { name: "Professional Scrum Master II", date: "2024-09-02", short: "PSM II" }
+  - { name: "Professional Scrum Master I",  date: "2024-02-12", short: "PSM I" }
 offTheClockBlocks:
   - "Movie nights with my wife Selina — Marvel & Harry Potter rotation."
   - "Proud dad of our daughter Niya."

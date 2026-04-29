@@ -1,69 +1,168 @@
 {{ define "main" }}
 {{- if .Sections -}}
-  {{/* /series/ — list of all series */}}
-  <section class="block">
-    <div class="section-head">
-      <span class="section-prompt">&gt;</span>
-      <h2 class="section-title">all_series</h2>
-      <span class="section-meta">{{ len .Sections }} active</span>
-    </div>
-    <div class="series-grid">
-      {{ range .Sections }}
+  {{/* /series/ — index of all series */}}
+  {{- $allSeries := .Sections -}}
+  {{- $totalEpisodes := 0 -}}
+  {{- $activeCount := 0 -}}
+  {{- $latestDate := time.AsTime "2000-01-01" -}}
+  {{- range $allSeries -}}
+    {{- $eps := where .RegularPages ".Params.draft" "ne" true -}}
+    {{- $totalEpisodes = add $totalEpisodes (len $eps) -}}
+    {{- if eq .Params.status "active" -}}{{- $activeCount = add $activeCount 1 -}}{{- end -}}
+    {{- range $eps -}}{{- if .Date.After $latestDate -}}{{- $latestDate = .Date -}}{{- end -}}{{- end -}}
+  {{- end -}}
+
+  <section class="series-idx">
+    <nav class="breadcrumbs">
+      <a href="/">~</a><span class="sep">/</span>
+      <span>series</span>
+    </nav>
+
+    <header class="series-idx-header">
+      <div class="prompt-line">
+        <span class="dollar">$</span>
+        <span class="cmd">find</span>
+        <span class="path">~/series</span>
+      </div>
+      <div class="series-idx-stats">
+        <span>{{ len $allSeries }} {{ if eq (len $allSeries) 1 }}series{{ else }}series{{ end }}</span>
+        {{ if gt $activeCount 0 }}<span>{{ $activeCount }} active</span>{{ end }}
+        <span>{{ $totalEpisodes }} episodes shipped</span>
+        {{ if gt $latestDate.Year 2000 }}<span>last update {{ dateFormat "2006-01-02" $latestDate }}</span>{{ end }}
+      </div>
+    </header>
+
+    <div class="series-list-v2">
+      {{ range $allSeries }}
         {{- $eps := where .RegularPages ".Params.draft" "ne" true -}}
-        <a href="{{ .RelPermalink }}" class="series-card">
-          <div class="series-status"><span class="pulse-dot"></span> {{ .Params.status }}</div>
-          <h3>{{ .Title }}</h3>
-          <p>{{ .Params.tagline }}</p>
-          <div class="meta">
-            <span>{{ len $eps }} / {{ len .RegularPages }} episodes</span>
-            {{ with .Params.cadence }}<span>· {{ . }}</span>{{ end }}
+        {{- $shipped := len $eps -}}
+        {{- $total := .Params.totalEpisodes | default (len .RegularPages) -}}
+        {{- if lt $total $shipped }}{{ $total = $shipped }}{{ end -}}
+        {{- $pct := 0 -}}
+        {{- if gt $total 0 }}{{ $pct = math.Round (mul (div (float $shipped) (float $total)) 100) }}{{ end -}}
+        {{- $status := .Params.status | default "active" -}}
+        <a href="{{ .RelPermalink }}" class="series-card-v2 {{ $status }}">
+          <span class="rail" aria-hidden="true"></span>
+          <div class="top">
+            <span class="pip"></span>
+            <span>{{ $status }}</span>
+            {{ with .Params.cadence }}<span class="sep">·</span><span class="cad">{{ . }}</span>{{ end }}
           </div>
+          <h3>{{ .Title }}</h3>
+          <p class="desc">{{ .Params.tagline | default .Params.description }}</p>
+          <div class="progress">
+            <span class="frac"><b>{{ $shipped }}</b> / {{ $total }} eps</span>
+            <span class="bar"><span class="fill" style="width:{{ $pct }}%"></span></span>
+            <span>{{ $pct }}%</span>
+          </div>
+          {{ if .Params.tags }}
+          <div class="meta-foot">
+            <span><b>id</b> {{ .Params.seriesId | default .File.ContentBaseName }}</span>
+            <span><b>tags</b> {{ range .Params.tags }}#{{ . }} {{ end }}</span>
+          </div>
+          {{ else }}
+          <div class="meta-foot">
+            <span><b>id</b> {{ .Params.seriesId | default .File.ContentBaseName }}</span>
+          </div>
+          {{ end }}
         </a>
       {{ end }}
     </div>
+
+    <div class="series-legend">
+      <span class="item"><span class="pip g"></span> active — shipping new episodes</span>
+      <span class="item"><span class="pip a"></span> paused — coming back</span>
+      <span class="item"><span class="pip m"></span> archived — closed loop</span>
+    </div>
   </section>
 {{- else -}}
-  {{/* /series/<id>/ — individual series with episode list */}}
+  {{/* /series/<id>/ — series detail with episodes */}}
   {{- $episodes := .RegularPages.ByParam "episode" -}}
-  <article class="article-shell">
+  {{- $shipped := where $episodes ".Params.draft" "ne" true -}}
+  {{- $total := .Params.totalEpisodes | default (len $episodes) -}}
+  {{- if lt $total (len $shipped) }}{{ $total = len $shipped }}{{ end -}}
+  {{- $pct := 0 -}}
+  {{- if gt $total 0 }}{{ $pct = math.Round (mul (div (float (len $shipped)) (float $total)) 100) }}{{ end -}}
+  {{- $status := .Params.status | default "active" -}}
+
+  <article class="series-detail-v2">
     <nav class="breadcrumbs">
       <a href="/">~</a><span class="sep">/</span>
       <a href="/series/">series</a><span class="sep">/</span>
       <span>{{ .Params.seriesId | default .File.ContentBaseName }}</span>
     </nav>
 
-    <header class="article-header">
-      <div class="series-status" style="margin-bottom:1rem;">
-        <span class="pulse-dot"></span> {{ .Params.status }}{{ with .Params.cadence }} · {{ . }}{{ end }}
-      </div>
-      <h1 class="article-title">{{ .Title }}</h1>
-      {{ with .Params.tagline }}<p class="article-subtitle">{{ . }}</p>{{ end }}
-    </header>
+    <div class="badges {{ $status }}">
+      <span class="pip"></span>
+      <span>{{ $status }}</span>
+      {{ with .Params.cadence }}<span style="color:var(--rule-hard)">·</span><span class="cat">{{ . }}</span>{{ end }}
+    </div>
 
-    <div class="article-content">
-      {{ .Content }}
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.tagline }}<p class="lede">{{ . }}</p>{{ end }}
 
-      <h2>episodes</h2>
-      <ul class="episode-list">
-        {{ range $episodes }}
-          {{- $num := printf "%02d" (int .Params.episode) -}}
-          <li>
-            {{ if .Params.draft }}
-              <a href="#" style="cursor:not-allowed;opacity:0.6;" aria-disabled="true">
-                <span class="episode-num">ep{{ $num }}</span>
-                <span class="episode-title">{{ .Title }}</span>
-                <span class="episode-status draft">draft</span>
-              </a>
+    <div class="series-grid-v2">
+      <div class="series-body-v2">
+        {{ .Content }}
+
+        <h2>episodes</h2>
+        <div class="episodes-v2">
+          {{ range $i, $e := $episodes }}
+            {{- $num := printf "%02d" (int .Params.episode) -}}
+            {{- $st := "shipped" -}}
+            {{- if .Params.draft }}{{ $st = "draft" }}{{ end -}}
+            {{- if .Params.upcoming }}{{ $st = "upcoming" }}{{ end -}}
+            {{ if eq $st "upcoming" }}
+              <div class="ep upcoming">
+                <span class="num">ep{{ $num }}</span>
+                <span class="d">— upcoming</span>
+                <span class="t">{{ .Title }}{{ with .Params.summary }}<span class="sub">{{ . }}</span>{{ end }}</span>
+                <span class="st">upcoming</span>
+                <span class="arr"></span>
+              </div>
+            {{ else if eq $st "draft" }}
+              <div class="ep draft" aria-disabled="true" style="cursor:not-allowed;opacity:0.7;">
+                <span class="num">ep{{ $num }}</span>
+                <span class="d">{{ if not .Date.IsZero }}{{ dateFormat "2006-01-02" .Date }}{{ else }}—{{ end }}</span>
+                <span class="t">{{ .Title }}{{ with .Params.summary }}<span class="sub">{{ . }}</span>{{ end }}</span>
+                <span class="st">draft</span>
+                <span class="arr">→</span>
+              </div>
             {{ else }}
-              <a href="{{ .RelPermalink }}">
-                <span class="episode-num">ep{{ $num }}</span>
-                <span class="episode-title">{{ .Title }}</span>
-                <span class="episode-status published">{{ dateFormat "2006-01-02" .Date }}</span>
+              <a href="{{ .RelPermalink }}" class="ep shipped">
+                <span class="num">ep{{ $num }}</span>
+                <span class="d">{{ if not .Date.IsZero }}{{ dateFormat "2006-01-02" .Date }}{{ else }}—{{ end }}</span>
+                <span class="t">{{ .Title }}{{ with .Params.summary }}<span class="sub">{{ . }}</span>{{ end }}</span>
+                <span class="st">shipped</span>
+                <span class="arr">→</span>
               </a>
             {{ end }}
-          </li>
+          {{ end }}
+        </div>
+      </div>
+
+      <aside class="series-aside-v2">
+        <div class="label">// META</div>
+        <div class="kv">
+          <span class="k">status</span><span class="v {{ if eq $status "active" }}green{{ end }}">● {{ $status }}</span>
+          {{ if not .Date.IsZero }}<span class="k">started</span><span class="v">{{ dateFormat "2006-01-02" .Date }}</span>{{ end }}
+          {{ with .Params.cadence }}<span class="k">cadence</span><span class="v">{{ . }}</span>{{ end }}
+          {{ with .Params.stack }}<span class="k">stack</span><span class="v">{{ delimit . " · " }}</span>{{ end }}
+          {{ with .Params.tags }}<span class="k">tags</span><span class="v">{{ range . }}#{{ . }} {{ end }}</span>{{ end }}
+        </div>
+
+        <div class="progress-block">
+          <div class="frac"><b>{{ len $shipped }}</b> / {{ $total }} eps · <span style="color:var(--accent)">{{ $pct }}%</span></div>
+          <div class="bar"><span class="fill" style="width:{{ $pct }}%"></span></div>
+        </div>
+
+        {{ with .Params.related }}
+        <div class="related">
+          <div class="label" style="margin-top:1.25rem;">// RELATED</div>
+          {{ range . }}<a href="{{ .url }}">{{ .label }}</a>{{ end }}
+        </div>
         {{ end }}
-      </ul>
+      </aside>
     </div>
   </article>
 {{- end -}}

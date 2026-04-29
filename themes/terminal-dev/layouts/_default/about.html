@@ -5,6 +5,12 @@
     <span>about</span>
   </nav>
 
+  <div class="about-cmd">
+    <span class="glyph">$</span>
+    <span class="cmd">cat</span>
+    <span class="arg">~/.identity</span><span class="cursor" aria-hidden="true"></span>
+  </div>
+
   <header class="cv-hero">
     <div class="cv-hero-text">
       <h1 class="cv-headline">Hi, I'm <span class="accent">Koen</span>.</h1>
@@ -19,8 +25,12 @@
   </header>
 
   {{ with .Params.experience }}
-  <section class="cv-row">
-    <div class="cv-label">EXPERIENCE</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">git log</span>
+      <span class="arg">--career</span>
+    </div>
     <div class="cv-rail">
       {{ range . }}
         <div class="cv-item">
@@ -36,10 +46,14 @@
   {{ end }}
 
   {{ with .Params.highlights }}
-  <section class="cv-row">
-    <div class="cv-label">SELECTED WORK</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">git log</span>
+      <span class="arg">--highlights</span>
+    </div>
     <div class="cv-rail">
-      {{ range . }}
+      {{ range sort . "period" "desc" }}
         <div class="cv-item">
           <div class="cv-period">{{ .period }}</div>
           <div class="cv-body">
@@ -53,8 +67,12 @@
   {{ end }}
 
   {{ with .Params.stack }}
-  <section class="cv-row">
-    <div class="cv-label">STACK</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">cat</span>
+      <span class="arg">~/stack.txt</span>
+    </div>
     <div class="cv-rail">
       <div class="cv-stack">
         {{ range . }}
@@ -69,15 +87,19 @@
   {{ end }}
 
   {{ with .Params.currently }}
-  <section class="cv-row">
-    <div class="cv-label">CURRENTLY</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">cat</span>
+      <span class="arg">~/.now</span>
+    </div>
     <div class="cv-rail">
       {{ range . }}
         <div class="cv-item">
           <div class="cv-period cv-tag">{{ .label }}</div>
           <div class="cv-body">
             <h3>{{ .title }}</h3>
-            <p>{{ .summary | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | safeHTML }}</p>
+            {{ with .summary }}<p>{{ . | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | safeHTML }}</p>{{ end }}
           </div>
         </div>
       {{ end }}
@@ -86,14 +108,18 @@
   {{ end }}
 
   {{ with .Params.certifications }}
-  <section class="cv-row">
-    <div class="cv-label">CERTIFICATIONS</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">ls</span>
+      <span class="arg">~/certs/</span>
+    </div>
     <div class="cv-rail">
       {{ range . }}
         <div class="cv-item">
-          <div class="cv-period">{{ dateFormat "2006-01-02" (time.AsTime .date) }}</div>
+          <div class="cv-period">{{ if .date }}{{ dateFormat "2006-01-02" (time.AsTime .date) }}{{ end }}</div>
           <div class="cv-body">
-            <h3>{{ .name }} <span class="cv-org">· {{ .score }}</span></h3>
+            <h3>{{ .name }}{{ with .score }} <span class="cv-org">· {{ . }}</span>{{ end }}</h3>
             {{ with .short }}<p>{{ . }}</p>{{ end }}
           </div>
         </div>
@@ -103,14 +129,26 @@
   {{ end }}
 
   {{ with .Params.offTheClockBlocks }}
-  <section class="cv-row">
-    <div class="cv-label">OFF THE CLOCK</div>
+  <section class="cv-row cli">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">cat</span>
+      <span class="arg">~/off-the-clock.txt</span>
+    </div>
     <div class="cv-rail">
       <ul class="cv-off">
-        {{ range . }}<li>{{ . }}</li>{{ end }}
+        {{ range . }}<li>{{ . | replaceRE "\\*\\*([^*]+)\\*\\*" "<strong>$1</strong>" | safeHTML }}</li>{{ end }}
       </ul>
     </div>
   </section>
+  {{ end }}
+
+  {{ with .Params.signoff }}
+  <div class="about-signoff">
+    <span class="glyph">$</span>
+    <span class="cmd">echo</span>
+    <span class="arg">"{{ . }}"</span><span class="cursor" aria-hidden="true"></span>
+  </div>
   {{ end }}
 </article>
 {{ end }}

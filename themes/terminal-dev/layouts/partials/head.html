@@ -27,7 +27,7 @@
 
 {{ $opts := dict "targetPath" "main.css" "enableSourceMap" false }}
 {{ $style := resources.Get "sass/main.scss" | css.Sass $opts | resources.Fingerprint }}
-<link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}">
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 
 <!-- RSS -->
 {{ range .AlternativeOutputFormats -}}

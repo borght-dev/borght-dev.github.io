@@ -168,8 +168,10 @@ export function bootShell() {
   closeBtn.addEventListener('click', close);
   drawer.addEventListener('click', (e) => {
     if (e.target === drawer) { close(); return; }
-    // Click anywhere inside the drawer (titlebar, output, form gutter) focuses
-    // the input — except the input itself and the close button.
+    // Don't steal focus while the user has selected text — focusing an input
+    // collapses the document selection and breaks copy.
+    const sel = window.getSelection();
+    if (sel && sel.toString().length > 0) return;
     if (e.target !== input && !e.target.closest('.shell-close')) {
       input.focus();
     }

@@ -128,22 +128,4 @@
     {{ end }}
   </div>
 </section>
-{{- $publishedPosts := where (where site.RegularPages "Section" "posts") ".Params.draft" "ne" true -}}
-{{- $allSeries      := where site.RegularPages "Section" "series" -}}
-<script>
-window.__SHELL_SITE__ = {
-  posts: [
-    {{- range $i, $p := $publishedPosts -}}
-      {{- if $i }}, {{ end -}}
-      "{{ $p.File.ContentBaseName }}.md"
-    {{- end -}}
-  ],
-  series: [
-    {{- range $i, $s := $allSeries -}}
-      {{- if $i }}, {{ end -}}
-      "{{ $s.File.ContentBaseName }}"
-    {{- end -}}
-  ]
-};
-</script>
 {{ end }}

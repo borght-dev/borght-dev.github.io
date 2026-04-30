@@ -93,8 +93,12 @@ export function bootShell() {
       if (url.startsWith('http')) {
         window.open(url, '_blank', 'noopener');
       } else {
-        // Persist a flag so the shell reopens on the destination page.
-        try { sessionStorage.setItem('shell:reopen', '1'); } catch { /* ignore */ }
+        // Persist a flag and the output buffer so the shell reopens on the
+        // destination page with the same scrollback as before navigation.
+        try {
+          sessionStorage.setItem('shell:reopen', '1');
+          sessionStorage.setItem('shell:output', output.innerHTML);
+        } catch { /* ignore */ }
         window.location.href = url;
       }
     },
@@ -152,7 +156,12 @@ export function bootShell() {
 
   closeBtn.addEventListener('click', close);
   drawer.addEventListener('click', (e) => {
-    if (e.target === drawer) close();
+    if (e.target === drawer) { close(); return; }
+    // Click anywhere inside the drawer (titlebar, output, form gutter) focuses
+    // the input — except the input itself and the close button.
+    if (e.target !== input && !e.target.closest('.shell-close')) {
+      input.focus();
+    }
   });
 
   const cursor = document.querySelector('.hero .prompt .cursor');
@@ -167,15 +176,26 @@ export function bootShell() {
     });
   }
 
-  print(`koen@web — type 'help' for commands. ESC or 'exit' to close.`);
-
-  // Reopen the shell after a same-tab navigation triggered by `cd`/`cat`.
+  // Detect reopen-after-navigation before printing the welcome banner.
+  let reopening = false;
   try {
     if (sessionStorage.getItem('shell:reopen') === '1') {
+      reopening = true;
       sessionStorage.removeItem('shell:reopen');
-      open();
+      const saved = sessionStorage.getItem('shell:output');
+      if (saved) {
+        output.innerHTML = saved;
+        sessionStorage.removeItem('shell:output');
+      }
     }
   } catch { /* ignore */ }
+
+  if (reopening) {
+    print(`# arrived at ${window.location.pathname}`);
+    open();
+  } else {
+    print(`koen@web — type 'help' for commands. ESC or 'exit' to close.`);
+  }
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {

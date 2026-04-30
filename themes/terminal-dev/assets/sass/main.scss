@@ -2304,10 +2304,10 @@ footer.foot {
 .hero .prompt .cursor { cursor: pointer; }
 .hero .prompt .cursor:hover { opacity: 0.7; }
 
-.ps-row-pulse {
-  animation: ps-pulse 400ms ease;
-}
-@keyframes ps-pulse {
-  0%   { background: var(--accent-soft); }
-  100% { background: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .ps-row-pulse { animation: ps-pulse 400ms ease; }
+  @keyframes ps-pulse {
+    0%   { background: var(--accent-soft); }
+    100% { background: transparent; }
+  }
 }

@@ -96,19 +96,20 @@ export const commands = [
     name: 'cd',
     summary: 'change directory',
     run(ctx, args) {
-      const target = args[0];
+      const raw = args[0];
+      if (!raw || raw === '~' || raw === '~/' || raw === '/') return ctx.navigate('/');
+      // Accept any of: posts, posts/, ~/posts, ~/posts/
+      const key = raw.replace(/\/$/, '').replace(/^~\//, '');
       const map = {
-        '~': '/',
-        '~/': '/',
-        '~/about': '/about/',
-        '~/posts': '/posts/',
-        '~/series': '/series/',
-        '~/borgdock': 'https://borgdock.pages.dev/',
+        about: '/about/',
+        posts: '/posts/',
+        series: '/series/',
+        borgdock: 'https://borgdock.pages.dev/',
       };
-      if (target && Object.prototype.hasOwnProperty.call(map, target)) {
-        return ctx.navigate(map[target]);
+      if (Object.prototype.hasOwnProperty.call(map, key)) {
+        return ctx.navigate(map[key]);
       }
-      ctx.print(`cd: ${target || ''}: no such file or directory`);
+      ctx.print(`cd: ${raw}: no such file or directory`);
     },
   },
   {

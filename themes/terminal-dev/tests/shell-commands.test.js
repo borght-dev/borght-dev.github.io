@@ -184,6 +184,30 @@ test('cd unknown: prints error', () => {
   assert.match(ctx.calls.print.join(' '), /no such file or directory/i);
 });
 
+test('cd posts: navigates without ~/', () => {
+  const ctx = makeCtx();
+  dispatch('cd posts', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/posts/']);
+});
+
+test('cd posts/: navigates with trailing slash', () => {
+  const ctx = makeCtx();
+  dispatch('cd posts/', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/posts/']);
+});
+
+test('cd ~/posts/: navigates with both prefix and slash', () => {
+  const ctx = makeCtx();
+  dispatch('cd ~/posts/', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/posts/']);
+});
+
+test('cd: no arg navigates home', () => {
+  const ctx = makeCtx();
+  dispatch('cd', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/']);
+});
+
 test('theme dark: invokes ctx.setTheme("dark")', () => {
   const ctx = makeCtx();
   dispatch('theme dark', ctx);

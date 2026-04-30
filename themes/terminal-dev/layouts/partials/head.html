@@ -39,6 +39,9 @@
 {{ $jsOpts := dict "minify" true "format" "esm" "targetPath" "js/ps-live.js" }}
 {{ $psLive := resources.Get "js/ps-live.js" | js.Build $jsOpts | resources.Fingerprint }}
 <script type="module" src="{{ $psLive.RelPermalink }}" integrity="{{ $psLive.Data.Integrity }}" defer></script>
+{{ $shellOpts := dict "minify" true "format" "esm" "targetPath" "js/shell.js" }}
+{{ $shell := resources.Get "js/shell.js" | js.Build $shellOpts | resources.Fingerprint }}
+<script type="module" src="{{ $shell.RelPermalink }}" integrity="{{ $shell.Data.Integrity }}" defer></script>
 
 <!-- RSS -->
 {{ range .AlternativeOutputFormats -}}

@@ -61,6 +61,16 @@ export function bootShell() {
   let historyIdx = history.length;
   const site = buildSiteData();
   const dadModeSince = '2023-07-23';
+  const pathToTilde = (p) => {
+    if (!p || p === '/') return '~';
+    return '~/' + p.replace(/^\//, '').replace(/\/$/, '');
+  };
+  const pwd = pathToTilde(window.location.pathname);
+  const promptStr = `${pwd} $`;
+
+  // Reflect cwd in the live input prompt.
+  const promptEl = drawer.querySelector('.shell-prompt');
+  if (promptEl) promptEl.textContent = promptStr;
 
   const print = (line) => {
     const el = document.createElement('div');
@@ -73,7 +83,7 @@ export function bootShell() {
   const printPrompt = (cmd) => {
     const el = document.createElement('div');
     el.className = 'shell-line shell-line-cmd';
-    el.textContent = `$ ${cmd}`;
+    el.textContent = `${promptStr} ${cmd}`;
     output.appendChild(el);
   };
 
@@ -125,6 +135,7 @@ export function bootShell() {
     site,
     history,
     dadModeSince,
+    pwd,
   };
 
   form.addEventListener('submit', (e) => {
@@ -191,7 +202,6 @@ export function bootShell() {
   } catch { /* ignore */ }
 
   if (reopening) {
-    print(`# arrived at ${window.location.pathname}`);
     open();
   } else {
     print(`koen@web — type 'help' for commands. ESC or 'exit' to close.`);

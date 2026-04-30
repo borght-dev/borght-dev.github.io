@@ -26,7 +26,7 @@ export const commands = [
   {
     name: 'pwd',
     summary: 'print working directory',
-    run(ctx) { ctx.print('~'); },
+    run(ctx) { ctx.print(ctx.pwd || '~'); },
   },
   {
     name: 'clear',

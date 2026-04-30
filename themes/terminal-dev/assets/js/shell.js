@@ -103,6 +103,8 @@ export function bootShell() {
       if (mode === 'toggle' || !mode) {
         toggleBtn.click();
       } else {
+        // Theme button cycles auto → light → dark → auto. Click up to 3 times to
+        // land on the requested mode. If the cycle is ever extended, raise this.
         for (let i = 0; i < 3; i++) {
           const current = label?.textContent?.trim();
           if (current === mode) break;

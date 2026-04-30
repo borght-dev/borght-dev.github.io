@@ -112,6 +112,85 @@ export const commands = [
     },
   },
   {
+    name: 'theme',
+    summary: 'cycle or set theme [dark|light|auto|toggle]',
+    run(ctx, args) {
+      const mode = args[0];
+      if (!mode) return ctx.setTheme('toggle');
+      if (['dark', 'light', 'auto', 'toggle'].includes(mode)) return ctx.setTheme(mode);
+      ctx.print(`theme: unknown theme '${mode}' (try dark|light|auto|toggle)`);
+    },
+  },
+  {
+    name: 'sudo',
+    summary: 'try and see',
+    run(ctx) {
+      ctx.print(`Sorry, koen is not in the sudoers file. This incident will be reported.`);
+    },
+  },
+  {
+    name: 'vim',
+    summary: 'open vim',
+    run(ctx) {
+      ctx.print(`Use :q! to escape vim. Just kidding — press ESC.`);
+    },
+  },
+  {
+    name: 'nano',
+    summary: 'open nano',
+    run(ctx) { ctx.print(`real ones use vim. (press ESC to close)`); },
+  },
+  {
+    name: 'rm',
+    summary: 'remove (you cannot)',
+    run(ctx, args) {
+      if (args.includes('-rf') && args.includes('/')) return ctx.print('nice try.');
+      ctx.print(`rm: read-only file system`);
+    },
+  },
+  {
+    name: 'cowsay',
+    summary: 'an opinionated cow',
+    run(ctx, args) {
+      const msg = args.join(' ') || 'moo';
+      const top = ' ' + '_'.repeat(msg.length + 2);
+      const mid = `< ${msg} >`;
+      const bot = ' ' + '-'.repeat(msg.length + 2);
+      ctx.print(top);
+      ctx.print(mid);
+      ctx.print(bot);
+      ctx.print('        \\   ^__^');
+      ctx.print('         \\  (oo)\\_______');
+      ctx.print('            (__)\\       )\\/\\');
+      ctx.print('                ||----w |');
+      ctx.print('                ||     ||');
+    },
+  },
+  {
+    name: 'fortune',
+    summary: 'a random truth',
+    run(ctx) {
+      const pool = [
+        'ship beats perfect.',
+        'the best code is the code you do not need to write.',
+        'comments lie. tests do not.',
+        'cmd+s is for cowards. real engineers fear nothing.',
+        'three similar lines beats a premature abstraction.',
+      ];
+      ctx.print(pool[Math.floor(Math.random() * pool.length)]);
+    },
+  },
+  {
+    name: 'top',
+    summary: 'animate the ps -ef table',
+    run(ctx) {
+      ctx.print('refreshing process table...');
+      if (ctx.dispatchEvent) {
+        ctx.dispatchEvent(new CustomEvent('shell:top'));
+      }
+    },
+  },
+  {
     name: 'exit',
     summary: 'close the shell',
     run(ctx) { ctx.close(); },

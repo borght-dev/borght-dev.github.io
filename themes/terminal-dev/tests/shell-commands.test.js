@@ -183,3 +183,64 @@ test('cd unknown: prints error', () => {
   dispatch('cd ~/nowhere', ctx);
   assert.match(ctx.calls.print.join(' '), /no such file or directory/i);
 });
+
+test('theme dark: invokes ctx.setTheme("dark")', () => {
+  const ctx = makeCtx();
+  dispatch('theme dark', ctx);
+  assert.deepEqual(ctx.calls.setTheme, ['dark']);
+});
+
+test('theme: with no arg cycles via ctx.setTheme("toggle")', () => {
+  const ctx = makeCtx();
+  dispatch('theme', ctx);
+  assert.deepEqual(ctx.calls.setTheme, ['toggle']);
+});
+
+test('theme bogus: prints error', () => {
+  const ctx = makeCtx();
+  dispatch('theme bogus', ctx);
+  assert.match(ctx.calls.print.join(' '), /unknown theme/i);
+});
+
+test('sudo: prints sudoers refusal', () => {
+  const ctx = makeCtx();
+  dispatch('sudo rm', ctx);
+  assert.match(ctx.calls.print.join(' '), /sudoers/i);
+});
+
+test('vim: prints vim joke', () => {
+  const ctx = makeCtx();
+  dispatch('vim', ctx);
+  assert.match(ctx.calls.print.join(' '), /:q!|escape/i);
+});
+
+test('rm -rf /: prints "nice try"', () => {
+  const ctx = makeCtx();
+  dispatch('rm -rf /', ctx);
+  assert.match(ctx.calls.print.join(' '), /nice try/i);
+});
+
+test('cowsay hello: produces cow + message', () => {
+  const ctx = makeCtx();
+  dispatch('cowsay hello world', ctx);
+  const out = ctx.calls.print.join('\n');
+  assert.ok(out.includes('hello world'));
+  assert.ok(out.includes('^__^') || out.includes('moo') || out.includes('(oo)'));
+});
+
+test('fortune: prints one of the known fortunes', () => {
+  const ctx = makeCtx();
+  dispatch('fortune', ctx);
+  assert.equal(ctx.calls.print.length, 1);
+  assert.ok(ctx.calls.print[0].length > 0);
+});
+
+test('top: dispatches shell:top via ctx.dispatchEvent', () => {
+  const events = [];
+  const ctx = { ...makeCtx(), dispatchEvent: (e) => events.push(e) };
+  // re-bind print to use the new ctx
+  ctx.print = (l) => ctx.calls.print.push(l);
+  dispatch('top', ctx);
+  assert.equal(events.length, 1);
+  assert.equal(events[0].type, 'shell:top');
+});

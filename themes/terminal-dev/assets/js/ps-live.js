@@ -125,3 +125,15 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     bootPsLive();
   }
 }
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('shell:top', () => {
+    const rows = document.querySelectorAll('.ps-row:not(.ps-head)');
+    rows.forEach((row, i) => {
+      setTimeout(() => {
+        row.classList.add('ps-row-pulse');
+        setTimeout(() => row.classList.remove('ps-row-pulse'), 400);
+      }, i * 120);
+    });
+  });
+}

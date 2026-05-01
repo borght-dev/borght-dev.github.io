@@ -2330,6 +2330,14 @@ footer.foot {
   font-family: var(--font-mono);
 }
 
+/* The shell only works with a physical keyboard; hide the hints on touch
+   devices and narrow viewports where pressing \ is awkward. The OR
+   combination catches phones whose UAs misreport (hover/pointer) plus
+   any narrow desktop window. */
+@media (pointer: coarse), (max-width: 768px) {
+  .prompt-hint, .foot-shell-hint { display: none !important; }
+}
+
 /* .ps-row uses display:contents, so its own background is invisible.
    Pulse the cells (> span) instead. */
 .ps-row-pulse > span {

@@ -35,4 +35,6 @@ Initially I thought, I’m a Windows user, what could be a better feel than nati
 
 ## Why not Electron
 
-...
+- bigger footprint (installer size + ram usage during runtime)
+- Essentially every Tauri pro is a con in electron
+- 

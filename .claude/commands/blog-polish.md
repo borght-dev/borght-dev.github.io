@@ -1,94 +1,114 @@
 ---
-description: Polish a rough draft into flowing prose for koenvdborght.nl. Identifies gaps and asks targeted questions to fill them, then rewrites for flow while preserving voice.
+description: Rewrite a rough draft into a publish-ready post for koenvdborght.nl. Reads style guide and reference posts, fills gaps via interview, then rewrites in Koen's voice. Output should need <15 min of human review.
 argument-hint: <path to draft file>
 ---
 
-You are polishing a rough blog draft for koenvdborght.nl. The author is Koen, a Dutch senior developer writing about AI-native engineering workflows and developer tools. Voice is direct, practical, dev-to-dev. Rough edges are a feature; AI slop is the enemy.
-
-If $ARGUMENTS is a file path, read the file. Otherwise treat as draft content.
+You are taking a rough draft and producing a publish-ready post for koenvdborght.nl. Output goal: Koen reads it, makes 5-10 small tweaks, hits publish.
 
 Draft: $ARGUMENTS
 
-## Workflow
+## Required reading before you start
 
-You work in three phases. Do not skip phase 2.
+Read these in order. Do not skip.
+
+1. `.claude/style-guide.md` — how Koen writes
+2. At least ONE reference post listed in the style guide. Pick the one closest in topic to the draft.
+3. The draft itself, end to end, before you touch anything.
+
+If any of these files are missing, stop and tell Koen which one.
+
+## Workflow
 
 ### Phase 1: Audit
 
-Read the draft once, end to end. Identify three categories of issues:
+After reading, identify:
 
-**Gaps** (need user input):
+**Hard gaps** (block publishing, need user input):
 - `[TODO: ...]` or `[needs: ...]` markers
-- Empty sections (heading with no content, or just `...`)
-- Placeholder links: `[some-link-goes-here]`, `[article-name]`, etc.
-- Vague claims that need a specific example, number, or detail
-- Counter-arguments or trade-offs that the post implies but doesn't state
-- Factual claims that read as uncertain ("about 9 years", "30 year old platform")
+- Empty sections (heading with no content, just `...`, or single placeholder)
+- Placeholder links: `[some-link]`, `[article-name-goes-here]`
+- Factual claims that read uncertain ("about 9 years")
+- Missing concrete evidence in a section that demands it (a "why we picked X" section with no reasons)
 
-**Flow issues** (you fix in phase 3):
-- Awkward sentence openings, dual verbs, filler
-- Paragraph order that buries the argument
-- Sections that don't connect to the previous one
-- Missing transitions between the problem and the solution
+**Soft gaps** (you can rewrite around them, but flag if you do):
+- A paragraph that gestures at an idea without landing it
+- A section that's shorter than it should be given its weight in the argument
 
-**Voice issues** (flag, don't fix):
-- Anything that sounds generic enough to fit any blog
-- Three-part rhetorical structures, mirror sentences
-- Banned vocabulary (see below)
+### Phase 2: Interview (only for hard gaps)
 
-### Phase 2: Interview
+Use AskUserQuestion. Up to 4 questions per round, batched. Rules:
 
-For every gap from phase 1, ask Koen using the AskUserQuestion tool. Rules:
+- For placeholder links: ask "exists / planned / cut" with options.
+- For empty sections: ask for 2-4 bullets in his own words, free text. Tell him 10-second answers are fine, you'll rewrite.
+- For uncertain facts: give him the exact line and ask for the correction.
+- For missing evidence: offer 2-3 plausible angles based on what the rest of the post implies, plus free-text option.
 
-- Ask up to 4 questions per round, batched. Do not ask one at a time.
-- Each question must be specific. Bad: "What do you want to say about Electron?" Good: "For the Electron section, what's your one-sentence reason for not picking it: bundle size, memory footprint, security model, or something else?"
-- Provide 2-4 multiple-choice options when the answer is likely to be a known category (framework choice, yes/no, scope). Use free-text only when an example or specific phrasing is needed.
-- For placeholder links, ask: does this post exist already (give URL), is it planned (mark as TODO), or should the reference be cut?
-- If a gap can be filled by a one-line clarification rather than new content, ask for that line in Koen's words. Do not invent the line yourself.
-- After the first round, do a second round only if the first answers create new gaps. Do not pad with optional questions.
+Skip phase 2 entirely if there are no hard gaps. Say "No gaps, rewriting now."
 
-If the draft has no gaps, skip phase 2 entirely. Say "No gaps to fill, polishing now" and continue.
+### Phase 3: Rewrite
 
-### Phase 3: Polish
+This is the agressive step. You are NOT polishing connective tissue. You ARE rewriting for flow, rhythm, and voice match to the reference post.
 
-Now rewrite for flow. Hard constraints:
+Allowed:
+- Reorder paragraphs within a section if it improves the argument
+- Combine or split paragraphs for rhythm
+- Rewrite awkward sentences fully, using vocabulary and patterns from the style guide
+- Cut sentences that don't earn their place
+- Replace generic claims with specific ones IF the specifics exist elsewhere in the draft (do not invent)
+- Tighten the opening so it lands in the first 2-3 sentences
 
-- Use Koen's exact phrasing wherever it works. Polish the connective tissue between his sentences, not the sentences themselves.
-- Fix grammar and clunky construction silently.
-- Apply silent fixes for: em dashes (→ comma/period/parens), banned vocabulary (leveraging, robust, seamless, delve, navigate, journey, unlock, empower, supercharge, game-changer, crucial, essentially, fundamentally, ultimately, certainly, indeed, moreover, furthermore, nevertheless, additionally), banned phrases ("it's worth noting", "keep in mind", "that being said", "in essence", "in today's fast-paced", "at the end of the day", "in conclusion").
-- Tighten paragraphs that meander. One paragraph per idea.
-- Vary sentence length. Fragments are fine. Short sentences are fine.
-- Do not add transitions like "Furthermore", "In conclusion", "It's worth noting".
-- Do not smooth Dutch directness into politeness.
-- Never invent a fact, a number, or an example. If a claim still feels weak after the interview, leave a `<!-- EDIT: ... -->` flag for blog-editor.
+Not allowed:
+- Inventing facts, numbers, names, code, or examples
+- Changing the argument or the order of sections
+- Adding "AI smoothing" transitions ("Furthermore", "It's worth noting")
+- Smoothing Dutch directness into politeness
+- Removing self-deprecation, opinions, or asides — those are voice
+- Using any banned vocabulary or banned phrase from the style guide
+
+For every rewritten paragraph, the test is: does this sound like the reference post you read? If not, rewrite again before output.
+
+### Phase 4: Self-check
+
+Before producing output, scan your draft for:
+- Em dashes → fix
+- Any banned word or phrase → fix
+- Three-adjective stacks → cut to one
+- "Not just X, but Y" patterns → rewrite
+- Mirror sentences ("It's not about X, it's about Y") → rewrite
+- Any paragraph longer than 4 sentences without a fragment or short sentence for rhythm → rewrite
+- Opening that doesn't land in 2-3 sentences → rewrite
 
 ## Output format
-
-Produce in this order:
 
 ```
 ## Audit
 
-Brief: how many gaps, how many flow issues, overall shape.
+Hard gaps: [count]
+Soft gaps: [count]
+Reference post used: [filename]
 
 ---
 
-## Polished draft
+## Rewritten draft
 
-[Full polished markdown, gaps filled from interview answers, silent fixes applied. Use front matter from the original.]
-
----
-
-## What I changed
-
-Numbered list of substantive changes (not banned-word swaps). For each: section, change, reason.
+[Full markdown, front matter included, ready to publish after light review]
 
 ---
 
-## What I left for blog-editor
+## Where I took liberties
 
-Sentences or sections you suspect still need an editorial eye. One line each.
+Numbered list. For each substantial rewrite (not silent fixes): paragraph reference, what I changed, why.
+
+Maximum 10 entries. If there are more, group them.
+
+---
+
+## Things Koen should double-check
+
+- Factual claims I couldn't verify
+- Places where I rewrote heavily and might have drifted from his intent
+- Anything that still feels generic to you despite the rewrite
 ```
 
-Stop after producing this. Do not ask if Koen wants more changes. Hand off to `/blog-edit` if needed.
+Stop after producing this. Do not ask for confirmation.
 

@@ -35,7 +35,7 @@ highlights:
     summary: "Wired Horizon, the legacy main portal, and the customer portal onto a shared RabbitMQ broker via SignalR fanout. Tenant-scoped hub, an embedded MassTransit consumer alongside Wolverine, and an Undo/revert UX for accidental customer-visible sends."
   - period: "2026"
     title: "Autonomous nightly fixer loops"
-    summary: "Two slash commands run on launchd timers each morning — one triages and fixes failing E2E tests against staging, the other fixes Code Scanning + Dependabot alerts on a daily budget. Both ship one dated PR per run, never dismiss findings, never suppress with comments."
+    summary: "Two slash commands run on launchd timers each morning — one triages and fixes failing E2E tests against staging, the other fixes Code Scanning + Dependabot alerts on a daily budget. Both ship one dated PR per run, never dismiss findings, never suppress with comments. A separate monitoring loop watches each PR after it's opened — failing CI, review comments, merge conflicts — and self-heals until it goes green or escalates."
   - period: "2026"
     title: "Skipped-test triage pipeline"
     summary: "Built a classifier that buckets every skipped E2E test by reason, plus a daily loop that converts data-missing skips into seeded specs in batches of eight. Added a nightly gate to keep the count from drifting back up."

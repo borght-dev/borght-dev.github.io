@@ -14,6 +14,11 @@ Direct, dev-to-dev, no marketing layer. Writes like he's explaining something to
 - Uses italics for emphasis sparingly: "I was going _fast_"
 - Self-aware confessions: "I am not great at keeping track of things"
 - Casual technical: "the noisy work (polling, parsing, git)" not "performance-critical operations"
+- Mid-sentence parentheticals for caveats: "(at least initially)", "(initially called PRDock)"
+- Personal rules introduced with a colon: "I have one hard rule: work first, then BorgDock"
+- Chained concrete examples: "whether that's X, or Y"
+- Acknowledges uncertainty in a full sentence, not a clipped phrase: "I also genuinely don't know whether the tool scales past me"
+- Explicit reversal setup, then admission: "Initially I thought X. Well, I was wrong."
 
 ## Sentence patterns Koen does NOT use
 
@@ -23,6 +28,13 @@ Direct, dev-to-dev, no marketing layer. Writes like he's explaining something to
 - "The truth is..."
 - Three-adjective stacks: "fast, reliable, and scalable"
 - Rhetorical questions as section openers
+- "X, exactly. They're Y" pseudo-correction reversal ("These aren't tools, exactly. They're...")
+- Two-word mic-drop sentences ("Honest unknown.", "Pure tax.")
+- Clipped aphorism + inverted echo ("My rule is hard. Work first, BorgDock after.")
+- Parenthetical triplets for symmetry: "(A, B, C) and (D, E)"
+- "The whole point of X is to be Y" framing
+- Scare-quoted performative casual words ("distinctly more 'meh'")
+- TOCs of future posts as bulleted bolded-title teasers
 
 ## Paragraph rhythm
 
@@ -33,6 +45,15 @@ Mix of:
 - Code blocks and inline `backticks` for anything technical
 
 Avoid: 5+ sentence dense paragraphs without a break.
+
+## Post structure
+
+- Open with the situation, not a hook ("It started when Gomocha kicked off...")
+- Subheadings are claims with the post's tension in them ("I built a sidebar, I use a tray"), not topic nouns ("Sidebar vs tray")
+- End on something concrete: a link, a current status, or a single emotional honest line ("I'm having fun building this thing out...")
+- Don't preview future posts with bulleted bolded-title teasers
+- Don't bolt on a "more posts coming" sentence if the previous paragraph already lands
+- Don't reader-flatter the closer ("If you've felt the same friction...")
 
 ## Reference posts
 

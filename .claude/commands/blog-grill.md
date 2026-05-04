@@ -85,7 +85,7 @@ After the interview, write the post. Read the style guide one more time before y
 - First person singular. "we" only when he genuinely worked with someone
 - Apply all silent fixes from the style guide (em dash policy, banned vocabulary, banned phrases)
 - Match the rhythm of the reference post you read
-- Keep his em-dash asides, parenthetical asides, italics-on-one-word emphasis, scare quotes for informal usage, personification of tools, epistemic hedges. These are voice, not noise.
+- Keep his parenthetical asides, italics-on-one-word emphasis, scare quotes for informal usage (but not as performative substitutes for plain words like "distinctly more 'meh'"), personification of tools, epistemic hedges. These are voice, not noise.
 - No three-item rhetorical lists where two would do. No mirror sentences.
 - If something is unclear or missing, leave a `<!-- EDIT: ... -->` flag. Do not invent.
 
@@ -107,11 +107,18 @@ episode: [if part of series]
 ## Self-check before output
 
 Scan your draft for:
-- Em dashes used as colon replacements → fix (asides only)
+- Any em dash → replace with comma, period, or parentheses
 - Any banned word or phrase → fix
 - Three-adjective stacks → cut to one
 - "Not just X, but Y" patterns → rewrite
 - Mirror sentences ("It's not about X, it's about Y") → rewrite
+- "X, exactly. They're Y" pseudo-correction reversal → rewrite
+- Two-word mic-drop sentences ("Honest unknown.") → expand to a full sentence
+- Clipped aphorism + inverted echo ("My rule is hard. Work first, BorgDock after.") → rewrite as one sentence with a colon
+- Parenthetical triplets for symmetry ("(A, B, C) and (D, E)") → drop the symmetry
+- "The whole point of X is to be Y" framing → rewrite
+- Bulleted bolded-title teasers of future posts → cut
+- Reader-flatter closer ("If you've felt the same friction...") → cut
 - Opening that doesn't land in 2-3 sentences → rewrite
 - Any section without specific evidence → flag or cut
 - Any sentence that could appear in any blog on this topic → rewrite to be specific

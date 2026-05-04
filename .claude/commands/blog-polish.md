@@ -62,7 +62,7 @@ Not allowed:
 - Changing the argument or the order of sections
 - Adding "AI smoothing" transitions ("Furthermore", "It's worth noting")
 - Smoothing Dutch directness into politeness
-- Removing self-deprecation, opinions, or asides — those are voice
+- Removing self-deprecation, opinions, or asides; those are voice
 - Using any banned vocabulary or banned phrase from the style guide
 
 For every rewritten paragraph, the test is: does this sound like the reference post you read? If not, rewrite again before output.
@@ -75,6 +75,13 @@ Before producing output, scan your draft for:
 - Three-adjective stacks → cut to one
 - "Not just X, but Y" patterns → rewrite
 - Mirror sentences ("It's not about X, it's about Y") → rewrite
+- "X, exactly. They're Y" pseudo-correction reversal → rewrite
+- Two-word mic-drop sentences ("Honest unknown.") → expand to a full sentence
+- Clipped aphorism + inverted echo ("My rule is hard. Work first, BorgDock after.") → rewrite as one sentence with a colon
+- Parenthetical triplets for symmetry ("(A, B, C) and (D, E)") → drop the symmetry
+- "The whole point of X is to be Y" framing → rewrite
+- Bulleted bolded-title teasers of future posts → cut
+- Reader-flatter closer ("If you've felt the same friction...") → cut
 - Any paragraph longer than 4 sentences without a fragment or short sentence for rhythm → rewrite
 - Opening that doesn't land in 2-3 sentences → rewrite
 

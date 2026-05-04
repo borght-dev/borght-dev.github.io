@@ -121,6 +121,15 @@
                 <span class="arr"></span>
               </div>
             {{ else if eq $st "draft" }}
+              {{ if hugo.IsServer }}
+              <a href="{{ .RelPermalink }}" class="ep draft" style="opacity:0.7;">
+                <span class="num">ep{{ $num }}</span>
+                <span class="d">{{ if not .Date.IsZero }}{{ dateFormat "2006-01-02" .Date }}{{ else }}—{{ end }}</span>
+                <span class="t">{{ .Title }}{{ with .Params.summary }}<span class="sub">{{ . }}</span>{{ end }}</span>
+                <span class="st">draft</span>
+                <span class="arr">→</span>
+              </a>
+              {{ else }}
               <div class="ep draft" aria-disabled="true" style="cursor:not-allowed;opacity:0.7;">
                 <span class="num">ep{{ $num }}</span>
                 <span class="d">{{ if not .Date.IsZero }}{{ dateFormat "2006-01-02" .Date }}{{ else }}—{{ end }}</span>
@@ -128,6 +137,7 @@
                 <span class="st">draft</span>
                 <span class="arr">→</span>
               </div>
+              {{ end }}
             {{ else }}
               <a href="{{ .RelPermalink }}" class="ep shipped">
                 <span class="num">ep{{ $num }}</span>

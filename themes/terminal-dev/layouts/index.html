@@ -1,6 +1,11 @@
 {{ define "main" }}
-{{- $allPosts := where .Site.RegularPages "Section" "posts" -}}
-{{- $allPosts = where $allPosts ".Params.draft" "ne" true -}}
+{{- $standalone := where .Site.RegularPages "Section" "posts" -}}
+{{- $episodes   := where .Site.RegularPages "Section" "series" -}}
+{{- $allPosts   := $standalone | append $episodes -}}
+{{- if not hugo.IsServer -}}
+  {{- $allPosts = where $allPosts ".Params.draft" "ne" true -}}
+{{- end -}}
+{{- $allPosts = sort $allPosts "Date" "desc" -}}
 {{- $posts    := first 4 $allPosts -}}
 {{- $shipping := where .Site.RegularPages "Section" "projects" -}}
 {{- $shipping  = where $shipping ".Params.pinned" "eq" true -}}

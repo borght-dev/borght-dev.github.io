@@ -26,7 +26,7 @@ experience:
 highlights:
   - period: "2026"
     title: "Ortec optimization integration"
-    summary: "Designed and shipped a 13-plan integration with Ortec's optimization engine — messaging + worker scaffolding, four periodic syncs (Resource, Activity, Realization, Recurring), webhook intake with idempotency, batch + single-route + timeslot flows, planboard augmentation, and an admin sync dashboard. First user-visible feature landed at Plan 8."
+    summary: "Designed and shipped a phased integration with Ortec's optimization engine — messaging + worker scaffolding, periodic syncs, webhook intake with idempotency, batch + single-route + timeslot flows, planboard augmentation, and an admin sync dashboard."
   - period: "2026"
     title: "Workspace Designer rebuild"
     summary: "Replaced the legacy react-dnd workspace editor with a feature-flagged rewrite — Layout, Position, Visible/Editable rules, Bulk update, Reset, optimistic-concurrency Save, plus a Playwright suite. Retired the legacy pages, stores, and components at cutover."

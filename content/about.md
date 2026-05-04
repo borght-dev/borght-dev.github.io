@@ -41,7 +41,7 @@ highlights:
     summary: "Built a classifier that buckets every skipped E2E test by reason, plus a daily loop that converts data-missing skips into seeded specs in batches of eight. Added a nightly gate to keep the count from drifting back up."
   - period: "2026"
     title: "Multi-pod readiness and zero-downtime deploys"
-    summary: "Made the platform horizontally scalable — SignalR Redis backplane, distributed cache, HPA on staging with PDBs, startup-probe tuning, and a deploy workflow that no longer drops connections. Verified via k6 load tests in CI."
+    summary: "Made the platform horizontally scalable on Kubernetes — SignalR Redis backplane, distributed cache, HPA + PDBs on staging, startup-probe tuning, and a deploy workflow that no longer drops connections. Verified via k6 load tests in CI."
   - period: "2026"
     title: "Quote management — workspace and pricing"
     summary: "Shipped the Quote Workspace end to end — wizard, deferred-edit persistence, revision/history lifecycle, the full pricebook hierarchy with CSV export and template management, and synchronous UQTC PDF render on Send."

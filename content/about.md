@@ -1,5 +1,5 @@
 ---
-title: "Koen"
+title: "About — Koen van der Borght"
 description: "Senior dev & tech lead at Gomocha. .NET, Azure, AI-native workflows."
 layout: about
 fullName: "Koen van der Borght"

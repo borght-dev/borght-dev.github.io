@@ -31,6 +31,7 @@ Direct, dev-to-dev, no marketing layer. Writes like he's explaining something to
 - "X, exactly. They're Y" pseudo-correction reversal ("These aren't tools, exactly. They're...")
 - Two-word mic-drop sentences ("Honest unknown.", "Pure tax.")
 - Clipped aphorism + inverted echo ("My rule is hard. Work first, BorgDock after.")
+- "Sunglasses-and-walk-away" one-liners. The pattern: a punchy standalone sentence dropped at the start or end of a paragraph, designed to land like a tagline. Examples to never produce: "Tiny detail, oversized payoff.", "Blue is 2. Done.", "The colours pay off again when I'm verifying.", "`fsp` also self-heals on the way up.", "No two instances ever fight for the same socket.", "No config to edit.", "No two instances collide. No mental tracking of which port is which." Even when the underlying claim is true, this register reads as performative chest-puffing. Replace with plain descriptive prose, or cut the sentence entirely if the surrounding paragraph already implies it.
 - Parenthetical triplets for symmetry: "(A, B, C) and (D, E)"
 - "The whole point of X is to be Y" framing
 - Scare-quoted performative casual words ("distinctly more 'meh'")

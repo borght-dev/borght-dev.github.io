@@ -3,7 +3,17 @@
 <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author }}">
 
-{{- $ogImage := .Params.image | default .Site.Params.social.image | default "images/og-preview.png" -}}
+{{/* OG image resolution:
+     1. Page frontmatter `image:` if set
+     2. Auto-generated card at images/og/<slug>.png if it exists (slug derived from RelPermalink — see scripts/og.ts)
+     3. Site-wide default
+*/}}
+{{- $autoSlug := .RelPermalink | strings.TrimPrefix "/" | strings.TrimSuffix "/" | replaceRE "/" "-" -}}
+{{- if eq $autoSlug "" }}{{ $autoSlug = "home" }}{{ end -}}
+{{- $autoOgPath := printf "static/images/og/%s.png" $autoSlug -}}
+{{- $autoOg := "" -}}
+{{- if (fileExists $autoOgPath) }}{{ $autoOg = printf "images/og/%s.png" $autoSlug }}{{ end -}}
+{{- $ogImage := .Params.image | default $autoOg | default .Site.Params.social.image | default "images/og-preview.png" -}}
 {{- $ogImageAbs := $ogImage | absURL -}}
 
 <!-- Open Graph / Facebook -->

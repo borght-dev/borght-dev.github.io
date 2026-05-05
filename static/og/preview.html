@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>OG cards preview — koenvdborght.nl</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { color-scheme: light; }
+    html, body { margin: 0; padding: 0; background: #f0eee9; font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace; color: #29261b; }
+    .page { padding: 48px 56px; }
+    h1.page-title { font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+    p.page-sub { font-size: 13px; color: #76715f; margin: 0 0 32px; }
+    section { margin-bottom: 56px; }
+    section h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #76715f; margin: 0 0 4px; }
+    section p { font-size: 12px; color: #9c9682; margin: 0 0 16px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 1340px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .frame { background: #fff; border: 1px solid #e7e3d8; border-radius: 12px; padding: 12px; box-shadow: 0 1px 0 rgba(0,0,0,.02); display: inline-block; }
+    .frame .label { font-size: 11px; color: #9c9682; padding-top: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .frame .stage { width: 1200px; height: 630px; overflow: hidden; border-radius: 4px; }
+    .scaled-50 .stage { transform: scale(0.5); transform-origin: top left; width: 600px; height: 315px; }
+    .scaled-33 .stage { transform: scale(0.333333); transform-origin: top left; width: 400px; height: 210px; }
+    .scaled-50 .inner { width: 1200px; height: 630px; }
+    .scaled-33 .inner { width: 1200px; height: 630px; }
+    .row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="page">
+    <h1 class="page-title">OG card variants — koenvdborght.nl</h1>
+    <p class="page-sub">1200 × 630 · JetBrains Mono · five series accents · auto-fitting titles</p>
+    <div id="root"></div>
+  </div>
+
+  <script type="text/babel" src="og-cards.jsx"></script>
+  <script type="text/babel" src="og-cards-site.jsx"></script>
+  <script type="text/babel">
+    const SITE_TAGLINE = "Senior dev & tech lead — performance, architecture, and AI-native engineering.";
+
+    // Real published posts on koenvdborght.nl right now.
+    const POSTS = [
+      {
+        slug: 'borgdock-file-palette',
+        title: "Ctrl+F8 — peeking at what the agents did while I wasn't looking",
+        series: 'engineering',
+        date: '2026 · 04 · 22',
+        tags: ['borgdock', 'tooling', 'tauri'],
+      },
+      {
+        slug: 'borgdock-1-1-0-tray-first',
+        title: 'BorgDock 1.1.0 — tray-first, in-app toasts, the file palette goes faster',
+        series: 'engineering',
+        date: '2026 · 04 · 23',
+        tags: ['borgdock', 'release', 'tauri'],
+      },
+    ];
+
+    const HOME = {
+      title: 'Senior dev & tech lead — performance, architecture, AI-native engineering',
+      series: 'engineering',
+      date: '2026 · 05 · 05',
+      tags: ['dotnet', 'claude-code', 'symbiotic'],
+    };
+
+    function Frame({ label, scale = 1, children }) {
+      const cls = ['frame'];
+      if (scale === 0.5) cls.push('scaled-50');
+      if (scale === 1/3) cls.push('scaled-33');
+      return (
+        <div className={cls.join(' ')}>
+          <div className="stage"><div className="inner">{children}</div></div>
+          <div className="label">{label}</div>
+        </div>
+      );
+    }
+
+    function Section({ title, sub, children }) {
+      return (
+        <section>
+          <h2>{title}</h2>
+          <p>{sub}</p>
+          {children}
+        </section>
+      );
+    }
+
+    function App() {
+      return (
+        <>
+          <Section
+            title="00 · site-tailored terminal — koenvdborght.nl palette"
+            sub="The chosen variant, restyled to match the site's terminal-dev theme: site colors, dot grid, koen@vanderborght:~$ prompt, pulse-dot, accent blue. Light + dark, real published posts, then size-shrunk previews.">
+            <div className="grid grid-2">
+              <Frame label="home · light"><SiteTerminalCard {...HOME} dark={false} /></Frame>
+              <Frame label="home · dark"><SiteTerminalCard {...HOME} dark={true} /></Frame>
+              {POSTS.map(p => (
+                <React.Fragment key={`site-${p.slug}`}>
+                  <Frame label={`${p.slug} · light`}><SiteTerminalCard {...p} dark={false} /></Frame>
+                  <Frame label={`${p.slug} · dark`}><SiteTerminalCard {...p} dark={true} /></Frame>
+                </React.Fragment>
+              ))}
+            </div>
+            <h2 style={{ marginTop: 32 }}>at 50% (linkedin / twitter feed)</h2>
+            <div className="row">
+              <Frame label="home · light · 50%" scale={0.5}><SiteTerminalCard {...HOME} dark={false} /></Frame>
+              <Frame label="home · dark · 50%" scale={0.5}><SiteTerminalCard {...HOME} dark={true} /></Frame>
+            </div>
+            <h2 style={{ marginTop: 32 }}>at 33% (slack / imessage)</h2>
+            <div className="row">
+              <Frame label="home · light · 33%" scale={1/3}><SiteTerminalCard {...HOME} dark={false} /></Frame>
+              <Frame label="home · dark · 33%" scale={1/3}><SiteTerminalCard {...HOME} dark={true} /></Frame>
+            </div>
+            <h2 style={{ marginTop: 32 }}>series accent palette (light)</h2>
+            <div className="grid grid-2">
+              {Object.keys(SITE_SERIES).map(key => (
+                <Frame key={`site-series-${key}`} label={`series.${key}`}>
+                  <SiteTerminalCard
+                    title={HOME.title} series={key}
+                    date={HOME.date} tags={HOME.tags} dark={false} />
+                </Frame>
+              ))}
+            </div>
+          </Section>
+
+          <Section
+            title="01 · original design variants (for reference)"
+            sub="The three Claude Design variants, kept here for comparison — terminal, diagrammatic, syntax.">
+            <div className="grid grid-2">
+              <Frame label="terminal · full"><TerminalCard {...HOME} dark={false} /></Frame>
+              <Frame label="diagrammatic · full"><DiagrammaticCard {...HOME} dark={false} /></Frame>
+              <Frame label="syntax · full"><SyntaxCard {...HOME} dark={false} /></Frame>
+            </div>
+            <div style={{ marginTop: 24 }}>
+              <h2 style={{ marginTop: 24 }}>at 50% (LinkedIn / Twitter feed)</h2>
+              <div className="row">
+                <Frame label="terminal · 50%" scale={0.5}><TerminalCard {...HOME} dark={false} /></Frame>
+                <Frame label="diagrammatic · 50%" scale={0.5}><DiagrammaticCard {...HOME} dark={false} /></Frame>
+                <Frame label="syntax · 50%" scale={0.5}><SyntaxCard {...HOME} dark={false} /></Frame>
+              </div>
+              <h2 style={{ marginTop: 24 }}>at 33% (slack unfurl / imessage)</h2>
+              <div className="row">
+                <Frame label="terminal · 33%" scale={1/3}><TerminalCard {...HOME} dark={false} /></Frame>
+                <Frame label="diagrammatic · 33%" scale={1/3}><DiagrammaticCard {...HOME} dark={false} /></Frame>
+                <Frame label="syntax · 33%" scale={1/3}><SyntaxCard {...HOME} dark={false} /></Frame>
+              </div>
+            </div>
+          </Section>
+
+          <Section
+            title="02 · published posts — terminal variant"
+            sub="Real titles from the blog, dark mode side by side.">
+            <div className="grid grid-2">
+              {POSTS.map(p => (
+                <React.Fragment key={p.slug}>
+                  <Frame label={`${p.slug} · light`}><TerminalCard {...p} dark={false} /></Frame>
+                  <Frame label={`${p.slug} · dark`}><TerminalCard {...p} dark={true} /></Frame>
+                </React.Fragment>
+              ))}
+            </div>
+          </Section>
+
+          <Section
+            title="03 · series palette — diagrammatic variant"
+            sub="One accent per series. Series taxonomy on the blog: ai-native-engineering, borgdock, fsp-horizon, multi-worktree-dotnet, my-setup. Mapped here to the design's five accents.">
+            <div className="grid grid-2">
+              {Object.keys(SERIES).map(key => (
+                <Frame key={key} label={`series.${key}`}>
+                  <DiagrammaticCard
+                    title={HOME.title} series={key}
+                    date={HOME.date} tags={HOME.tags} dark={false} />
+                </Frame>
+              ))}
+            </div>
+          </Section>
+
+          <Section
+            title="04 · long-title stress test — terminal variant"
+            sub="Auto-fit handles 30–105 character titles.">
+            <div className="grid grid-2">
+              <Frame label="short · ~45 chars">
+                <TerminalCard
+                  title="Claude Code on my phone, without the wrapper"
+                  series="engineering" date={HOME.date} tags={['mobile', 'claude-code']}
+                  dark={false} />
+              </Frame>
+              <Frame label="long · ~105 chars">
+                <TerminalCard
+                  title="BorgDock: a tool for the way I actually work — building developer tools that respect attention and context"
+                  series="engineering" date={HOME.date} tags={['borgdock', 'tauri', 'tooling']}
+                  dark={false} />
+              </Frame>
+            </div>
+          </Section>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

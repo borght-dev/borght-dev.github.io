@@ -1,0 +1,19 @@
+{
+  "name": "koenvanderborght-dev.github.io",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/react": "^19.2.14",
+    "gray-matter": "^4.0.3",
+    "react": "^19.2.5",
+    "satori": "^0.26.0"
+  }
+}

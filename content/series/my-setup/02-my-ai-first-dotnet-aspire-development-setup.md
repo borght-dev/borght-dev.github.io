@@ -3,7 +3,7 @@ title: "My AI-first .NET Aspire development setup"
 date: 2026-05-05
 seriesId: my-setup
 episode: 2
-draft: true
+draft: false
 summary: How our team runs a multi-service .NET Aspire app across multiple worktrees without port collisions or per-project setup, via a shared PowerShell profile checked into the repo.
 ---
 

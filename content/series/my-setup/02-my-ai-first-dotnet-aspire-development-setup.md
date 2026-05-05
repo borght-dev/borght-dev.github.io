@@ -4,6 +4,7 @@ date: 2026-05-05
 seriesId: my-setup
 episode: 2
 draft: false
+tags: [dotnet, aspire, powershell, worktrees, claude-code]
 summary: How our team runs a multi-service .NET Aspire app across multiple worktrees without port collisions or per-project setup, via a shared PowerShell profile checked into the repo.
 ---
 

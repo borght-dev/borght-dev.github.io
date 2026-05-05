@@ -4,6 +4,7 @@ date: 2026-05-04
 seriesId: my-setup
 episode: 1
 draft: false
+tags: [claude-code, mobile, tailscale, tmux, termius]
 summary: How I run native Claude Code from my phone via Tailscale, Termius, and tmux into my Mac Mini. The Happy app was the wrapper that pushed me to roll my own.
 ---
 

@@ -3,6 +3,7 @@ title: "BorgDock: a tool for the way I actually work"
 date: 2026-05-03
 seriesId: borgdock
 episode: 1
+tags: [borgdock, tauri, tooling, github-actions]
 summary: BorgDock is my answer to losing PRs in tabs and missing CI failures while heads-down on the next thing. Post 1 of the series, on the pain that justified building rather than tab-refreshing, why I keep building my own tools, and the form factor that surprised me.
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Multi-Worktree .NET: Running 5 Aspire Apps in Parallel"
+draft: true
 seriesId: multi-worktree-dotnet
 tagline: "How a small PowerShell helper lets a tiny team work on 5 feature branches simultaneously without containerizing anything."
 description: "A 3-part series on the multi-worktree workflow we run on FSP-Horizon: a PowerShell helper that allocates ports per worktree, the Aspire gotchas you hit at scale, and how the same setup feeds straight into deployment."

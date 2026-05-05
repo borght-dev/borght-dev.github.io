@@ -1,5 +1,6 @@
 ---
 title: "FSP Horizon: Rebuilding a 25-Year-Old Field Service Platform"
+draft: true
 seriesId: fsp-horizon
 tagline: "What it takes to rebuild a quarter-century-old field service platform on .NET Aspire + React, with multi-tenancy from commit one and Claude in the loop."
 description: "A live-from-the-trenches series on FSP Horizon — the ground-up rebuild of Gomocha's field service platform. Aspire, multi-tenant message contracts, vendor integrations, BFF auth migrations, and plan-driven development with Claude Code."

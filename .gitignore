@@ -17,6 +17,9 @@ node_modules/
 # IDE/Editor folders
 .vscode/
 
+# Claude Code local state
+.claude/scheduled_tasks.lock
+
 # Netlify/Vercel folders (indien van toepassing)
 .netlify/
 .vercel/

@@ -1,0 +1,10 @@
+{{- $alt := .PlainText -}}
+{{- $title := .Title -}}
+<figure class="article-figure">
+  <button type="button" class="article-image-trigger" data-full-src="{{ .Destination | safeURL }}" aria-label="Open image at full size: {{ $alt }}">
+    <img src="{{ .Destination | safeURL }}" alt="{{ $alt }}" loading="lazy" />
+  </button>
+  {{- with $title -}}
+  <figcaption class="article-figure-caption">{{ . }}</figcaption>
+  {{- end -}}
+</figure>

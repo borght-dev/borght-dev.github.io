@@ -45,6 +45,9 @@
 {{ $shellOpts := dict "minify" true "format" "esm" "targetPath" "js/shell.js" }}
 {{ $shell := resources.Get "js/shell.js" | js.Build $shellOpts | resources.Fingerprint }}
 <script type="module" src="{{ $shell.RelPermalink }}" integrity="{{ $shell.Data.Integrity }}" defer></script>
+{{ $zoomOpts := dict "minify" true "format" "esm" "targetPath" "js/image-zoom.js" }}
+{{ $zoom := resources.Get "js/image-zoom.js" | js.Build $zoomOpts | resources.Fingerprint }}
+<script type="module" src="{{ $zoom.RelPermalink }}" integrity="{{ $zoom.Data.Integrity }}" defer></script>
 
 <!-- RSS -->
 {{ range .AlternativeOutputFormats -}}

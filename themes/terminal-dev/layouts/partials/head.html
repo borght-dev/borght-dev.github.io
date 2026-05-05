@@ -24,6 +24,8 @@
 
 <title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
 
+<link rel="canonical" href="{{ .Permalink }}">
+
 <!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
@@ -50,19 +52,67 @@
 {{ end -}}
 
 <!-- JSON-LD Schema -->
+{{- $author := .Site.Params.author -}}
+{{- $authorUrl := .Site.BaseURL | absURL -}}
+{{- $sameAs := slice -}}
+{{- with .Site.Params.linkedin }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+{{- with .Site.Params.github }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+{{- $personNode := dict
+    "@type" "Person"
+    "name" $author
+    "url" $authorUrl
+-}}
+{{- if $sameAs }}{{ $personNode = merge $personNode (dict "sameAs" $sameAs) }}{{ end -}}
+
+{{- $jsonOpts := dict "indent" "  " -}}
+
+{{- if .IsHome -}}
+{{- $websiteNode := dict
+    "@context" "https://schema.org"
+    "@type" "WebSite"
+    "name" .Site.Title
+    "url" (.Site.BaseURL | absURL)
+    "description" .Site.Params.description
+    "author" $personNode
+    "publisher" $personNode
+-}}
+{{- $personLd := merge (dict "@context" "https://schema.org") $personNode -}}
 <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "{{ if .IsPage }}BlogPosting{{ else }}WebSite{{ end }}",
-    "name": "{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}",
-    "headline": "{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}",
-    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
-    "url": "{{ .Permalink }}",
-    "author": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author }}"
-    }{{ if .IsPage }},
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}"{{ end }}
-}
+{{ jsonify $jsonOpts $websiteNode | safeJS }}
 </script>
+<script type="application/ld+json">
+{{ jsonify $jsonOpts $personLd | safeJS }}
+</script>
+{{- else if and .IsPage (eq .Section "posts") -}}
+{{- $ogImagePost := .Params.image | default .Site.Params.social.image | default "images/og-preview.png" -}}
+{{- $ogImagePostAbs := $ogImagePost | absURL -}}
+{{- $postNode := dict
+    "@context" "https://schema.org"
+    "@type" "BlogPosting"
+    "headline" .Title
+    "description" (cond (ne .Description "") .Description .Site.Params.description)
+    "image" $ogImagePostAbs
+    "url" .Permalink
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    "author" $personNode
+    "publisher" $personNode
+-}}
+<script type="application/ld+json">
+{{ jsonify $jsonOpts $postNode | safeJS }}
+</script>
+{{- else -}}
+{{- $pageNode := dict
+    "@context" "https://schema.org"
+    "@type" "WebPage"
+    "name" .Title
+    "description" (cond (ne .Description "") .Description .Site.Params.description)
+    "url" .Permalink
+    "isPartOf" (dict "@type" "WebSite" "name" .Site.Title "url" (.Site.BaseURL | absURL))
+    "author" $personNode
+-}}
+<script type="application/ld+json">
+{{ jsonify $jsonOpts $pageNode | safeJS }}
+</script>
+{{- end -}}

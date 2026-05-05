@@ -8,6 +8,7 @@ theme = "terminal-dev"
     dir = ':cacheDir/images'
 
 [params]
+  author = "Koen van der Borght"
   description = "Senior developer, technical lead, and lifelong learner."
   ShowReadingTime = true
   ShowSystemStatus = false

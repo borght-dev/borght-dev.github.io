@@ -1,5 +1,6 @@
 ---
 title: "Koen van der Borght"
+description: "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and the developer tools I build on the side."
 ---
 
 # Hi, I’m Koen

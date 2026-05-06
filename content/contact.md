@@ -1,5 +1,6 @@
 ---
 title: "Contact"
+description: "Reach out if you want to collaborate, talk about AI-native engineering, .NET modernization, or just have a chat — email and LinkedIn are the fastest channels."
 ---
 
 Feel free to reach out if you want to collaborate or just have a chat:

@@ -9,7 +9,7 @@ theme = "terminal-dev"
 
 [params]
   author = "Koen van der Borght"
-  description = "Senior developer, technical lead, and lifelong learner."
+  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
   ShowReadingTime = true
   ShowSystemStatus = false
   ShowShareButtons = false
@@ -64,7 +64,7 @@ theme = "terminal-dev"
 [params.social]
   title = "Koen van der Borght"
   image = "images/og-preview.png"
-  description = "Senior developer & tech lead with a passion for performance and architecture."
+  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
   type = "website"
 
 # [pagination]

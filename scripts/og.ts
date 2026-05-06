@@ -144,9 +144,11 @@ async function renderOne(input: PageInput) {
     ],
   });
 
+  // Opaque background = LinkedIn-safe. RGBA PNGs sometimes pixelate in their
+  // preview compositor; flattening to RGB against the card's site bg avoids it.
   const png = new Resvg(svg, {
     fitTo: { mode: "width", value: 1200 },
-    background: "transparent",
+    background: "#FAFBFC",
   })
     .render()
     .asPng();

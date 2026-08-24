@@ -2,6 +2,8 @@
 
 Hugo site. Theme at `themes/terminal-dev/`. Posts under `content/posts/`, series under `content/series/<slug>/`.
 
+Homepage (consultancy positioning): section copy lives in `content/_index.md` frontmatter; hero headline/tagline/availability + CTA in `hugo.toml` (`[params.positioning]`, `[params.cta]`); templates in `themes/terminal-dev/layouts/partials/home/*.html`; styles in `assets/sass/_home.scss`. "Writing" (`/posts/`) is one flat list of posts + series episodes. Blue = actions, green = status only. Never publish the assessment price.
+
 ## Local preview
 
 `hugo server --buildDrafts` from the repo root. Available on both PowerShell and Bash.

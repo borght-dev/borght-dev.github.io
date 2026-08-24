@@ -1,0 +1,15 @@
+{{- with .Params.final_cta }}
+{{- $email := $.Site.Params.email -}}
+{{- $cta := $.Site.Params.cta -}}
+<section class="home-section home-cta" id="contact" aria-labelledby="cta-heading">
+  <div class="home-wrap home-cta-inner">
+    <h2 id="cta-heading" class="home-h2 home-cta-h2">{{ .heading }}</h2>
+    <p class="home-cta-body">{{ .body }}</p>
+    <div class="ctas ctas-center">
+      <a href="mailto:{{ $email }}?subject={{ .subject | urlquery }}" class="btn btn-cta btn-lg">{{ $cta.label }}</a>
+      {{- with $.Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Connect on LinkedIn ↗</a>{{ end }}
+    </div>
+    <p class="home-cta-email"><span class="mono-dim">$</span> mail <a href="mailto:{{ $email }}">{{ $email }}</a></p>
+  </div>
+</section>
+{{- end }}

@@ -1,0 +1,10 @@
+{{- with .Params.problem }}
+<section class="home-section home-problem" aria-labelledby="problem-heading">
+  <div class="home-wrap home-problem-grid">
+    <h2 id="problem-heading" class="home-h2">{{ .heading }}</h2>
+    <div class="home-prose">
+      {{- range .paragraphs }}<p>{{ . }}</p>{{ end }}
+    </div>
+  </div>
+</section>
+{{- end }}

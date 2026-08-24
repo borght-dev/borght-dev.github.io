@@ -1,0 +1,34 @@
+{{- with .Params.assessment }}
+{{- $email := $.Site.Params.email -}}
+<section class="home-section home-assessment" id="assessment" aria-labelledby="assessment-heading">
+  <div class="home-wrap">
+    <div class="term-box assess-box">
+      <div class="titlebar">
+        <span class="lights" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="name">{{ .filename }}</span>
+        <span class="right">{{ .duration }}</span>
+      </div>
+      <div class="assess-body">
+        <div class="assess-main">
+          <div class="assess-eyebrow"><span class="pulse-dot" aria-hidden="true"></span>{{ .eyebrow }}</div>
+          <h2 id="assessment-heading" class="home-h2">{{ .title }}</h2>
+          <p class="assess-headline">{{ .headline }}</p>
+          <p class="assess-text">{{ .body }}</p>
+          <div class="ctas">
+            <a href="mailto:{{ $email }}?subject={{ .cta_subject | urlquery }}" class="btn btn-cta">{{ .cta }}</a>
+            <a href="/contact/" class="btn btn-ghost">Other ways to reach me</a>
+          </div>
+        </div>
+        <div class="assess-side">
+          <h3 class="assess-side-heading">{{ .outputs_heading }}</h3>
+          <ul class="assess-outputs">
+            {{- range .outputs }}
+            <li><span class="arr" aria-hidden="true">→</span>{{ . }}</li>
+            {{- end }}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{{- end }}

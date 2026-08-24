@@ -172,10 +172,16 @@ test('cat ~/.identity: navigates to /about/', () => {
   assert.deepEqual(ctx.calls.navigate, ['/about/']);
 });
 
-test('cat now_shipping.md: navigates to home anchor', () => {
+test('cat services: navigates to home services anchor', () => {
   const ctx = makeCtx();
-  dispatch('cat now_shipping.md', ctx);
-  assert.deepEqual(ctx.calls.navigate, ['/#now-shipping']);
+  dispatch('cat services', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/#services']);
+});
+
+test('cat modernization-assessment.md: navigates to home assessment anchor', () => {
+  const ctx = makeCtx();
+  dispatch('cat modernization-assessment.md', ctx);
+  assert.deepEqual(ctx.calls.navigate, ['/#assessment']);
 });
 
 test('cat <post>.md: navigates to /posts/<slug>/', () => {

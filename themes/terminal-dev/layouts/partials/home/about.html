@@ -1,0 +1,22 @@
+{{- with .Params.about }}
+{{- $photo := $.Site.GetPage "/about" -}}
+{{- $photoSrc := "" -}}
+{{- with $photo }}{{ $photoSrc = .Params.photo }}{{ end -}}
+<section class="home-section home-about" id="about" aria-labelledby="about-heading">
+  <div class="home-wrap about-grid">
+    {{- with $photoSrc }}
+    <img src="{{ . }}" alt="Portrait of Koen van der Borght" class="about-photo" width="180" height="216" loading="lazy" decoding="async">
+    {{- end }}
+    <div class="about-text">
+      <h2 id="about-heading" class="home-h2">{{ .heading }}</h2>
+      <p class="about-lead">{{ .lead }}</p>
+      <p class="about-body">{{ .body }}</p>
+      {{- with .trust }}<p class="about-trust"><span class="pulse-dot" aria-hidden="true"></span>{{ . }}</p>{{ end }}
+      <div class="ctas">
+        <a href="/about/" class="btn btn-ghost">Full background</a>
+        {{- with $.Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>{{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{- end }}

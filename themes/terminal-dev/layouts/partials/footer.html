@@ -3,22 +3,24 @@
 <footer class="foot">
   <div class="foot-col">
     <h4>// connect</h4>
-    {{ with .Site.Params.github }}<a href="{{ . }}" target="_blank" rel="noopener">GitHub</a>{{ end }}
+    {{ with .Site.Params.email }}<a href="mailto:{{ . }}">Email</a>{{ end }}
     {{ with .Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener">LinkedIn</a>{{ end }}
-    <a href="https://borgdock.pages.dev/" target="_blank" rel="noopener">BorgDock</a>
+    {{ with .Site.Params.github }}<a href="{{ . }}" target="_blank" rel="noopener">GitHub</a>{{ end }}
     <a href="/index.xml">RSS</a>
   </div>
   <div class="foot-col">
     <h4>// navigate</h4>
-    <a href="/posts/">~/blog</a>
-    <a href="/series/">~/series</a>
-    <a href="/about/">~/about</a>
+    <a href="/#services">services</a>
+    <a href="/#assessment">assessment</a>
+    <a href="/posts/">writing</a>
+    <a href="/about/">about</a>
+    <a href="/contact/">contact</a>
   </div>
   <div class="foot-col">
     <h4>// system</h4>
     <div class="foot-system">
       <span class="k">built with</span> Hugo<br>
-      <span class="k">editor</span> Obsidian (mobile)<br>
+      <span class="k">side project</span> <a href="https://borgdock.pages.dev/" target="_blank" rel="noopener" class="foot-inline">BorgDock</a><br>
       <span class="k">last build</span> {{ $build }}<br>
       <span class="foot-shell-hint">// press <kbd>\</kbd> for shell</span>
     </div>
@@ -29,7 +31,7 @@
   <span>© {{ $year }} Koen van der Borght · made in /home</span>
   <span style="display:inline-flex;align-items:center;gap:0.75rem;">
     <span style="display:inline-flex;align-items:center;gap:0.5rem;">
-      <span class="pulse-dot"></span> all systems operational
+      <span class="pulse-dot"></span> {{ .Site.Params.positioning.availability | default "all systems operational" | lower }}
     </span>
     <button id="theme-toggle" class="foot-theme-toggle" aria-label="Cycle theme: auto, light, dark">
       <span aria-hidden="true">◐</span>

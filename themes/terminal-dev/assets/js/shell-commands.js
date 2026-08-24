@@ -19,8 +19,8 @@ export const commands = [
     name: 'whoami',
     summary: 're-print the hero tagline',
     run(ctx) {
-      ctx.print('koen — senior dev shipping tools, not slides');
-      ctx.print('full-stack engineer at Gomocha · building developer tools by night');
+      ctx.print('koen — senior software engineer · .NET modernization · architecture · devops · ai-assisted engineering');
+      ctx.print('helping teams ship the projects they do not have capacity for · taking on select projects');
     },
   },
   {
@@ -83,7 +83,8 @@ export const commands = [
       const target = args[0];
       if (!target) { ctx.print('cat: missing operand'); return; }
       if (target === '~/.identity') return ctx.navigate('/about/');
-      if (target === 'now_shipping.md') return ctx.navigate('/#now-shipping');
+      if (target === 'services' || target === 'services.md') return ctx.navigate('/#services');
+      if (target === 'modernization-assessment.md' || target === 'assessment.md') return ctx.navigate('/#assessment');
       if (target.endsWith('.md')) {
         const slug = target.replace(/\.md$/, '');
         if (ctx.site.posts && ctx.site.posts.includes(target)) {
@@ -106,6 +107,8 @@ export const commands = [
       const key = raw.replace(/\/$/, '').replace(/^~\//, '');
       const map = {
         about: '/about/',
+        contact: '/contact/',
+        writing: '/posts/',
         posts: '/posts/',
         series: '/series/',
         borgdock: 'https://borgdock.pages.dev/',

@@ -1,0 +1,22 @@
+{{- with .Params.proof }}
+<section class="home-section home-proof" id="experience" aria-labelledby="proof-heading">
+  <div class="home-wrap">
+    <div class="home-section-head">
+      <h2 id="proof-heading" class="home-h2">{{ .heading }}</h2>
+      {{- with .intro }}<p class="home-section-intro">{{ . }}</p>{{ end }}
+    </div>
+    <div class="proof-grid">
+      {{- range .items }}
+      <article class="proof">
+        <div class="proof-label">{{ .label }}</div>
+        <h3 class="proof-title">{{ .title }}</h3>
+        <p class="proof-body">{{ .body }}</p>
+        {{- if .link }}
+        <a href="{{ .link }}" class="proof-link">{{ .link_label | default "read more" }} <span aria-hidden="true">→</span></a>
+        {{- end }}
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

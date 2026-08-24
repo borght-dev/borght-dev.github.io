@@ -1,15 +1,49 @@
 {{- $p := .RelPermalink -}}
+{{- $cta := .Site.Params.cta -}}
 <header class="topbar">
   <div class="topbar-inner">
     <a href="/" class="topbar-prompt" aria-label="home">
       <span class="pulse-dot" aria-hidden="true"></span>
-      <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span style="color:var(--ink-mute)">:~$</span></span>
+      <span><span class="who">koen</span><span class="at">@</span><span class="who">vanderborght</span><span class="topbar-tilde" aria-hidden="true">:~$</span></span>
     </a>
-    <nav class="topbar-nav" aria-label="primary">
-      <a href="/posts/"    class="{{ if hasPrefix $p "/posts" }}active{{ end }}">~/blog</a>
-      <a href="/series/"   class="{{ if hasPrefix $p "/series" }}active{{ end }}">~/series</a>
-      <a href="https://borgdock.pages.dev/" target="_blank" rel="noopener" class="hide-mobile">borgdock&nbsp;↗</a>
-      <a href="/about/"    class="{{ if hasPrefix $p "/about" }}active{{ end }}">~/about</a>
+
+    <nav class="topbar-nav" id="topbar-nav" aria-label="primary">
+      {{- range .Site.Menus.main }}
+        {{- if .Params.cta }}{{ continue }}{{ end -}}
+        {{- $active := false -}}
+        {{- if eq .Identifier "writing" }}{{ $active = or (hasPrefix $p "/posts") (hasPrefix $p "/series") }}
+        {{- else if eq .Identifier "about" }}{{ $active = hasPrefix $p "/about" }}{{ end -}}
+        <a href="{{ .URL }}" class="{{ if $active }}active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{- end }}
+      {{- with $cta }}<a href="{{ .url }}" class="topbar-nav-cta">{{ .label }} <span aria-hidden="true">→</span></a>{{ end }}
     </nav>
+
+    <div class="topbar-actions">
+      <button type="button" class="topbar-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Theme: auto / light / dark">
+        <svg class="ico-sun" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/><g stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="8" y1="0.8" x2="8" y2="2.6"/><line x1="8" y1="13.4" x2="8" y2="15.2"/><line x1="0.8" y1="8" x2="2.6" y2="8"/><line x1="13.4" y1="8" x2="15.2" y2="8"/><line x1="2.9" y1="2.9" x2="4.2" y2="4.2"/><line x1="11.8" y1="11.8" x2="13.1" y2="13.1"/><line x1="2.9" y1="13.1" x2="4.2" y2="11.8"/><line x1="11.8" y1="4.2" x2="13.1" y2="2.9"/></g></svg>
+        <svg class="ico-moon" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+      {{- with $cta }}
+      <a href="{{ .url }}" class="btn btn-cta btn-sm topbar-cta{{ if hasPrefix $p "/contact" }} active{{ end }}">{{ .label }}</a>
+      {{- end }}
+      <button type="button" class="topbar-menu" aria-label="Open menu" aria-expanded="false" aria-controls="topbar-nav">
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
   </div>
 </header>
+<script>
+(function () {
+  var btn = document.querySelector('.topbar-menu');
+  var bar = document.querySelector('.topbar');
+  if (!btn || !bar) return;
+  function setOpen(open) {
+    bar.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  btn.addEventListener('click', function () { setOpen(!bar.classList.contains('is-open')); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  bar.querySelectorAll('.topbar-nav a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+})();
+</script>

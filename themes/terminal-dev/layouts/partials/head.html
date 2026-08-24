@@ -38,7 +38,7 @@
 <meta name="twitter:description" content="{{ $pageDesc }}">
 <meta name="twitter:image" content="{{ $ogImageAbs }}">
 
-<title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+<title>{{ if .IsHome }}{{ .Site.Params.homeTitle | default .Site.Title }}{{ else if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
 
 <link rel="canonical" href="{{ .Permalink }}">
 
@@ -48,7 +48,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
 {{ $opts := dict "targetPath" "main.css" "enableSourceMap" false }}
 {{ $style := resources.Get "sass/main.scss" | css.Sass $opts | resources.Fingerprint }}

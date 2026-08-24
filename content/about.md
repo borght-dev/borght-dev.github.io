@@ -1,11 +1,11 @@
 ---
 title: "About — Koen van der Borght"
-description: "Senior dev & tech lead at Gomocha. .NET, Azure, AI-native workflows."
+description: "Koen van der Borght: senior software engineer and tech lead. Building software professionally since 2016. Legacy .NET modernization, architecture, DevOps, and AI-assisted engineering."
 layout: about
 fullName: "Koen van der Borght"
 photo: /profile.jpg
-intro: "Software engineer & tech lead with 8+ years of experience. I started as an intern, worked my way up to senior, and currently lead the development team at [Gomocha](https://www.gomocha.com). I write about AI-native engineering workflows and ship developer tools on the side."
-signoff: "let's build better software, together."
+intro: "Senior software engineer and tech lead, building software professionally since 2016. I started as an intern at [Gomocha](https://www.gomocha.com), grew into senior and then tech lead, and today I lead its development team. Alongside that I take on focused engagements for other teams: critical project delivery, legacy .NET modernization and practical AI-assisted engineering. I write about the work here."
+signoff: "let's make your next project easier to build."
 experience:
   - period: "2022-now"
     role: "Tech Lead"
@@ -41,7 +41,7 @@ highlights:
     summary: "Built a classifier that buckets every skipped E2E test by reason, plus a daily loop that converts data-missing skips into seeded specs in batches of eight. Added a nightly gate to keep the count from drifting back up."
   - period: "2026"
     title: "Multi-pod readiness and zero-downtime deploys"
-    summary: "Made the platform horizontally scalable on Kubernetes: SignalR Redis backplane, distributed cache, HPA + PDBs on staging, startup-probe tuning, and a deploy workflow that no longer drops connections. Verified via k6 load tests in CI."
+    summary: "Made the platform horizontally scalable on Kubernetes: SignalR Redis backplane, distributed cache, HPA + PDBs, startup-probe tuning, and a deploy workflow that no longer drops connections. Verified via k6 load tests in CI."
   - period: "2026"
     title: "Quote management: workspace and pricing"
     summary: "Shipped the Quote Workspace end to end: wizard, deferred-edit persistence, revision/history lifecycle, the full pricebook hierarchy with CSV export and template management, and synchronous UQTC PDF render on Send."
@@ -50,10 +50,10 @@ highlights:
     summary: "Replaced the legacy planboard with a Bryntum-based scheduler: drag-drop on engineer and equipment resources, a batch MoveOrders endpoint, and JSON-based user preferences for panel persistence."
   - period: "2026"
     title: "Ship-it pipeline from day one"
-    summary: "Wired the delivery loop before the team scaled up. Every PR deploys to staging, runs unit + integration + E2E, enforces a no-coverage-decrease gate, runs AI code review, and auto-deploys to the Kubernetes test cluster on merge. Observability as a first-class citizen: OpenTelemetry to Honeycomb, structured logs to Seq. Shared PowerShell profile so every dev gets the same local setup."
+    summary: "Wired the delivery loop before the team scaled up. Every PR deploys to staging, runs unit + integration + E2E, enforces a no-coverage-decrease gate, runs AI code review, and auto-deploys to the Kubernetes test cluster on merge. Observability as a first-class citizen: OpenTelemetry traces and structured logging from day one. Shared PowerShell profile so every dev gets the same local setup."
   - period: "2026"
     title: "FSP Horizon platform foundation"
-    summary: "Set up the technical foundation for re-implementing Gomocha's platform (development started 30 years ago), solo, in a few weeks, before teammates joined for feature-parity work. .NET Aspire orchestrating CQRS Vertical Slice services on .NET 10, Dockerized end to end. Frontend on React + Tailwind v4 + AG Grid + TanStack Query, with bun + oxlint. Architecture, internal technical, and customer-facing documentation, kept up to date with AI."
+    summary: "Set up the technical foundation for re-implementing Gomocha's field service platform (a codebase with decades of history) before teammates joined for feature-parity work. .NET Aspire orchestrating CQRS Vertical Slice services on .NET 10, Dockerized end to end. Frontend on React + Tailwind v4 + AG Grid + TanStack Query, with bun + oxlint. Architecture, internal technical, and customer-facing documentation, kept up to date with AI."
   - period: "2025"
     title: "Coverage-based, AI-unattended unit-test generation"
     summary: "Designed a self-paced test generator with a queue and a durable state cursor that produces tests overnight against a coverage gap list, verifies, and advances on its own."
@@ -77,7 +77,7 @@ stack:
   - { name: "Claude Code", level: "daily" }
 currently:
   - { label: "shipping", title: "BorgDock",                          summary: "A dev tool to stay focused while running parallel Claude Code agents." }
-  - { label: "writing",  title: "AI-native engineering workflows",   summary: "A weekly series on how my day-to-day has changed." }
+  - { label: "writing",  title: "Notes from the work",               summary: ".NET modernization, DevOps and AI-assisted engineering, as I go." }
   - { label: "leading",  title: "FSP Horizon · Gomocha",             summary: "Next-gen field service platform on .NET Aspire + React. Multi-tenant from commit one." }
   - { label: "tinkering", title: "Mechanical keyboards",             summary: "Daily drivers: Ergodox with Gateron Browns and a Keychron Q1 with Zealios 67g." }
 certifications:

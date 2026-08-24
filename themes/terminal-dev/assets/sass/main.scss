@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap");
+/* Fonts are loaded via <link> in partials/head.html (JetBrains Mono + Instrument Sans). */
 
 /* ─── Tokens ─────────────────────────────────────────────────── */
 :root {
@@ -24,6 +24,7 @@
 
   /* type */
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* space */
   --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem;
@@ -124,6 +125,18 @@ a:hover { color: var(--accent-deep); }
 .btn-primary:hover { transform: translateY(-1px); background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--rule-hard); }
 .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+/* Blue = primary action (consultancy CTA). Green stays reserved for status. */
+.btn-cta { background: var(--accent); color: #fff; border: 1px solid var(--accent); font-weight: 600; }
+.btn-cta:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; transform: translateY(-1px); }
+.btn-lg { font-size: 15px; padding: 14px 26px; }
+.btn-sm { font-size: 13px; padding: 7px 14px; }
+.btn .mono-dim, .mono-dim { color: var(--pulse); font-weight: 700; }
+
+:where(a, button, summary, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
 
 /* ─── Inner-page slim header ─────────────────────────────────── */
 .topbar {
@@ -163,6 +176,8 @@ a:hover { color: var(--accent-deep); }
 }
 .topbar-nav a:hover { color: var(--ink); background: var(--bg-elev); }
 .topbar-nav a.active { color: var(--accent); }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: var(--s-2); }
+.topbar-nav + .topbar-actions { margin-left: 0; }
 .topbar-toggle {
   background: transparent; color: var(--ink-soft); border: 1px solid var(--rule-hard);
   border-radius: var(--radius);
@@ -171,13 +186,54 @@ a:hover { color: var(--accent-deep); }
   transition: border-color 120ms ease, color 120ms ease;
 }
 .topbar-toggle:hover { border-color: var(--ink); color: var(--ink); }
+.topbar-toggle .ico-sun { display: none; }
+html.dark-mode .topbar-toggle .ico-sun { display: block; }
+html.dark-mode .topbar-toggle .ico-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) .topbar-toggle .ico-sun { display: block; }
+  html:not(.light-mode) .topbar-toggle .ico-moon { display: none; }
+}
+.topbar-cta.active { box-shadow: 0 0 0 3px var(--accent-soft); }
+.topbar-menu {
+  display: none;
+  background: transparent; color: var(--ink); border: 1px solid var(--rule-hard);
+  border-radius: var(--radius);
+  width: 32px; height: 32px; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.topbar-menu .bars { display: grid; gap: 4px; }
+.topbar-menu .bars span { display: block; width: 16px; height: 2px; background: currentColor; border-radius: 1px; transition: transform 160ms ease, opacity 160ms ease; }
+.topbar-menu .bars span:last-child { width: 11px; }
+.topbar.is-open .topbar-menu .bars span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.topbar.is-open .topbar-menu .bars span:nth-child(2) { opacity: 0; }
+.topbar.is-open .topbar-menu .bars span:nth-child(3) { width: 16px; transform: translateY(-6px) rotate(-45deg); }
 
+@media (max-width: 760px) {
+  .topbar-inner { flex-wrap: wrap; }
+  .topbar-nav + .topbar-actions { margin-left: auto; }
+  .topbar-menu { display: inline-flex; }
+  .topbar-nav {
+    display: none;
+    order: 10;
+    flex-basis: 100%;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--s-2) 0 var(--s-3);
+    border-top: 1px solid var(--rule);
+    margin-top: var(--s-2);
+  }
+  .topbar.is-open .topbar-nav { display: flex; }
+  .topbar-nav a { font-size: 14px; padding: var(--s-3) var(--s-3); }
+}
 @media (max-width: 600px) {
   .topbar-inner { padding: var(--s-3) var(--s-4); gap: var(--s-2); font-size: 12px; }
   .topbar-prompt { font-size: 12px; }
-  .topbar-nav { gap: 0; }
-  .topbar-nav a { padding: var(--s-2); font-size: 12px; }
-  .topbar-nav a.hide-mobile { display: none; }
+  .topbar-tilde { display: none; }
+}
+.topbar-nav-cta { display: none; }
+@media (max-width: 440px) {
+  .topbar-cta { display: none; }
+  .topbar-nav-cta { display: block; color: var(--accent) !important; font-weight: 600; }
 }
 
 /* ─── Hero (home only) ───────────────────────────────────────── */
@@ -2434,3 +2490,5 @@ footer.foot {
     100% { background: transparent; }
   }
 }
+
+@import "home";

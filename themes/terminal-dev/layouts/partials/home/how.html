@@ -1,0 +1,19 @@
+{{- with .Params.how }}
+<section class="home-section home-how" id="how" aria-labelledby="how-heading">
+  <div class="home-wrap">
+    <h2 id="how-heading" class="home-h2">{{ .heading }}</h2>
+    <ol class="how-steps">
+      {{- range .steps }}
+      <li class="how-step">
+        <div class="how-index">{{ .index }}</div>
+        <h3 class="how-title">{{ .title }}</h3>
+        <p>{{ .body }}</p>
+      </li>
+      {{- end }}
+    </ol>
+    {{- with .principle }}
+    <p class="how-principle"><span class="glyph" aria-hidden="true">#</span> {{ . }}</p>
+    {{- end }}
+  </div>
+</section>
+{{- end }}

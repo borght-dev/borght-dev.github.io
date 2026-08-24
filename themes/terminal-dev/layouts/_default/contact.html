@@ -1,0 +1,41 @@
+{{ define "main" }}
+{{- $email := .Site.Params.email -}}
+<article class="article-shell contact-page">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <span>contact</span>
+  </nav>
+
+  <div class="about-cmd">
+    <span class="glyph">$</span>
+    <span class="cmd">mail</span>
+    <span class="arg">koen</span><span class="cursor" aria-hidden="true"></span>
+  </div>
+
+  <header class="article-header">
+    <div class="article-headline">
+      <h1 class="article-title">{{ .Title }}</h1>
+      {{ with .Params.subtitle }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <div class="article-content">
+      {{ .Content }}
+
+      <ul class="contact-ways" aria-label="Contact options">
+        {{ with $email }}<li><span class="k">email</span><a href="mailto:{{ . }}?subject={{ $.Params.subject | default "Project conversation" | urlquery }}">{{ . }}</a></li>{{ end }}
+        {{ with .Site.Params.linkedin }}<li><span class="k">linkedin</span><a href="{{ . }}" target="_blank" rel="noopener">{{ replaceRE "/$" "" (replaceRE "^https?://(www\\.)?" "" .) }} ↗</a></li>{{ end }}
+        {{ with .Site.Params.github }}<li><span class="k">github</span><a href="{{ . }}" target="_blank" rel="noopener">{{ replaceRE "/$" "" (replaceRE "^https?://(www\\.)?" "" .) }} ↗</a></li>{{ end }}
+      </ul>
+
+      <div class="ctas">
+        {{ with $email }}<a href="mailto:{{ . }}?subject={{ $.Params.subject | default "Project conversation" | urlquery }}" class="btn btn-cta btn-lg">{{ $.Site.Params.cta.label | default "Discuss a project" }}</a>{{ end }}
+        <a href="/#assessment" class="btn btn-ghost btn-lg">About the assessment</a>
+      </div>
+
+      {{ with .Params.after }}{{ . | markdownify }}{{ end }}
+    </div>
+  </div>
+</article>
+{{ end }}

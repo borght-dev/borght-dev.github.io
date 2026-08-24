@@ -1,0 +1,52 @@
+{{- $cfg := .Params.writing -}}
+{{- $standalone := where .Site.RegularPages "Section" "posts" -}}
+{{- $episodes   := where .Site.RegularPages "Section" "series" -}}
+{{- $all        := $standalone | append $episodes -}}
+{{- $all = where $all ".Params.draft" "ne" true -}}
+{{- /* Posts with `featured: true` in frontmatter come first, then newest. */ -}}
+{{- $featured := sort (where $all ".Params.featured" true) "Date" "desc" -}}
+{{- $rest     := sort (where $all ".Params.featured" "ne" true) "Date" "desc" -}}
+{{- $count    := $cfg.count | default 3 -}}
+{{- $posts    := first $count ($featured | append $rest) -}}
+{{- if $posts }}
+<section class="home-section home-writing" id="writing" aria-labelledby="writing-heading">
+  <div class="home-wrap">
+    <div class="ps1 home-ps1">
+      <span class="glyph">$</span>
+      <span class="cmd">ls</span>
+      <span class="arg">~/writing/recent</span>
+      <span class="comment"># latest {{ len $posts }}</span>
+    </div>
+    <div class="home-section-head">
+      <h2 id="writing-heading" class="home-h2">{{ $cfg.heading | default "Recent writing" }}</h2>
+      {{- with $cfg.intro }}<p class="home-section-intro">{{ . }}</p>{{ end }}
+    </div>
+
+    <div class="writing-grid">
+      {{- range $posts }}
+        {{- $words   := len (split .Plain " ") -}}
+        {{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
+        {{- $seriesTitle := "" -}}
+        {{- if eq .Section "series" }}{{ with .Parent }}{{ $seriesTitle = .Title }}{{ end }}{{ end -}}
+      <a href="{{ .RelPermalink }}" class="writing-card">
+        <div class="writing-meta">
+          <span class="writing-file">{{ .File.ContentBaseName }}.md</span>
+          <span class="writing-date">{{ dateFormat "2006-01-02" .Date }}</span>
+        </div>
+        <h3 class="writing-title">{{ .Title }}</h3>
+        {{- with (.Params.summary | default .Description) }}<p class="writing-summary">{{ . }}</p>{{ end }}
+        <div class="writing-foot">
+          {{- if $seriesTitle }}<span class="writing-series">series · {{ $seriesTitle }}</span>{{ end }}
+          <span class="writing-read">{{ $minutes }} min read</span>
+          <span class="writing-arr" aria-hidden="true">→</span>
+        </div>
+      </a>
+      {{- end }}
+    </div>
+
+    <div class="writing-more">
+      <a href="/posts/" class="btn btn-ghost">All writing <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+{{- end }}

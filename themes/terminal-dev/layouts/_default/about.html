@@ -160,6 +160,27 @@
   </section>
   {{ end }}
 
+  <section class="cv-row cli about-hire">
+    <div class="cv-label cli">
+      <span class="glyph">$</span>
+      <span class="cmd">cat</span>
+      <span class="arg">~/work-with-me.md</span>
+    </div>
+    <div class="cv-rail">
+      <div class="cv-item">
+        <div class="cv-period cv-tag">hire</div>
+        <div class="cv-body">
+          <h3>Working on something similar?</h3>
+          <p>I take on focused engagements: critical project delivery, legacy .NET modernization (starting with a <a href="/#assessment">2–3 week assessment</a>) and AI engineering enablement. You work directly with me, the engineer doing the work.</p>
+          <div class="ctas" style="margin-top: var(--s-4);">
+            <a href="{{ .Site.Params.cta.url | default "/contact/" }}" class="btn btn-cta">{{ .Site.Params.cta.label | default "Discuss a project" }}</a>
+            <a href="/#services" class="btn btn-ghost">See services</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {{ with .Params.signoff }}
   <div class="about-signoff">
     <span class="glyph">$</span>

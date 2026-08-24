@@ -1,0 +1,31 @@
+{{- with .Params.services }}
+<section class="home-section home-services" id="services" aria-labelledby="services-heading">
+  <div class="home-wrap">
+    <h2 id="services-heading" class="home-h2">How I can help</h2>
+
+    <div class="svc-grid">
+      {{- range . }}
+      <article class="svc{{ if .featured }} svc-featured{{ end }}" id="svc-{{ .id }}">
+        <div class="svc-index">{{ .index }} — {{ .label | upper }}</div>
+        <h3 class="svc-title">{{ .title }}</h3>
+        <p class="svc-lead">{{ .lead }}</p>
+        <p class="svc-body">{{ .body }}</p>
+        {{- with .examples }}
+        <ul class="svc-list">
+          {{- range . }}<li>{{ . }}</li>{{ end }}
+        </ul>
+        {{- end }}
+        {{- with .tags }}
+        <ul class="svc-tags" aria-label="Typical work">
+          {{- range . }}<li>{{ . }}</li>{{ end }}
+        </ul>
+        {{- end }}
+        {{- if .featured }}
+        <a href="#assessment" class="svc-more">Start with an assessment <span aria-hidden="true">→</span></a>
+        {{- end }}
+      </article>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

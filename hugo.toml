@@ -9,7 +9,8 @@ theme = "terminal-dev"
 
 [params]
   author = "Koen van der Borght"
-  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
+  homeTitle = "Koen van der Borght — Senior software engineer · .NET modernization & engineering velocity"
+  description = "Koen van der Borght — senior software engineer helping teams deliver critical projects, modernize legacy .NET systems, and adopt practical AI-assisted engineering workflows."
   ShowReadingTime = true
   ShowSystemStatus = false
   ShowShareButtons = false
@@ -25,89 +26,53 @@ theme = "terminal-dev"
 
 [menu]
   [[menu.main]]
-    identifier = "home"
-    name = "Home"
-    url = "/"
+    identifier = "services"
+    name = "Services"
+    url = "/#services"
     weight = 1
+
+  [[menu.main]]
+    identifier = "assessment"
+    name = "Assessment"
+    url = "/#assessment"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "writing"
+    name = "Writing"
+    url = "/posts/"
+    weight = 3
 
   [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/about/"
-    weight = 2
-
-  [[menu.main]]
-    identifier = "projects"
-    name = "Projects"
-    url = "/projects/"
-    weight = 3
-
-  [[menu.main]]
-    identifier = "blog"
-    name = "Blog"
-    url = "/posts/"
     weight = 4
 
   [[menu.main]]
     identifier = "contact"
-    name = "Contact"
+    name = "Discuss a project"
     url = "/contact/"
     weight = 5
+    [menu.main.params]
+      cta = true
 
+[params.positioning]
+  headline = "Ship the projects your engineering team doesn't have capacity for."
+  tagline = "I help software teams move faster by delivering critical projects, modernizing legacy .NET systems, and improving engineering workflows with AI."
+  expertise = "Senior software engineer · .NET modernization · Architecture · DevOps · AI-assisted engineering"
+  # Green status indicator. Keep it selective — never "open for anything".
+  availability = "Taking on select projects"
 
-[params.homeInfoParams]
-  Title = "Hi, I'm Koen"
-  Content = "Senior developer & tech lead with a passion for performance, architecture, and practical AI."
+[params.cta]
+  label = "Discuss a project"
+  url = "/contact/"
 
 [params.assets]
   disableHLJS = false
 [params.social]
   title = "Koen van der Borght"
   image = "images/og-preview.png"
-  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
+  description = "Koen van der Borght — senior software engineer helping teams deliver critical projects, modernize legacy .NET systems, and adopt practical AI-assisted engineering workflows."
   type = "website"
-
-# [pagination]
-# pagerSize = 5
-#
-# [params.author]
-# name = "Koen van der Borght"
-#
-#
-# [[menu.main]]
-#   identifier = "home"
-#   name = "Home"
-#   url = "/"
-#   weight = 1
-#
-# [[menu.main]]
-#   identifier = "about"
-#   name = "About"
-#   url = "/about/"
-#   weight = 2
-#
-# [[menu.main]]
-#   identifier = "projects"
-#   name = "Projects"
-#   url = "/projects/"
-#   weight = 3
-#
-# [[menu.main]]
-#   identifier = "blog"
-#   name = "Blog"
-#   url = "/posts/"
-#   weight = 4
-#
-# [[menu.main]]
-#   identifier = "contact"
-#   name = "Contact"
-#   url = "/contact/"
-#   weight = 5
-#
-# [markup.goldmark.renderer]
-# unsafe = true
-#
-# [markup.highlight]
-# style = 'catppuccin-frappe'
-#
 

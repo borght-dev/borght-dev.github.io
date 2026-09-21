@@ -78,6 +78,7 @@ function detectSeries(rel: string, frontmatter: Record<string, unknown>): Series
   if (sid && SERIES_MAP[sid]) return SERIES_MAP[sid];
   const m = rel.match(/^series\/([^/]+)\//);
   if (m && SERIES_MAP[m[1]]) return SERIES_MAP[m[1]];
+  if (rel.startsWith("notes/")) return "notes";
   return "engineering";
 }
 
@@ -87,10 +88,18 @@ function pathLabel(rel: string): string {
   if (rel === "about") return "~/about";
   if (rel === "contact") return "~/contact";
   if (rel.startsWith("posts/")) return "~/blog";
+  if (rel.startsWith("notes/")) return "~/notes";
   if (rel === "series/_index") return "~/series";
   const seriesMatch = rel.match(/^series\/([^/]+)/);
   if (seriesMatch) return `~/series/${seriesMatch[1]}`;
   return "~/" + rel.split("/")[0];
+}
+
+// Notes have no title; the first sentence stands in, mirroring themes/terminal-dev/layouts/partials/note-title.html.
+function firstSentence(markdown: string): string | undefined {
+  const flat = markdown.replace(/\s+/g, " ").trim();
+  if (!flat) return undefined;
+  return flat.length > 90 ? flat.slice(0, 87).trimEnd() + "…" : flat;
 }
 
 function buildInputs(): PageInput[] {
@@ -99,15 +108,16 @@ function buildInputs(): PageInput[] {
 
   for (const path of files) {
     const raw = readFileSync(path, "utf8");
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
     if (data.draft === true) continue;
 
     const rel = relative(CONTENT, path).replace(/\\/g, "/");
     const slug = slugFromPath(path);
 
-    // Title fallback chain: frontmatter.title → site title → slug
+    // Title fallback chain: frontmatter.title → first sentence (notes) → site title → slug
     const title =
       (data.title as string | undefined) ||
+      (rel.startsWith("notes/") ? firstSentence(content) : undefined) ||
       (slug === "home" ? "Koen van der Borght" : slug);
 
     inputs.push({

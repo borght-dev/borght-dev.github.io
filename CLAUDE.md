@@ -1,6 +1,6 @@
 # koenvdborght.nl
 
-Hugo site. Theme at `themes/terminal-dev/`. Posts under `content/posts/`, series under `content/series/<slug>/`.
+Hugo site. Theme at `themes/terminal-dev/`. Posts under `content/posts/`, series under `content/series/<slug>/`, notes under `content/notes/<date>-<slug>.md` (no title; date, tags, draft only). Photos from the phone app land in `static/images/<section>/<slug>/`.
 
 ## Local preview
 

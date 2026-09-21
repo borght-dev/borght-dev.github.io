@@ -1,0 +1,2 @@
+{{- /* Notes have no title by design; the first sentence stands in for one, the same way the phone app lists them. */ -}}
+{{- with .Title }}{{ . }}{{ else }}{{ .Plain | replaceRE "\\s+" " " | strings.TrimSpace | truncate 90 }}{{ end -}}

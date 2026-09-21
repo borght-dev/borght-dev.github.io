@@ -49,10 +49,16 @@ theme = "terminal-dev"
     weight = 4
 
   [[menu.main]]
+    identifier = "notes"
+    name = "Notes"
+    url = "/notes/"
+    weight = 5
+
+  [[menu.main]]
     identifier = "contact"
     name = "Contact"
     url = "/contact/"
-    weight = 5
+    weight = 6
 
 
 [params.homeInfoParams]

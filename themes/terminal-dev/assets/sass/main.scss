@@ -1303,6 +1303,33 @@ footer.foot {
   display: flex; flex-wrap: wrap; gap: var(--s-3);
   font-size: 11px;
 }
+/* ---- Notes: a stream of short entries, no titles ---- */
+.notes-intro {
+  font-size: 13px; color: var(--ink-soft);
+  font-style: italic; font-weight: 300;
+  margin-top: var(--s-3);
+}
+.blog-list-meta a { color: var(--ink-mute); text-decoration: underline dotted; }
+.blog-list-meta a:hover { color: var(--accent); }
+.note-stream { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.note {
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.note-meta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-3);
+  font-size: 11px; color: var(--ink-mute); letter-spacing: 0.02em;
+  margin-bottom: var(--s-3);
+}
+.note-meta time { white-space: nowrap; }
+.note-date { color: var(--ink-mute); text-decoration: none; }
+.note-date:hover { color: var(--accent); }
+.note-body.article-content { font-size: 15px; line-height: 1.7; }
+.note-body.article-content > * + * { margin-top: var(--s-4); }
+.note-shell .note-meta { font-size: 12px; margin-bottom: var(--s-6); }
+.note-shell .note-body.article-content { font-size: 17px; line-height: 1.75; }
+.note-shell .article-nav { margin-top: var(--s-12); }
+
 .blog-row-hashtag {
   color: var(--ink-mute);
   font-size: 11px;

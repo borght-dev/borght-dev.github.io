@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{- $notes := where .Pages "Params.draft" "ne" true -}}
+{{- $notes = $notes.ByDate.Reverse -}}
+{{- $latest := index $notes 0 -}}
+<section class="blog-list notes-list">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <a href="/notes/">notes</a>
+  </nav>
+
+  <header class="blog-list-header">
+    <div class="prompt-line">
+      <span class="dollar">$</span>
+      <span class="cmd">tail -f</span>
+      <span class="path">~/notes</span>
+    </div>
+    <p class="blog-list-meta">
+      {{ len $notes }} {{ if eq (len $notes) 1 }}note{{ else }}notes{{ end }}
+      {{ if $latest }} · last entry {{ dateFormat "2006-01-02" $latest.Date }}{{ end }}
+      · <a href="/notes/index.xml">rss</a>
+    </p>
+    <p class="notes-intro">{{ .Description }}</p>
+  </header>
+
+  <ol class="note-stream" role="list">
+    {{ range $notes }}
+      <li class="note" id="{{ .File.ContentBaseName }}">
+        <div class="note-meta">
+          <a href="{{ .RelPermalink }}" class="note-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ dateFormat "2006-01-02" .Date }}</time></a>
+          {{ range .Params.tags }}<span class="blog-row-hashtag">#{{ . }}</span>{{ end }}
+        </div>
+        <div class="note-body article-content">{{ .Content }}</div>
+      </li>
+    {{ end }}
+    {{ if eq (len $notes) 0 }}<p class="tagline">Nothing noted yet.</p>{{ end }}
+  </ol>
+</section>
+{{ end }}

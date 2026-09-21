@@ -3,9 +3,11 @@
 {{/* Description: page frontmatter `description` → `summary` (series posts use this) → site default. */}}
 {{- $pageDesc := .Site.Params.description -}}
 {{- if .Description }}{{ $pageDesc = .Description -}}
-{{- else if .Params.summary }}{{ $pageDesc = .Params.summary }}{{ end -}}
+{{- else if .Params.summary }}{{ $pageDesc = .Params.summary -}}
+{{- else if and (eq .Section "notes") .IsPage }}{{ $pageDesc = .Plain | replaceRE "\\s+" " " | strings.TrimSpace | truncate 160 }}{{ end -}}
 {{/* og:title and twitter:title use just the page title (no site name suffix) to stay under 60 chars. */}}
-{{- $pageTitle := cond (ne .Title "") .Title .Site.Title -}}
+{{- $noteTitle := partial "note-title.html" . -}}
+{{- $pageTitle := cond (ne $noteTitle "") $noteTitle .Site.Title -}}
 <meta name="description" content="{{ $pageDesc }}">
 <meta name="author" content="{{ .Site.Params.author }}">
 
@@ -38,7 +40,7 @@
 <meta name="twitter:description" content="{{ $pageDesc }}">
 <meta name="twitter:image" content="{{ $ogImageAbs }}">
 
-<title>{{ if and .Title (not .IsHome) }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+<title>{{ if and $noteTitle (not .IsHome) }}{{ $noteTitle }} | {{ end }}{{ .Site.Title }}</title>
 
 <link rel="canonical" href="{{ .Permalink }}">
 

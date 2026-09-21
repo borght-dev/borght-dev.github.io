@@ -199,7 +199,7 @@ test('cd ~/about: navigates', () => {
 test('cd ~/borgdock: navigates to external', () => {
   const ctx = makeCtx();
   dispatch('cd ~/borgdock', ctx);
-  assert.deepEqual(ctx.calls.navigate, ['https://borgdock.pages.dev/']);
+  assert.deepEqual(ctx.calls.navigate, ['https://borgdock.koenvdborght.nl/']);
 });
 
 test('cd unknown: prints error', () => {

@@ -8,7 +8,7 @@
     <nav class="topbar-nav" aria-label="primary">
       <a href="/posts/"    class="{{ if hasPrefix $p "/posts" }}active{{ end }}">~/blog</a>
       <a href="/series/"   class="{{ if hasPrefix $p "/series" }}active{{ end }}">~/series</a>
-      <a href="https://borgdock.pages.dev/" target="_blank" rel="noopener" class="hide-mobile">borgdock&nbsp;↗</a>
+      <a href="{{ site.Data.borgdock.url }}" target="_blank" rel="noopener" class="hide-mobile">borgdock&nbsp;↗</a>
       <a href="/about/"    class="{{ if hasPrefix $p "/about" }}active{{ end }}">~/about</a>
     </nav>
   </div>

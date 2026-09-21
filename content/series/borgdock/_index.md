@@ -1,12 +1,12 @@
 ---
-title: "BorgDock: A Desktop Sidebar for GitHub PRs"
+title: "Building BorgDock"
 seriesId: borgdock
-tagline: "Why I built a docked Tauri app to keep my open PRs and CI failures one glance away — and what I learned shipping it."
-description: "A 4-part series on building BorgDock: the rationale, the GitHub Actions log parser, a Tauri/Windows main-thread deadlock that took a week to find, and one-click auto-fix wiring with Claude Code."
+tagline: "Why I built a desktop app to keep track of my pull requests, and what I learned along the way."
+description: "Notes on building BorgDock with Tauri, React, and Rust."
 status: active
-cadence: "weekly"
+cadence: "occasional"
 ---
 
-PRs get stuck in browser tabs. CI failures hide behind notifications you swipe away. BorgDock is my answer: a docked sidebar that stays out of the way until something needs you.
+I kept forgetting to check my pull requests while I was working on the next thing. I built BorgDock to keep CI results and reviews visible on my desktop.
 
-This series walks through how I built it.
+These posts cover the decisions and bugs behind it. The app has changed since the first post; [the release notes](https://borgdock.koenvdborght.nl/changelog/) cover recent updates.

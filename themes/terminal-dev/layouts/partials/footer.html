@@ -5,7 +5,8 @@
     <h4>// connect</h4>
     {{ with .Site.Params.github }}<a href="{{ . }}" target="_blank" rel="noopener">GitHub</a>{{ end }}
     {{ with .Site.Params.linkedin }}<a href="{{ . }}" target="_blank" rel="noopener">LinkedIn</a>{{ end }}
-    <a href="https://borgdock.pages.dev/" target="_blank" rel="noopener">BorgDock</a>
+    <a href="{{ site.Data.borgdock.url }}" target="_blank" rel="noopener">BorgDock</a>
+    <a href="/contact/">Contact</a>
     <a href="/index.xml">RSS</a>
   </div>
   <div class="foot-col">
@@ -18,7 +19,6 @@
     <h4>// system</h4>
     <div class="foot-system">
       <span class="k">built with</span> Hugo<br>
-      <span class="k">editor</span> Obsidian (mobile)<br>
       <span class="k">last build</span> {{ $build }}<br>
       <span class="foot-shell-hint">// press <kbd>\</kbd> for shell</span>
     </div>
@@ -26,11 +26,8 @@
 </footer>
 
 <div class="foot-bottom">
-  <span>© {{ $year }} Koen van der Borght · made in /home</span>
+  <span>© {{ $year }} Koen van der Borght</span>
   <span style="display:inline-flex;align-items:center;gap:0.75rem;">
-    <span style="display:inline-flex;align-items:center;gap:0.5rem;">
-      <span class="pulse-dot"></span> all systems operational
-    </span>
     <button id="theme-toggle" class="foot-theme-toggle" aria-label="Cycle theme: auto, light, dark">
       <span aria-hidden="true">◐</span>
       <span>theme:</span>

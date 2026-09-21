@@ -1,0 +1,4 @@
+{{- $writing := where site.RegularPages "Section" "in" (slice "posts" "series") -}}
+{{- $writing = where $writing "Params.draft" "ne" true -}}
+{{- $writing = where $writing "Params.upcoming" "ne" true -}}
+{{- return $writing.ByDate.Reverse -}}

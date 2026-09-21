@@ -9,7 +9,7 @@ theme = "terminal-dev"
 
 [params]
   author = "Koen van der Borght"
-  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
+  description = "Senior developer and tech lead at Gomocha. Building FSP Horizon and BorgDock, and writing about .NET, developer tools, and working with AI."
   ShowReadingTime = true
   ShowSystemStatus = false
   ShowShareButtons = false
@@ -57,14 +57,14 @@ theme = "terminal-dev"
 
 [params.homeInfoParams]
   Title = "Hi, I'm Koen"
-  Content = "Senior developer & tech lead with a passion for performance, architecture, and practical AI."
+  Content = "I build field service software at Gomocha and developer tools in my own time."
 
 [params.assets]
   disableHLJS = false
 [params.social]
   title = "Koen van der Borght"
   image = "images/og-preview.png"
-  description = "Senior dev & tech lead at Gomocha. I write about AI-native engineering — Claude Code workflows, .NET Aspire, multi-tenant rebuilds, and shipping developer tools on the side."
+  description = "Senior developer and tech lead at Gomocha. Building FSP Horizon and BorgDock, and writing about .NET, developer tools, and working with AI."
   type = "website"
 
 # [pagination]

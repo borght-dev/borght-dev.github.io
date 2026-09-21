@@ -27,7 +27,7 @@
       <div class="series-idx-stats">
         <span>{{ len $allSeries }} {{ if eq (len $allSeries) 1 }}series{{ else }}series{{ end }}</span>
         {{ if gt $activeCount 0 }}<span>{{ $activeCount }} active</span>{{ end }}
-        <span>{{ $totalEpisodes }} episodes shipped</span>
+        <span>{{ $totalEpisodes }} posts published</span>
         {{ if gt $latestDate.Year 2000 }}<span>last update {{ dateFormat "2006-01-02" $latestDate }}</span>{{ end }}
       </div>
     </header>
@@ -36,10 +36,6 @@
       {{ range $allSeries }}
         {{- $eps := where .RegularPages ".Params.draft" "ne" true -}}
         {{- $shipped := len $eps -}}
-        {{- $total := .Params.totalEpisodes | default (len .RegularPages) -}}
-        {{- if lt $total $shipped }}{{ $total = $shipped }}{{ end -}}
-        {{- $pct := 0 -}}
-        {{- if gt $total 0 }}{{ $pct = math.Round (mul (div (float $shipped) (float $total)) 100) }}{{ end -}}
         {{- $status := .Params.status | default "active" -}}
         <a href="{{ .RelPermalink }}" class="series-card-v2 {{ $status }}">
           <span class="rail" aria-hidden="true"></span>
@@ -51,9 +47,7 @@
           <h3>{{ .Title }}</h3>
           <p class="desc">{{ .Params.tagline | default .Params.description }}</p>
           <div class="progress">
-            <span class="frac"><b>{{ $shipped }}</b> / {{ $total }} eps</span>
-            <span class="bar"><span class="fill" style="width:{{ $pct }}%"></span></span>
-            <span>{{ $pct }}%</span>
+            <span class="frac">{{ $shipped }} {{ if eq $shipped 1 }}post{{ else }}posts{{ end }} published</span>
           </div>
           {{ if .Params.tags }}
           <div class="meta-foot">
@@ -70,19 +64,15 @@
     </div>
 
     <div class="series-legend">
-      <span class="item"><span class="pip g"></span> active — shipping new episodes</span>
-      <span class="item"><span class="pip a"></span> paused — coming back</span>
-      <span class="item"><span class="pip m"></span> archived — closed loop</span>
+      <span class="item"><span class="pip g"></span> active</span>
+      <span class="item"><span class="pip a"></span> paused</span>
+      <span class="item"><span class="pip m"></span> archived</span>
     </div>
   </section>
 {{- else -}}
   {{/* /series/<id>/ — series detail with episodes */}}
   {{- $episodes := .RegularPages.ByParam "episode" -}}
   {{- $shipped := where $episodes ".Params.draft" "ne" true -}}
-  {{- $total := .Params.totalEpisodes | default (len $episodes) -}}
-  {{- if lt $total (len $shipped) }}{{ $total = len $shipped }}{{ end -}}
-  {{- $pct := 0 -}}
-  {{- if gt $total 0 }}{{ $pct = math.Round (mul (div (float (len $shipped)) (float $total)) 100) }}{{ end -}}
   {{- $status := .Params.status | default "active" -}}
 
   <article class="series-detail-v2">
@@ -105,7 +95,7 @@
       <div class="series-body-v2">
         {{ .Content }}
 
-        <h2>episodes</h2>
+        <h2>Posts</h2>
         <div class="episodes-v2">
           {{ range $i, $e := $episodes }}
             {{- $num := printf "%02d" (int .Params.episode) -}}
@@ -143,7 +133,7 @@
                 <span class="num">ep{{ $num }}</span>
                 <span class="d">{{ if not .Date.IsZero }}{{ dateFormat "2006-01-02" .Date }}{{ else }}—{{ end }}</span>
                 <span class="t">{{ .Title }}{{ with .Params.summary }}<span class="sub">{{ . }}</span>{{ end }}</span>
-                <span class="st">shipped</span>
+                <span class="st">published</span>
                 <span class="arr">→</span>
               </a>
             {{ end }}
@@ -162,8 +152,7 @@
         </div>
 
         <div class="progress-block">
-          <div class="frac"><b>{{ len $shipped }}</b> / {{ $total }} eps · <span style="color:var(--accent)">{{ $pct }}%</span></div>
-          <div class="bar"><span class="fill" style="width:{{ $pct }}%"></span></div>
+          <div class="frac">{{ len $shipped }} {{ if eq (len $shipped) 1 }}post{{ else }}posts{{ end }} published</div>
         </div>
 
         {{ with .Params.related }}

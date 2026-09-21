@@ -19,8 +19,8 @@ export const commands = [
     name: 'whoami',
     summary: 're-print the hero tagline',
     run(ctx) {
-      ctx.print('koen — senior dev shipping tools, not slides');
-      ctx.print('full-stack engineer at Gomocha · building developer tools by night');
+      ctx.print('Koen van der Borght, senior developer and tech lead at Gomocha');
+      ctx.print('Building FSP Horizon and BorgDock.');
     },
   },
   {
@@ -108,7 +108,7 @@ export const commands = [
         about: '/about/',
         posts: '/posts/',
         series: '/series/',
-        borgdock: 'https://borgdock.pages.dev/',
+        borgdock: 'https://borgdock.koenvdborght.nl/',
       };
       if (Object.prototype.hasOwnProperty.call(map, key)) {
         return ctx.navigate(map[key]);

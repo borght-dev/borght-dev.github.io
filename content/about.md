@@ -1,90 +1,69 @@
 ---
-title: "About — Koen van der Borght"
-description: "Senior dev & tech lead at Gomocha. .NET, Azure, AI-native workflows."
+title: "About"
+description: "I'm Koen van der Borght, a senior developer and tech lead at Gomocha, and the developer behind BorgDock."
 layout: about
 fullName: "Koen van der Borght"
 photo: /profile.jpg
-intro: "Software engineer & tech lead with 8+ years of experience. I started as an intern, worked my way up to senior, and currently lead the development team at [Gomocha](https://www.gomocha.com). I write about AI-native engineering workflows and ship developer tools on the side."
-signoff: "let's build better software, together."
+intro: "I'm a senior developer and tech lead at [Gomocha](https://www.gomocha.com). I joined as an intern in 2016 and stayed. These days I'm leading FSP Horizon, a rebuild of our field service platform, and building [BorgDock](https://borgdock.koenvdborght.nl/) in my own time. I like code where the names and structure explain what's happening."
 experience:
   - period: "2022-now"
-    role: "Tech Lead"
+    role: "Tech lead"
     org: "Gomocha"
-    summary: "Leading the dev team. Drove the .NET Framework 4.8 → .NET 8 modernization, then kicked off **FSP Horizon**: a ground-up rebuild on .NET Aspire + React, plan-driven and AI-augmented end-to-end."
+    summary: "Led the migration from .NET Framework 4.8 to .NET 8. Started FSP Horizon on .NET Aspire and React, then brought teammates into the rebuild."
   - period: "2019-2022"
-    role: "Senior Developer"
+    role: "Senior developer"
     org: "Gomocha"
-    summary: "Always pushing the platform forward: refreshing UI/UX, tightening the backend, and modernizing the DevOps stack along the way."
+    summary: "Worked on the field service platform's UI, backend, and build and deployment pipelines."
   - period: "2017-2019"
     role: "Developer"
     org: "Gomocha"
-    summary: "Full-stack on the field-service platform, including DevOps and infra. Promoted from intern to full-time."
+    summary: "Joined full-time after my internship. Worked across the application and its infrastructure."
   - period: "2016-2017"
     role: "Intern"
     org: "Gomocha"
-    summary: "Where it all started."
+    summary: "Started working on the field service platform."
 highlights:
   - period: "2026"
-    title: "Ortec optimization integration"
-    summary: "Designed and shipped a phased integration with Ortec's optimization engine: messaging + worker scaffolding, periodic syncs, webhook intake with idempotency, batch + single-route + timeslot flows, planboard augmentation, and an admin sync dashboard."
+    title: "FSP Horizon"
+    summary: "Set up the new platform on .NET 10, Aspire, and React before teammates joined for feature work. Built the CI pipeline to deploy PRs to staging and run integration and Playwright tests."
   - period: "2026"
-    title: "Workspace Designer rebuild"
-    summary: "Replaced the legacy react-dnd workspace editor with a feature-flagged rewrite: Layout, Position, Visible/Editable rules, Bulk update, Reset, optimistic-concurrency Save, plus a Playwright suite. Retired the legacy pages, stores, and components at cutover."
+    title: "Ortec route optimization"
+    summary: "Integrated Ortec's optimization engine with the platform. Added synchronization, webhook handling, and flows for batch planning, single routes, and appointment timeslots."
   - period: "2026"
-    title: "Cross-app real-time discussions"
-    summary: "Wired Horizon, the legacy main portal, and the customer portal onto a shared RabbitMQ broker via SignalR fanout. Tenant-scoped hub, an embedded MassTransit consumer alongside Wolverine, and an Undo/revert UX for accidental customer-visible sends."
+    title: "Workspace Designer"
+    summary: "Rebuilt the workspace editor, including layout controls, visibility rules, and checks for conflicting edits. Added Playwright tests and removed the old implementation after cutover."
   - period: "2026"
-    title: "Autonomous nightly fixer loops"
-    summary: "Two slash commands run on launchd timers each morning. One triages and fixes failing E2E tests against staging, the other fixes Code Scanning + Dependabot alerts on a daily budget. Both ship one dated PR per run, never dismiss findings, never suppress with comments. A separate monitoring loop watches each PR after it's opened (failing CI, review comments, merge conflicts) and self-heals until it goes green or escalates."
+    title: "Automated test and security fixes"
+    summary: "Built scheduled agents that investigate failing E2E tests and security alerts, verify fixes, and open PRs. A follow-up loop handles CI failures and review comments."
   - period: "2026"
-    title: "Skipped-test triage pipeline"
-    summary: "Built a classifier that buckets every skipped E2E test by reason, plus a daily loop that converts data-missing skips into seeded specs in batches of eight. Added a nightly gate to keep the count from drifting back up."
-  - period: "2026"
-    title: "Multi-pod readiness and zero-downtime deploys"
-    summary: "Made the platform horizontally scalable on Kubernetes: SignalR Redis backplane, distributed cache, HPA + PDBs on staging, startup-probe tuning, and a deploy workflow that no longer drops connections. Verified via k6 load tests in CI."
-  - period: "2026"
-    title: "Quote management: workspace and pricing"
-    summary: "Shipped the Quote Workspace end to end: wizard, deferred-edit persistence, revision/history lifecycle, the full pricebook hierarchy with CSV export and template management, and synchronous UQTC PDF render on Send."
-  - period: "2026"
-    title: "Re-implemented Planboard on Bryntum Scheduler"
-    summary: "Replaced the legacy planboard with a Bryntum-based scheduler: drag-drop on engineer and equipment resources, a batch MoveOrders endpoint, and JSON-based user preferences for panel persistence."
-  - period: "2026"
-    title: "Ship-it pipeline from day one"
-    summary: "Wired the delivery loop before the team scaled up. Every PR deploys to staging, runs unit + integration + E2E, enforces a no-coverage-decrease gate, runs AI code review, and auto-deploys to the Kubernetes test cluster on merge. Observability as a first-class citizen: OpenTelemetry to Honeycomb, structured logs to Seq. Shared PowerShell profile so every dev gets the same local setup."
-  - period: "2026"
-    title: "FSP Horizon platform foundation"
-    summary: "Set up the technical foundation for re-implementing Gomocha's platform (development started 30 years ago), solo, in a few weeks, before teammates joined for feature-parity work. .NET Aspire orchestrating CQRS Vertical Slice services on .NET 10, Dockerized end to end. Frontend on React + Tailwind v4 + AG Grid + TanStack Query, with bun + oxlint. Architecture, internal technical, and customer-facing documentation, kept up to date with AI."
+    title: "Running across Kubernetes pods"
+    summary: "Added a SignalR Redis backplane and distributed caching so requests and live updates work across pods. Adjusted health probes and deployment settings, then checked the result with k6 load tests."
   - period: "2025"
-    title: "Coverage-based, AI-unattended unit-test generation"
-    summary: "Designed a self-paced test generator with a queue and a durable state cursor that produces tests overnight against a coverage gap list, verifies, and advances on its own."
-  - period: "2025"
-    title: "Ranorex → Playwright UI test migration"
-    summary: "Replaced the legacy Ranorex suite with Playwright, plus a CI-resilient playbook: removed nested retries, fixed flaky dropdowns, brought failure diagnostics inline."
-  - period: "2025"
-    title: "Admin tooling on AvaloniaUI + license portal"
-    summary: "Converted the legacy admin tools to AvaloniaUI for cross-platform .NET desktop with comprehensive test coverage, and shipped a separate portal for organisation creation, environment management, and license reporting."
+    title: "Replacing Ranorex with Playwright"
+    summary: "Migrated UI tests to Playwright. Removed nested retries, fixed unreliable dropdown interactions, and improved the diagnostics available when CI fails."
 stack:
-  - { name: ".NET 10",     level: "core"  }
   - { name: "C#",          level: "core"  }
-  - { name: "Azure",       level: "core"  }
+  - { name: ".NET 10",     level: "core"  }
+  - { name: "Aspire",      level: "core"  }
   - { name: "SQL Server",  level: "core"  }
+  - { name: "Azure",       level: "core"  }
   - { name: "TypeScript",  level: "core"  }
-  - { name: ".NET Aspire", level: "core"  }
   - { name: "React",       level: "often" }
   - { name: "Playwright",  level: "often" }
-  - { name: "SignalR",     level: "often" }
+  - { name: "Kubernetes",  level: "often" }
   - { name: "Tauri",       level: "side"  }
   - { name: "Claude Code", level: "daily" }
+  - { name: "Codex",       level: "daily" }
 currently:
-  - { label: "shipping", title: "BorgDock",                          summary: "A dev tool to stay focused while running parallel Claude Code agents." }
-  - { label: "writing",  title: "AI-native engineering workflows",   summary: "A weekly series on how my day-to-day has changed." }
-  - { label: "leading",  title: "FSP Horizon · Gomocha",             summary: "Next-gen field service platform on .NET Aspire + React. Multi-tenant from commit one." }
-  - { label: "tinkering", title: "Mechanical keyboards",             summary: "Daily drivers: Ergodox with Gateron Browns and a Keychron Q1 with Zealios 67g." }
+  - { label: "porting", title: "FSP Horizon", summary: "With Fable and Astra, I'm now porting features and services in days. That used to take weeks." }
+  - { label: "building", title: "BorgDock", summary: "A desktop app for tracking pull requests, CI results, and Azure DevOps work items. Built with Tauri, React, and Rust." }
+  - { label: "writing", title: "Notes from my own workflow", summary: "BorgDock, my development setup, and what changes when I work with coding agents." }
+  - { label: "tinkering", title: "3D printing", summary: "Trying things on my Bambu Lab X2D." }
 certifications:
   - { name: "Professional Scrum Master II", date: "2024-09-02", short: "PSM II" }
-  - { name: "Professional Scrum Master I",  date: "2024-02-12", short: "PSM I" }
+  - { name: "Professional Scrum Master I", date: "2024-02-12", short: "PSM I" }
 offTheClockBlocks:
-  - "Movie nights with my wife Selina (Marvel & Harry Potter rotation)."
-  - "Proud dad of our daughter Niya."
-  - "Mechanical keyboard fan: Ergodox with Gateron Browns and a Keychron Q1 with Zealios 67g."
+  - "Movie nights with my wife Selina. Usually Marvel or Harry Potter."
+  - "Dad to Niya."
+  - "Mechanical keyboards: an Ergodox with Gateron Browns and a Keychron Q1 with Zealios 67g."
 ---

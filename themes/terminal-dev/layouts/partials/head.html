@@ -38,7 +38,7 @@
 <meta name="twitter:description" content="{{ $pageDesc }}">
 <meta name="twitter:image" content="{{ $ogImageAbs }}">
 
-<title>{{ if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+<title>{{ if and .Title (not .IsHome) }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
 
 <link rel="canonical" href="{{ .Permalink }}">
 

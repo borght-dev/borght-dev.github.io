@@ -4,7 +4,7 @@ date: 2026-05-03
 seriesId: borgdock
 episode: 1
 tags: [borgdock, tauri, tooling, github-actions]
-summary: BorgDock is my answer to losing PRs in tabs and missing CI failures while heads-down on the next thing. Post 1 of the series, on the pain that justified building rather than tab-refreshing, why I keep building my own tools, and the form factor that surprised me.
+summary: Why I built BorgDock to track my pull requests, switched from WPF to Tauri, and ended up using the tray more than the sidebar.
 ---
 
 It started when Gomocha kicked off a complete rewrite of the 30-year-old platform I've worked on for nine years. I set the repo up so every PR triggers a build, runs unit tests, runs integration tests, deploys to staging, and runs E2E tests against it. While that's running, Claude reviews the PR and leaves feedback. Once everything is green, the PR can be approved.

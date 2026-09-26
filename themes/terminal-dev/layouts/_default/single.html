@@ -39,13 +39,12 @@
           <span>{{ $minutes }} min read</span>
         {{ end }}
         {{ with .Params.status }}<span>·</span><span>{{ . }}</span>{{ end }}
-        {{ if .Params.tags }}
-          <span>·</span>
-          <div class="blog-row-tags">
-            {{ range .Params.tags }}<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="blog-row-hashtag">#{{ . }}</a>{{ end }}
-          </div>
-        {{ end }}
       </div>
+      {{ end }}
+      {{ if .Params.tags }}
+        <div class="blog-row-tags article-tags">
+          {{ range .Params.tags }}<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="blog-row-hashtag">#{{ . }}</a>{{ end }}
+        </div>
       {{ end }}
     </div>
     {{ if .Params.stack }}

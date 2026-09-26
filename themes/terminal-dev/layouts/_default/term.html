@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{- $items := where .Pages "Params.draft" "ne" true -}}
+{{- $items = $items.ByDate.Reverse -}}
+{{- $tag := .Data.Term -}}
+<section class="blog-list">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <a href="/posts/">blog</a><span class="sep">/</span>
+    <span>#{{ $tag }}</span>
+  </nav>
+
+  <header class="blog-list-header">
+    <div class="prompt-line">
+      <span class="dollar">$</span>
+      <span class="cmd">grep -rl</span>
+      <span class="path">"#{{ $tag }}"</span>
+      <span class="cmd">~/blog</span>
+    </div>
+    <p class="blog-list-meta">
+      {{ len $items }} {{ if eq (len $items) 1 }}match{{ else }}matches{{ end }}
+      · <a href="/posts/">all posts</a>
+    </p>
+  </header>
+
+  <ol class="blog-rows" role="list">
+    {{ range $i, $p := $items }}
+      {{ partial "blog-row.html" (dict "page" $p "latest" false) }}
+    {{ end }}
+    {{ if eq (len $items) 0 }}<p class="tagline">Nothing tagged #{{ $tag }} yet.</p>{{ end }}
+  </ol>
+</section>
+{{ end }}

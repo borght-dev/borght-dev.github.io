@@ -1,0 +1,23 @@
+{{- /* One row in a writing list. Context: dict "page" .Page "latest" bool */ -}}
+{{- $p := .page -}}
+{{- $latest := .latest -}}
+{{- $words   := len (split $p.Plain " ") -}}
+{{- $minutes := math.Max 1 (math.Ceil (div (float $words) 200.0)) -}}
+{{- $tagAttr := delimit ($p.Params.tags | default slice) " " -}}
+<li class="blog-row{{ if $latest }} is-latest{{ end }}" data-tags="{{ $tagAttr }}">
+  <a href="{{ $p.RelPermalink }}" class="blog-row-link">
+    <span class="blog-row-date">{{ dateFormat "2006-01-02" $p.Date }}</span>
+    <div class="blog-row-body">
+      {{ if $latest }}<span class="blog-row-tag-latest">// LATEST</span>{{ end }}
+      <h3 class="blog-row-title">{{ partial "note-title.html" $p }}</h3>
+      {{ with $p.Params.subtitle | default $p.Params.summary | default $p.Description }}<p class="blog-row-desc">{{ . }}</p>{{ end }}
+      {{ if $p.Params.tags }}
+        <div class="blog-row-tags">
+          {{ range $p.Params.tags }}<span class="blog-row-hashtag">#{{ . }}</span>{{ end }}
+        </div>
+      {{ end }}
+    </div>
+    <span class="blog-row-read">{{ $minutes }} min</span>
+    <span class="blog-row-arrow" aria-hidden="true">→</span>
+  </a>
+</li>

@@ -22,6 +22,13 @@
       <img src="{{ .Params.avatar }}" alt="{{ .Title }}" class="avatar" loading="lazy" />
     {{ end }}
     <div class="article-headline">
+      {{ if not $section }}
+      <div class="prompt-line">
+        <span class="dollar">$</span>
+        <span class="cmd">cat</span>
+        <span class="path">~/{{ .File.BaseFileName }}</span>
+      </div>
+      {{ end }}
       <h1 class="article-title">{{ .Title }}</h1>
       {{ with .Params.subtitle }}<p class="article-subtitle">{{ . }}</p>{{ end }}
       {{ if or (not .Date.IsZero) (eq $section "posts") .Params.status .Params.tags }}
@@ -34,8 +41,8 @@
         {{ with .Params.status }}<span>·</span><span>{{ . }}</span>{{ end }}
         {{ if .Params.tags }}
           <span>·</span>
-          <div class="tags" style="display:inline-flex;gap:0.5rem;">
-            {{ range .Params.tags }}<span class="tag">{{ . }}</span>{{ end }}
+          <div class="blog-row-tags">
+            {{ range .Params.tags }}<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" class="blog-row-hashtag">#{{ . }}</a>{{ end }}
           </div>
         {{ end }}
       </div>
@@ -97,7 +104,7 @@
   </script>
   {{ end }}
 
-  {{ if or .PrevInSection .NextInSection }}
+  {{ if and $section (or .PrevInSection .NextInSection) }}
   <nav class="article-nav">
     {{ if .PrevInSection }}
       <a href="{{ .PrevInSection.RelPermalink }}">

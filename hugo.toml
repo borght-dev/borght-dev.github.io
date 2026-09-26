@@ -2,10 +2,19 @@ baseURL = "https://koenvdborght.nl/"
 languageCode = "en-us"
 title = "Koen van der Borght"
 theme = "terminal-dev"
+disableKinds = ["taxonomy"]
 
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
+
+[taxonomies]
+  tag = "tags"
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    style = "github-dark"
 
 [params]
   author = "Koen van der Borght"

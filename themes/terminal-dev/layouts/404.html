@@ -1,0 +1,35 @@
+{{ define "main" }}
+<section class="blog-list notfound">
+  <nav class="breadcrumbs">
+    <a href="/">~</a><span class="sep">/</span>
+    <span class="notfound-path" data-notfound-path>?</span>
+  </nav>
+
+  <header class="blog-list-header">
+    <div class="prompt-line">
+      <span class="dollar">$</span>
+      <span class="cmd">cat</span>
+      <span class="path"><span data-notfound-path>~/?</span></span>
+    </div>
+    <p class="notfound-error">cat: <span data-notfound-path>~/?</span>: No such file or directory</p>
+    <p class="blog-list-meta">exit status 404</p>
+  </header>
+
+  <p class="notfound-help">The page moved, was never written, or the link had a typo. These still exist:</p>
+
+  <ul class="notfound-links">
+    <li><a href="/">~</a><span>home</span></li>
+    <li><a href="/posts/">~/blog</a><span>everything I've published</span></li>
+    <li><a href="/series/">~/series</a><span>longer runs on one topic</span></li>
+    <li><a href="/notes/">~/notes</a><span>short entries from the phone</span></li>
+    <li><a href="/about/">~/about</a><span>who I am and what I work on</span></li>
+  </ul>
+</section>
+<script>
+  (function () {
+    var path = location.pathname.replace(/\/$/, '') || '/';
+    var shown = path === '/' ? '~' : '~' + path;
+    document.querySelectorAll('[data-notfound-path]').forEach(function (el) { el.textContent = shown; });
+  })();
+</script>
+{{ end }}
